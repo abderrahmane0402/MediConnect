@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <header className="sticky w-full h-auto flex justify-between items-center px-1 md:px-4 lg:px-14 py-1 md:py-2 border-b bg-white shadow-sm">
       <div className="flex gap-5 items-center">
-        <h3 className="text-base md:text-lg lg:text-xl tracking-wide font-bold">
+        <h3 className="text-base md:text-lg lg:text-xl tracking-wide font-bold text-blue-600">
           MediConnect
         </h3>
         <Nav />

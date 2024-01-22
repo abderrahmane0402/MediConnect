@@ -22,7 +22,7 @@ export default function MobileNav() {
       </SheetTrigger>
       <SheetContent className="overflow-auto">
         <SheetHeader>
-          <SheetTitle>MediConnect</SheetTitle>
+          <SheetTitle className="text-blue-600">MediConnect</SheetTitle>
           <SheetDescription>
             plateform de gestion des dossiers medical
           </SheetDescription>
@@ -69,7 +69,6 @@ export default function MobileNav() {
               <span className="truncate">Rapport</span>
             </Link>
           </Button>
-          
         </div>
       </SheetContent>
     </Sheet>
