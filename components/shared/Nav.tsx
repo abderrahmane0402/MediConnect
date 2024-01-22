@@ -13,20 +13,39 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { usePathname } from "next/navigation";
 
 export default function Nav() {
+  let path = usePathname();
+  if (path == "/dossierMedical/ajouter") path = "/dossierMedical";
+  if (path == "/materiel/ajouter") path = "/materiel";
+  if (path == "/employe/ajouter") path = "/employe";
+  if (path == "/rapport/ajouter") path = "/rapport";
   return (
     <NavigationMenu className="hidden md:block">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink
+              className={cn(
+                navigationMenuTriggerStyle(),
+                path == "/" && "border-b-2 text-blue-600 border-blue-600"
+              )}
+            >
               Acceuil
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Dossier Medical</NavigationMenuTrigger>
+          <NavigationMenuTrigger
+            className={
+              path == "/dossierMedical"
+                ? "border-b-2 text-blue-600 border-blue-600"
+                : ""
+            }
+          >
+            Dossier Medical
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               <ListItem href="/dossierMedical" title="les dossiers medicals">
@@ -43,15 +62,23 @@ export default function Nav() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>cabinet médical</NavigationMenuTrigger>
+          <NavigationMenuTrigger
+            className={
+              path == "/materiel" || path == "employer"
+                ? "border-b-2 text-blue-600 border-blue-600"
+                : ""
+            }
+          >
+            Cabinet médical
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/employee" title="Les employee">
+              <ListItem href="/employe" title="Les Employés">
                 cette page contient une list des employees du cabinet
               </ListItem>
-              <ListItem href="/employee/ajouter" title="Ajouter Employee">
+              <ListItem href="/employe/ajouter" title="Ajouter Employé">
                 cette page demande les informations pour enregistrer un nouveau
-                employee
+                employe
               </ListItem>
               <ListItem href="/materiel" title="materiel du cabinet">
                 cette page affiche les informations sur le materiel du caninet
@@ -65,7 +92,12 @@ export default function Nav() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="/rapport" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink
+              className={cn(
+                navigationMenuTriggerStyle(),
+                path == "/rapport" && "border-b-2 text-blue-600 border-blue-600"
+              )}
+            >
               Rapport
             </NavigationMenuLink>
           </Link>

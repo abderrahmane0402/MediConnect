@@ -11,8 +11,10 @@ import { Button, buttonVariants } from "../ui/button";
 import { MenuIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function MobileNav() {
+  const route = usePathname()
   return (
     <Sheet>
       <SheetTrigger className="md:hidden">
@@ -28,43 +30,75 @@ export default function MobileNav() {
           </SheetDescription>
         </SheetHeader>
         <div className="w-full flex flex-col gap-2 mt-4 overflow-auto">
-          <Button className="rounded-sm" variant={"default"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/" ? "default" : "secondary"}
+            asChild
+          >
             <span className="truncate">
               <Link href="/">Acceuil</Link>
             </span>
           </Button>
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/dossierMedical" ? "default" : "secondary"}
+            asChild
+          >
             <span className="truncate">
               <Link href="/">Dossier Medical</Link>
             </span>
           </Button>
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/dossierMedical/ajouter" ? "default" : "secondary"}
+            asChild
+          >
             <span className="truncate">
               <Link href="/">Ajouter Dossier Medical</Link>
             </span>
           </Button>
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/materiel" ? "default" : "secondary"}
+            asChild
+          >
             <Link href="/">
               <span className="truncate">Materiel de Cabinet</span>
             </Link>
           </Button>
 
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/materiel/ajouter" ? "default" : "secondary"}
+            asChild
+          >
             <Link href="/">
               <span className="truncate">Ajouter Materiel</span>
             </Link>
           </Button>
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/employer" ? "default" : "secondary"}
+            asChild
+          >
             <Link href="/">
               <span className="truncate">Les Employer</span>
             </Link>
           </Button>
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/employer/ajouter" ? "default" : "secondary"}
+            asChild
+          >
             <Link href="/">
               <span className="truncate">Ajouter Employer</span>
             </Link>
           </Button>
-          <Button className="rounded-sm" variant={"secondary"} asChild>
+          <Button
+            className="rounded-sm"
+            variant={route == "/rapport" ? "default" : "secondary"}
+            asChild
+          >
             <Link href="/">
               <span className="truncate">Rapport</span>
             </Link>
