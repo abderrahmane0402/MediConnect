@@ -1,5 +1,100 @@
-export default function RootPage(){
-    return (
-        <div>hello world</div>
-    )
+import { RecentActivities } from "@/components/RecentActivities";
+import { StatisticDossier } from "@/components/charts/StatisticDossier";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { TestTube } from "lucide-react";
+
+export default function RootPage() {
+  return (
+    <main className="w-full">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <TestTube className="h-4 w-4" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-center sm:text-start">
+              $45,231.89
+            </div>
+            <p className="text-xs text-muted-foreground text-center sm:text-start">
+              +20.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <TestTube className="h-4 w-4" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-center sm:text-start">
+              $45,231.89
+            </div>
+            <p className="text-xs text-muted-foreground text-center sm:text-start">
+              +20.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <TestTube className="h-4 w-4" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-center sm:text-start">
+              $45,231.89
+            </div>
+            <p className="text-xs text-muted-foreground text-center sm:text-start">
+              +20.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <TestTube className="h-4 w-4" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-center sm:text-start">
+              $45,231.89
+            </div>
+            <p className="text-xs text-muted-foreground text-center sm:text-start">
+              +20.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-7 mt-2 md:mt-3 gap-2 lg:gap-3">
+        <Card className="md:col-span-4">
+          <CardHeader>
+            <CardTitle className="text-lg font-medium">
+              Nombre de dossiers traités par mois.
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <StatisticDossier />
+          </CardContent>
+        </Card>
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle className="text-lg font-medium">
+              Les activités récentes
+            </CardTitle>
+            <CardDescription>
+              225 dossiers ont été traités ce mois-ci.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RecentActivities />
+          </CardContent>
+        </Card>
+      </div>
+    </main>
+  );
 }
