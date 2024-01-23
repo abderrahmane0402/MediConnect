@@ -71,7 +71,7 @@ export default function Nav() {
           >
             Cabinet médical
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="z-50">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               <ListItem href="/employe" title="Les Employés">
                 cette page contient une list des employees du cabinet

@@ -29,7 +29,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 
 import {
@@ -65,8 +65,21 @@ export function DossierDataTable<TData, TValue>({
       columnFilters,
     },
   });
+
+  const overrideShadcnElement = () => {
+    const relativeDiv = document.querySelector("#mytable")?.childNodes[0];
+    // @ts-ignore
+    relativeDiv.className = relativeDiv.className.replace("relative", "");
+    // @ts-ignore
+    console.log(relativeDiv.className);
+  };
+
+  useEffect(() => {
+    overrideShadcnElement();
+  }, []);
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 z-0">
       <div className="flex px-3 gap-2">
         <Input
           placeholder="Rechercher"
@@ -80,7 +93,7 @@ export function DossierDataTable<TData, TValue>({
           }
         />
         <Select onValueChange={setSelectColumn}>
-          <SelectTrigger className="w-[180px] border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground">
+          <SelectTrigger className="w-[250px] border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground">
             <SelectValue placeholder="Sélectionnez une colonne" />
           </SelectTrigger>
           <SelectContent>
@@ -94,9 +107,9 @@ export function DossierDataTable<TData, TValue>({
           </SelectContent>
         </Select>
       </div>
-      <div className="rounded-md border h-96 overflow-auto">
+      <div className="rounded-md border h-96 overflow-auto" id="mytable">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-blue-100/70">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
