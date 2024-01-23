@@ -79,12 +79,12 @@ export function DossierDataTable<TData, TValue>({
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 z-0">
-      <div className="flex px-3 gap-2">
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col-reverse md:flex-row md:px-3 gap-2">
         <Input
           placeholder="Rechercher"
           type="text"
-          className="w-72 border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground"
+          className="w-full md:w-72 border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground"
           value={
             (table.getColumn(selectColumn)?.getFilterValue() as string) ?? ""
           }
@@ -93,7 +93,7 @@ export function DossierDataTable<TData, TValue>({
           }
         />
         <Select onValueChange={setSelectColumn}>
-          <SelectTrigger className="w-[250px] border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground">
+          <SelectTrigger className="w-full md:w-[250px] border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground">
             <SelectValue placeholder="Sélectionnez une colonne" />
           </SelectTrigger>
           <SelectContent>
@@ -107,7 +107,10 @@ export function DossierDataTable<TData, TValue>({
           </SelectContent>
         </Select>
       </div>
-      <div className="rounded-md border h-96 overflow-auto" id="mytable">
+      <div
+        className="rounded-md border h-[510px] md:h-96 overflow-auto"
+        id="mytable"
+      >
         <Table>
           <TableHeader className="bg-blue-100/70">
             {table.getHeaderGroups().map((headerGroup) => (
