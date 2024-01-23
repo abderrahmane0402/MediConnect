@@ -45,7 +45,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function DossierDataTable<TData, TValue>({
+export function EquipementDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -97,13 +97,9 @@ export function DossierDataTable<TData, TValue>({
             <SelectValue placeholder="Sélectionnez une colonne" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="nom">Nom</SelectItem>
-            <SelectItem value="prenom">Prénom</SelectItem>
-            <SelectItem value="ppr">PPR</SelectItem>
-            <SelectItem value="natureEmploi">Nature de l'emploi</SelectItem>
-            <SelectItem value="sanguin">Gr. sanguin</SelectItem>
-            <SelectItem value="dateExamen">Date d'examen</SelectItem>
-            <SelectItem value="postTravail">Poste de travail</SelectItem>
+            <SelectItem value="nom">Nom de l'équipement</SelectItem>
+            <SelectItem value="prenom">État</SelectItem>
+            <SelectItem value="cin">Opérationnel</SelectItem>
           </SelectContent>
         </Select>
       </div>
