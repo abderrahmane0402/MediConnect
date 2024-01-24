@@ -50,11 +50,11 @@ export default function MobileNav() {
           </Button>
           <Button
             className="rounded-sm"
-            variant={route == "/dossierMedical/ajouter" ? "default" : "secondary"}
+            variant={route == "/dossierMedical/AjoutDossier" ? "default" : "secondary"}
             asChild
           >
             <span className="truncate">
-              <Link href="/">Ajouter Dossier Medical</Link>
+              <Link href="">Ajouter Dossier Medical</Link>
             </span>
           </Button>
           <Button

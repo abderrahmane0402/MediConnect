@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FolderOpen, Stethoscope, TestTube } from "lucide-react";
-
 export default function RootPage() {
   return (
     <main className="w-full">

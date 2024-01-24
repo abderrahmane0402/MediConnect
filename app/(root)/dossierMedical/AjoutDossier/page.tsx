@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { tree } from "next/dist/build/templates/app-page";
-import { Card } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
@@ -29,7 +29,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import Dropzone from "@/components/Drag&Drop";
 
 const formSchema = z.object({
   nom: z.string().min(2, {
@@ -215,26 +225,20 @@ export default function RootPage() {
   const handlechange_Acc_Tra = () => {
     setAcc_Tra_ants(!isAcc_Tra_ant);
   };
-  // const handle_Exchange_Acc_Tra = () => {
-  //   setAcc_Tra_ants(false);
-  // };
+
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, last_page));
   };
-  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   //@ts-ignore
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
   return (
     <div>
-      <div className="text-indigo-900 text-[34px] font-bold font-['DM Sans'] leading-[40px]">
-        Ajouter un Dossier Médical
-      </div>
       <Form {...form}>
         <Card className="">
           <form
@@ -243,10 +247,10 @@ export default function RootPage() {
           >
             {current_page === 1 && (
               <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
-                <div className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
+                <CardTitle className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
                   Information Personnelle du Patient
                   <br />
-                </div>
+                </CardTitle>
                 <div className="flex flex-row w-full gap-2 ">
                   <div className="w-full md:w-1/2 px-4 ">
                     <FormField
@@ -409,7 +413,7 @@ export default function RootPage() {
                       name="address"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Adress </FormLabel>
+                          <FormLabel>Adresse </FormLabel>
                           <FormControl>
                             <Input
                               type=""
@@ -528,7 +532,7 @@ export default function RootPage() {
                   Antecedents Medicaux / Professionnels et Vaccinations
                   <br />
                 </div>
-                <div className=" pl-4  text-black text-xl font-semibold font-['Inter']">
+                <div className=" pl-[2%]   text-black text-xl font-semibold font-['Inter']">
                   Antecedents Medicaux :
                   <br />
                 </div>
@@ -704,8 +708,10 @@ export default function RootPage() {
                     )}
                   </div>
                 </div>
-                <div className="w-full h-[0px] border border-black"></div>
-                <div className=" pl-4  text-black text-xl font-semibold font-['Inter']">
+                <div className="flex items-center justify-center">
+                  <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
+                </div>
+                <div className=" pl-[2%]  text-black text-xl font-semibold font-['Inter']">
                   Antecedents Professionnels :
                   <br />
                 </div>
@@ -863,8 +869,10 @@ export default function RootPage() {
                     )}
                   </div>
                 </div>
-                <div className="w-full h-[0px] border border-black"></div>
-                <div className=" pl-4  text-black text-xl font-semibold font-['Inter']">
+                <div className="flex items-center justify-center">
+                  <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
+                </div>
+                <div className=" pl-[2%]  text-black text-xl font-semibold font-['Inter']">
                   Vaccinations :
                   <br />
                 </div>
@@ -934,7 +942,6 @@ export default function RootPage() {
                                           <Input
                                             type="date"
                                             placeholder="Enter date"
-                                           
                                             {...form.register(
                                               //@ts-ignore
                                               `vaccinations.${item.id}.date`
@@ -954,7 +961,6 @@ export default function RootPage() {
                                           <Input
                                             type="text"
                                             placeholder="Enter rappel"
-                                            
                                             {...form.register(
                                               //@ts-ignore
                                               `vaccinations.${item.id}.rappel`
@@ -998,10 +1004,10 @@ export default function RootPage() {
             )}
             {current_page === 3 && (
               <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
-                <div className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
+                <CardTitle className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
                   Premier Examen Medical
                   <br />
-                </div>
+                </CardTitle>
                 <div className="flex flex-row w-full gap-2 ">
                   <div className="w-full md:w-1/2 px-4 ">
                     <FormField
@@ -1037,7 +1043,9 @@ export default function RootPage() {
                     />
                   </div>
                 </div>
-                <div className="w-full h-[0px] border border-black"></div>
+                <div className="flex items-center justify-center">
+                  <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
+                </div>
                 <div className="flex flex-row w-full gap-2 ">
                   <div className="w-full md:w-1/3 px-4">
                     <FormField
@@ -1097,7 +1105,9 @@ export default function RootPage() {
                     />
                   </div>
                 </div>
-                <div className="w-full h-[0px] border border-black"></div>
+                {/* <div  className="flex items-center justify-center">
+                <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
+                </div> */}
                 <div className="flex flex-row w-full gap-2 ">
                   <div className="w-full md:w-1/3 px-4">
                     <FormField
@@ -1155,107 +1165,355 @@ export default function RootPage() {
                     />
                   </div>
                 </div>
-                <div className="w-full h-[0px] border border-black"></div>
-                <div className="flex flex-row w-full gap-2 ">
-                  <div className="w-full md:w-1/2 px-4">
+                <div className="flex items-center justify-center">
+                  <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
+                </div>
+                <div className="flex  w-full gap-2 ">
+                  {/* <div className="flex items-center justify-center w-full md:w-1/2 px-4 gap-2 ">
+                    <div className="w-full md:w-[87%] ">
+                      <FormField
+                        name="appr_auditif"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Appareil auditif : </FormLabel>
+                            <FormControl>
+                              <Input
+                              //@ts-ignore
+                                 onChange={(e) => {setSelectedFile( e.target.files?.[0] || null)}}
+                                type="file"
+                                placeholder="Entrer la Appareil auditif  du patient"
+                                {...{ ...field, onChange: undefined }}
+                              />
+                            </FormControl>
+                            
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-full md:w-auto pt-7 pl-2">
+                      <Drawer>
+                        <DrawerTrigger asChild>
+                          <Button variant="outline" className="bg-[#A9DAED] ">
+                            Open File
+                          </Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                          <div className="mx-auto w-full max-w-sm">
+                            <DrawerHeader>
+                              <DrawerTitle>Move Goal</DrawerTitle>
+
+                              <DrawerClose />
+                            </DrawerHeader>
+                            <div className="p-4 pb-0">
+                              <img
+                                className="flex items-center justify-center space-x-2"
+                                src={selectedFile}
+                                alt=""
+   
+                              />
+                            </div>
+                            
+                            
+                          </div>
+                          <DrawerFooter>
+                            {/* Add any additional footer content here */}
+                  {/* </DrawerFooter>
+                        </DrawerContent>
+                      </Drawer>
+                    </div>
+                  </div> */}
+                  <div className="w-full md:w-1/3 px-4 flex items-center ">
                     <FormField
+                      // control={form.control}
                       name="appr_auditif"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Appareil auditif : </FormLabel>
                           <FormControl>
-                            <Input
-                              onChange={handleFileChange}
-                              type="file"
-                              placeholder="Entrer la Appareil auditif  du patient"
-                              {...field}
-                            />
+                            <div className="flex justify-center items-center w-full gap-8  ">
+                              <div className="flex w-1/3   ">
+                                <RadioGroup
+                                  defaultValue=""
+                                  name="appr_auditif_OD"
+                                >
+                                  <FormLabel> OD : </FormLabel>
+                                  <div className="flex  gap-3 ">
+                                    <RadioGroupItem
+                                      value="true"
+                                      id="appr_auditif_OD"
+                                    />
+                                    <Label htmlFor="appr_auditif_OD">oui</Label>
+                                    <RadioGroupItem
+                                      value="false"
+                                      id="appr_auditif_OD"
+                                    />
+                                    <Label htmlFor="appr_auditif_OD">Non</Label>
+                                  </div>
+                                </RadioGroup>
+                              </div>
+                              <div className="flex w-1/3  ">
+                                <RadioGroup
+                                  defaultValue=""
+                                  name="appr_auditif_OD"
+                                >
+                                  <FormLabel> OG : </FormLabel>
+                                  <div className="flex gap-3 ">
+                                    <RadioGroupItem
+                                      value="true"
+                                      id="appr_auditif_OG"
+                                    />
+                                    <Label htmlFor="appr_auditif_OG">oui</Label>
+                                    <RadioGroupItem
+                                      value="false"
+                                      id="appr_auditif_OG"
+                                    />
+                                    <Label htmlFor="appr_auditif_OG">Non</Label>
+                                  </div>
+                                </RadioGroup>
+                              </div>
+                              <div className=" flex pl-2 ">
+                                <Drawer>
+                                  <DrawerTrigger asChild>
+                                    <Button
+                                      variant="outline"
+                                      className="bg-[#A9DAED] w-full"
+                                    >
+                                      Ajouter Scan
+                                    </Button>
+                                  </DrawerTrigger>
+                                  <DrawerContent>
+                                    <div className="mx-auto w-full max-w-sm text-center">
+                                      <DrawerHeader>
+                                        <DrawerTitle>Enter le scan</DrawerTitle>
+                                        <DrawerClose />
+                                      </DrawerHeader>
+                                      <div className="p-4 pb-0">
+                                        <img
+                                          className="flex items-center justify-center "
+                                          // src={selectedFile}
+                                          alt=""
+                                        />
+                                      </div>
+                                    </div>
+                                    <DrawerFooter></DrawerFooter>
+                                  </DrawerContent>
+                                </Drawer>
+                              </div>
+                            </div>
                           </FormControl>
-                         
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <Drawer>
-                      <DrawerTrigger>
-                        <button>Select File</button>
-                      </DrawerTrigger>
-                      <DrawerContent>
-                        <DrawerHeader>
-                          <DrawerTitle>Selected File</DrawerTitle>
-                          <DrawerClose />
-                        </DrawerHeader>
-                        
-                        <DrawerFooter>
-                          {/* Add any additional footer content here */}
-                        </DrawerFooter>
-                      </DrawerContent>
-                    </Drawer>
                   </div>
-                  <div className="w-full md:w-1/2 px-4">
+                  <div className="w-full md:w-2/3 px-4 flex items-center ">
                     <FormField
-                      control={form.control}
-                      name="address"
+                      // control={form.control}
+                      name="appr_Oculaire"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Adress </FormLabel>
+                          <FormLabel>Appareil Oculaire : </FormLabel>
                           <FormControl>
-                            <Input
-                              type=""
-                              placeholder="Entrer l'adresse du patient"
-                              {...field}
-                            />
+                            <div className="flex justify-center items-center w-full  gap-5 ">
+                              <div className="flex justify-center items-center w-full  gap-5 ">
+                                <FormLabel className="w-full ">
+                                  Sans Correction
+                                </FormLabel>
+                                <div className="flex w-1/3   ">
+                                  <RadioGroup
+                                    defaultValue=""
+                                    name="appr_occulaire_sansCorr_pres"
+                                  >
+                                    <FormLabel> De prés : </FormLabel>
+                                    <div className="flex  gap-3 ">
+                                      <RadioGroupItem
+                                        value="appr_occulaire_sansCorr_pres_OD"
+                                        id="appr_occulaire_sansCorr_pres_OD"
+                                      />
+                                      <Label htmlFor="appr_occulaire_sansCorr_pres_OD">
+                                        OD
+                                      </Label>
+                                      <RadioGroupItem
+                                        value="appr_occulaire_sansCorr_pres_OG"
+                                        id="appr_occulaire_sansCorr_pres_OG"
+                                      />
+                                      <Label htmlFor="appr_occulaire_sansCorr_pres_OG">
+                                        OG
+                                      </Label>
+                                    </div>
+                                  </RadioGroup>
+                                </div>
+                                <div className="flex w-1/3  ">
+                                  <RadioGroup
+                                    defaultValue=""
+                                    name="appr_occulaire_sansCorr_loin"
+                                  >
+                                    <FormLabel> De loin : </FormLabel>
+                                    <div className="flex gap-3 ">
+                                      <RadioGroupItem
+                                        value="appr_occulaire_sansCorr_loin_OD"
+                                        id="appr_occulaire_sansCorr_loin_OD"
+                                      />
+                                      <Label htmlFor="appr_occulaire_sansCorr_loin_OD">
+                                        OD
+                                      </Label>
+                                      <RadioGroupItem
+                                        value="appr_occulaire_sansCorr_loin_OG"
+                                        id="appr_occulaire_sansCorr_loin_OG"
+                                      />
+                                      <Label htmlFor="appr_occulaire_sansCorr_loin_OG">
+                                        OG
+                                      </Label>
+                                    </div>
+                                  </RadioGroup>
+                                </div>
+                              </div>
+                              <div className="flex justify-center items-center w-full  gap-5 ">
+                                <FormLabel className="w-full ">
+                                  Avec Correction
+                                </FormLabel>
+                                <div className="flex w-1/3   ">
+                                  <RadioGroup
+                                    defaultValue=""
+                                    name="appr_occulaire_avecCorr_pres"
+                                  >
+                                    <FormLabel> De prés : </FormLabel>
+                                    <div className="flex  gap-3 ">
+                                      <RadioGroupItem
+                                        value="appr_occulaire_avecCorr_pres_OD"
+                                        id="appr_occulaire_avecCorr_pres_OD"
+                                        onClick={handlechange_Acc_Tra}
+                                      />
+                                      <Label htmlFor="appr_occulaire_avecCorr_pres_OD">
+                                        OD
+                                      </Label>
+                                      <RadioGroupItem
+                                        value="appr_occulaire_avecCorr_pres_OG"
+                                        id="appr_occulaire_avecCorr_pres_OG"
+                                      />
+                                      <Label htmlFor="appr_occulaire_avecCorr_pres_OG">
+                                        OG
+                                      </Label>
+                                    </div>
+                                  </RadioGroup>
+                                </div>
+                                <div className="flex w-1/3  ">
+                                  <RadioGroup
+                                    defaultValue=""
+                                    name="appr_occulaire_avecCorr_loin"
+                                  >
+                                    <FormLabel> De loin : </FormLabel>
+                                    <div className="flex gap-3 ">
+                                      <RadioGroupItem
+                                        value="appr_occulaire_avecCorr_loin_OD"
+                                        id="appr_occulaire_avecCorr_loin_OD"
+                                      />
+                                      <Label htmlFor="appr_occulaire_avecCorr_loin_OD">
+                                        OD
+                                      </Label>
+                                      <RadioGroupItem
+                                        value="appr_occulaire_avecCorr_loin_OG"
+                                        id="appr_occulaire_avecCorr_loin_OG"
+                                      />
+                                      <Label htmlFor="appr_occulaire_avecCorr_loin_OG">
+                                        OG
+                                      </Label>
+                                    </div>
+                                  </RadioGroup>
+                                </div>
+                              </div>
+                              <div className=" flex p1-2 ">
+                                <Drawer>
+                                  <DrawerTrigger asChild>
+                                    <Button
+                                      variant="outline"
+                                      className="bg-[#A9DAED] w-full"
+                                    >
+                                      Ajouter Scan
+                                    </Button>
+                                  </DrawerTrigger>
+                                  <DrawerContent>
+                                    <div className="mx-auto w-full max-w-sm text-center">
+                                      <DrawerHeader>
+                                        <DrawerTitle>Enter le scan</DrawerTitle>
+                                        <DrawerClose />
+                                      </DrawerHeader>
+                                      <div className="p-4 pb-0">
+                                        <img
+                                          className="flex items-center justify-center "
+                                          // src={selectedFile}
+                                          alt=""
+                                        />
+                                      </div>
+                                    </div>
+                                    <DrawerFooter></DrawerFooter>
+                                  </DrawerContent>
+                                </Drawer>
+                              </div>
+                            </div>
                           </FormControl>
-                          {/* <FormDescription>
-                   This is your public display name.
-                 </FormDescription> */}
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
                 </div>
+                <div className="flex items-center justify-center">
+                  <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
+                </div>
+                <div className="flex flex-row w-full gap-2 ">
+                  <div className="w-full md:w-1/3 px-4">
+                    <FormField
+                      // control={form.control}
+                      name="teguments"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Téguments </FormLabel>
+                          <FormControl>
+                            <Input
+                              type=""
+                              placeholder="Entrer la teguments du patient"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full md:w-1/3 px-4">
+                    <FormField
+                      // control={form.control}
+                      name="gangloins"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gangloins : </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Entrer la Gangloins "
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full md:w-1/3 px-4">
+                    <FormField
+                      name="rate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Rate </FormLabel>
+                          <FormControl>
+                            <Input
+                              // type="number"
+                              placeholder="Entrer le Rate"
+                              {...field}
+                            />
+                          </FormControl>
 
-                <div className="flex flex-row w-full gap-2 ">
-                  <div className="w-full md:w-1/2 px-4">
-                    <FormField
-                      control={form.control}
-                      name="grade"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Grade </FormLabel>
-                          <FormControl>
-                            <Input
-                              type=""
-                              placeholder="Entrer la Grade   du patient"
-                              {...field}
-                            />
-                          </FormControl>
-                          {/* <FormDescription>
-                   This is your public display name.
-                 </FormDescription> */}
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-full md:w-1/2 px-4">
-                    <FormField
-                      control={form.control}
-                      name="ppr"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>PPR </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="Entrer le PPR du patient"
-                              {...field}
-                            />
-                          </FormControl>
-                          {/* <FormDescription>
-                   This is your public display name.
-                 </FormDescription> */}
                           <FormMessage />
                         </FormItem>
                       )}
@@ -1263,45 +1521,162 @@ export default function RootPage() {
                   </div>
                 </div>
                 <div className="flex flex-row w-full gap-2 ">
-                  <div className="w-full md:w-1/2 px-4">
+                  <div className="w-full md:w-1/4 px-4">
                     <FormField
-                      control={form.control}
-                      name="nature_empl"
+                      // control={form.control}
+                      name="Examen_Radoilogique"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Nature de l'emploi occupé </FormLabel>
+                          <FormLabel>Examen_Radoilogique : </FormLabel>
                           <FormControl>
-                            <Input
+                            <div className=" flex p1-2 ">
+                              <Drawer>
+                                <DrawerTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className="bg-[#A9DAED] w-full"
+                                  >
+                                    Ajouter Scan
+                                  </Button>
+                                </DrawerTrigger>
+                                <DrawerContent>
+                                  <div className="mx-auto w-full text-center">
+                                  <h1 className="title text-xl font-bold">
+                                      Upload Files
+                                    </h1>
+                                    <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" />
+                                  </div>
+                                  <DrawerFooter>
+                                    <div className="flex flex-col justify-center items-center">
+                                    <Button className="w-[50%]">Submit</Button>
+                                    <DrawerClose asChild>
+                                      <Button variant="outline" className="w-[50%]">Cancel</Button>
+                                    </DrawerClose>
+                                    </div>
+                                  </DrawerFooter>
+                                </DrawerContent>
+                              </Drawer>
+                            </div>
+
+                            {/* <Input
                               type=""
-                              placeholder="Entrer la Nature de l'emploi occupé  du patient"
+                              placeholder="Entrer Examen_Radoilogique"
                               {...field}
-                            />
+                            /> */}
                           </FormControl>
-                          {/* <FormDescription>
-                   This is your public display name.
-                 </FormDescription> */}
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className="w-full md:w-1/2 px-4">
+                  <div className="w-full md:w-1/4 px-4">
                     <FormField
-                      control={form.control}
-                      name="date_empl"
+                      // control={form.control}
+                      name="Examen_Radoilogique"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Depuis : </FormLabel>
+                          <FormLabel>Appareil digestif : </FormLabel>
                           <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="Entrer la depuis : du patient"
+                            <div className=" flex p1-2 ">
+                              <Drawer>
+                                <DrawerTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className="bg-[#A9DAED] w-full"
+                                  >
+                                    Ajouter Scan
+                                  </Button>
+                                </DrawerTrigger>
+                                <DrawerContent>
+                                  <div className="mx-auto w-full  text-center">
+                                    <DrawerHeader>
+                                      <DrawerTitle>
+                                        Enter le scan de l'appareil digestif
+                                      </DrawerTitle>
+                                      <DrawerClose />
+                                    </DrawerHeader>
+                                    <h1 className="title text-xl font-bold">
+                                      Upload Files
+                                    </h1>
+                                    <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" />
+                                  </div>
+                                  <DrawerFooter>
+                                    <div className="flex flex-col justify-center items-center">
+                                    <Button className="w-[50%]">Submit</Button>
+                                    <DrawerClose asChild>
+                                      <Button variant="outline" className="w-[50%]">Cancel</Button>
+                                    </DrawerClose>
+                                    </div>
+                                  </DrawerFooter>
+                                </DrawerContent>
+                              </Drawer>
+                            </div>
+
+                            {/* <Input
+                              type=""
+                              placeholder="Entrer Examen_Radoilogique"
                               {...field}
-                            />
+                            /> */}
                           </FormControl>
-                          {/* <FormDescription>
-                   This is your public display name.
-                 </FormDescription> */}
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full md:w-1/4 px-4">
+                    <FormField
+                      // control={form.control}
+                      name="Examen_Radoilogique"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Appareil hématologique et réticulaire :{" "}
+                          </FormLabel>
+                          <FormControl>
+                            <div className=" flex p1-2 ">
+                              <Drawer>
+                                <DrawerTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className="bg-[#A9DAED] w-full"
+                                  >
+                                    Ajouter Scan
+                                  </Button>
+                                </DrawerTrigger>
+                                <DrawerContent>
+                                  <div className="mx-auto w-full  text-center">
+                                    <DrawerHeader>
+                                      <DrawerTitle>
+                                      <div className="text-center">
+                                        Enter le scan de l'Appareil
+                                        hématologique et réticulaire
+                                        </div>
+                                      </DrawerTitle>
+                                      <DrawerClose />
+                                    </DrawerHeader>
+                                    <h1 className="title text-xl font-bold">
+                                      Upload Files
+                                    </h1>
+                                    <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" />
+                                  </div>
+                                  <DrawerFooter>
+                                    <div className="flex flex-col justify-center items-center">
+                                    <Button className="w-[50%]">Submit</Button>
+                                    <DrawerClose asChild>
+                                      <Button variant="outline" className="w-[50%]">Cancel</Button>
+                                    </DrawerClose>
+                                    </div>
+                                  </DrawerFooter>
+                                </DrawerContent>
+                              </Drawer>
+                            </div>
+
+                            {/* <Input
+                              type=""
+                              placeholder="Entrer Examen_Radoilogique"
+                              {...field}
+                            /> */}
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -1310,7 +1685,6 @@ export default function RootPage() {
                 </div>
               </div>
             )}
-            {/* <Button type="submit">Submit</Button> */}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">
@@ -1321,9 +1695,12 @@ export default function RootPage() {
               {" "}
               {current_page}/{last_page}{" "}
             </div>
-            <Button className=" " onClick={handleNextPage}>
-              Next
-            </Button>
+            {current_page != 3 && (
+              <Button className=" " onClick={handleNextPage}>
+                Next
+              </Button>
+            )}
+            {current_page === 3 && <Button type="submit">Submit</Button>}
           </div>
         </Card>
       </Form>
