@@ -17,7 +17,7 @@ import { usePathname } from "next/navigation";
 
 export default function Nav() {
   let path = usePathname();
-  if (path == "/dossierMedical/AjoutDossier") path = "/dossierMedical/AjoutDossier";
+  if (path == "/dossierMedical/ajouter") path = "/dossierMedical/ajouter";
   if (path == "/materiel/ajouter") path = "/materiel";
   if (path == "/employe/ajouter") path = "/employe";
   if (path == "/rapport/ajouter") path = "/rapport";
@@ -52,7 +52,7 @@ export default function Nav() {
                 cette page contient une list des dossiers medicals
               </ListItem>
               <ListItem
-                href="/dossierMedical/AjoutDossier"
+                href="/dossierMedical/ajouter"
                 title="Ajouter dossiers medical"
               >
                 cette page demande les informations pour enregistrer un nouveau
