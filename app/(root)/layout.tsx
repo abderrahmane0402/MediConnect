@@ -7,10 +7,10 @@ export default function RoutLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen flex flex-col bg-[#E0F9FF]">
+    <div className="max-h-screen min-h-screen flex flex-col bg-[#E0F9FF]">
       <Header />
-      <div className="flex-1 py-1 md:py-4 lg:py-5 px-1 md:px-4 lg:px-14">{children}</div>
-      <Footer />
+      <div className="h-full py-1 md:py-4 lg:py-5 px-1 md:px-4 lg:px-14 overflow-auto">{children}</div>
+      {/* <Footer /> */}
     </div>
   );
 }

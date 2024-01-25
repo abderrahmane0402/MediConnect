@@ -107,10 +107,7 @@ export function DossierDataTable<TData, TValue>({
           </SelectContent>
         </Select>
       </div>
-      <div
-        className="rounded-md border h-[510px] md:h-96 overflow-auto"
-        id="mytable"
-      >
+      <div className="rounded-md border overflow-auto" id="mytable">
         <Table>
           <TableHeader className="bg-blue-100/70">
             {table.getHeaderGroups().map((headerGroup) => (

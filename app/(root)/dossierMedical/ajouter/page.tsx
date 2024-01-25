@@ -239,7 +239,7 @@ export default function RootPage() {
   };
 
   return (
-    <div>
+    <>
       <Form {...form}>
         <Card className="">
           <form
@@ -1666,6 +1666,6 @@ export default function RootPage() {
           </div>
         </Card>
       </Form>
-    </div>
+    </>
   );
 }
