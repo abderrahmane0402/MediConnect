@@ -40,6 +40,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import Dropzone from "@/components/Drag&Drop";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   nom: z.string().min(2, {
@@ -708,14 +709,14 @@ export default function RootPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center my-4">
                   <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
                 </div>
                 <div className=" pl-[2%]  text-black text-xl font-semibold font-['Inter']">
                   Antecedents Professionnels :
                   <br />
                 </div>
-                <div className="flex flex-row w-full gap-2  ">
+                <div className="flex flex-row w-full gap-2">
                   <div className="w-full md:w-1/2 px-4">
                     <FormField
                       control={form.control}
@@ -869,7 +870,7 @@ export default function RootPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center my-4">
                   <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
                 </div>
                 <div className=" pl-[2%]  text-black text-xl font-semibold font-['Inter']">
@@ -1043,7 +1044,7 @@ export default function RootPage() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center my-4">
                   <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
                 </div>
                 <div className="flex flex-row w-full gap-2 ">
@@ -1165,300 +1166,240 @@ export default function RootPage() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center my-4">
                   <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
                 </div>
-                <div className="flex  w-full gap-2 ">
-                  {/* <div className="flex items-center justify-center w-full md:w-1/2 px-4 gap-2 ">
-                    <div className="w-full md:w-[87%] ">
-                      <FormField
-                        name="appr_auditif"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Appareil auditif : </FormLabel>
-                            <FormControl>
-                              <Input
-                              //@ts-ignore
-                                 onChange={(e) => {setSelectedFile( e.target.files?.[0] || null)}}
-                                type="file"
-                                placeholder="Entrer la Appareil auditif  du patient"
-                                {...{ ...field, onChange: undefined }}
-                              />
-                            </FormControl>
-                            
-
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="w-full md:w-auto pt-7 pl-2">
-                      <Drawer>
-                        <DrawerTrigger asChild>
-                          <Button variant="outline" className="bg-[#A9DAED] ">
-                            Open File
-                          </Button>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                          <div className="mx-auto w-full max-w-sm">
-                            <DrawerHeader>
-                              <DrawerTitle>Move Goal</DrawerTitle>
-
-                              <DrawerClose />
-                            </DrawerHeader>
-                            <div className="p-4 pb-0">
-                              <img
-                                className="flex items-center justify-center space-x-2"
-                                src={selectedFile}
-                                alt=""
-   
-                              />
+                <div className="grid grid-cols-2 w-full gap-5 px-4">
+                  <FormField
+                    // control={form.control}
+                    name="appr_auditif"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Appareil auditif : </FormLabel>
+                        <FormControl>
+                          <div className="flex justify-center items-center gap-8">
+                            <div className="flex">
+                              <RadioGroup
+                                defaultValue=""
+                                name="appr_auditif_OD"
+                              >
+                                <FormLabel> OD : </FormLabel>
+                                <div className="flex  gap-3 ">
+                                  <RadioGroupItem
+                                    value="true"
+                                    id="appr_auditif_OD"
+                                  />
+                                  <Label htmlFor="appr_auditif_OD">oui</Label>
+                                  <RadioGroupItem
+                                    value="false"
+                                    id="appr_auditif_OD"
+                                  />
+                                  <Label htmlFor="appr_auditif_OD">Non</Label>
+                                </div>
+                              </RadioGroup>
                             </div>
-                            
-                            
+                            <div className="flex">
+                              <RadioGroup
+                                defaultValue=""
+                                name="appr_auditif_OD"
+                              >
+                                <FormLabel> OG : </FormLabel>
+                                <div className="flex gap-3 ">
+                                  <RadioGroupItem
+                                    value="true"
+                                    id="appr_auditif_OG"
+                                  />
+                                  <Label htmlFor="appr_auditif_OG">oui</Label>
+                                  <RadioGroupItem
+                                    value="false"
+                                    id="appr_auditif_OG"
+                                  />
+                                  <Label htmlFor="appr_auditif_OG">Non</Label>
+                                </div>
+                              </RadioGroup>
+                            </div>
+                            <div className=" flex pl-2 ">
+                              <Drawer>
+                                <DrawerTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className="bg-[#A9DAED] w-full"
+                                  >
+                                    Ajouter Scan
+                                  </Button>
+                                </DrawerTrigger>
+                                <DrawerContent>
+                                  <div className="mx-auto w-full max-w-sm text-center">
+                                    <DrawerHeader>
+                                      <DrawerTitle>Enter le scan</DrawerTitle>
+                                      <DrawerClose />
+                                    </DrawerHeader>
+                                    <div className="p-4 pb-0">
+                                      <img
+                                        className="flex items-center justify-center "
+                                        // src={selectedFile}
+                                        alt=""
+                                      />
+                                    </div>
+                                  </div>
+                                  <DrawerFooter></DrawerFooter>
+                                </DrawerContent>
+                              </Drawer>
+                            </div>
                           </div>
-                          <DrawerFooter>
-                            {/* Add any additional footer content here */}
-                  {/* </DrawerFooter>
-                        </DrawerContent>
-                      </Drawer>
-                    </div>
-                  </div> */}
-                  <div className="w-full md:w-1/3 px-4 flex items-center ">
-                    <FormField
-                      // control={form.control}
-                      name="appr_auditif"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Appareil auditif : </FormLabel>
-                          <FormControl>
-                            <div className="flex justify-center items-center w-full gap-8  ">
-                              <div className="flex w-1/3   ">
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    // control={form.control}
+                    name="appr_Oculaire"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Appareil Oculaire : </FormLabel>
+                        <FormControl>
+                          <div className="flex w-full gap-5 justify-between px-5">
+                            <div className="flex px-5 gap-5">
+                              <FormLabel className="">
+                                -- Sans Correction :
+                              </FormLabel>
+                              <div className="flex">
                                 <RadioGroup
                                   defaultValue=""
-                                  name="appr_auditif_OD"
+                                  name="appr_occulaire_sansCorr_pres"
                                 >
-                                  <FormLabel> OD : </FormLabel>
+                                  <FormLabel> De prés : </FormLabel>
                                   <div className="flex  gap-3 ">
                                     <RadioGroupItem
-                                      value="true"
-                                      id="appr_auditif_OD"
+                                      value="appr_occulaire_sansCorr_pres_OD"
+                                      id="appr_occulaire_sansCorr_pres_OD"
                                     />
-                                    <Label htmlFor="appr_auditif_OD">oui</Label>
+                                    <Label htmlFor="appr_occulaire_sansCorr_pres_OD">
+                                      OD
+                                    </Label>
                                     <RadioGroupItem
-                                      value="false"
-                                      id="appr_auditif_OD"
+                                      value="appr_occulaire_sansCorr_pres_OG"
+                                      id="appr_occulaire_sansCorr_pres_OG"
                                     />
-                                    <Label htmlFor="appr_auditif_OD">Non</Label>
+                                    <Label htmlFor="appr_occulaire_sansCorr_pres_OG">
+                                      OG
+                                    </Label>
                                   </div>
                                 </RadioGroup>
                               </div>
-                              <div className="flex w-1/3  ">
+                              <Separator orientation="vertical" />
+                              <div className="flex">
                                 <RadioGroup
                                   defaultValue=""
-                                  name="appr_auditif_OD"
+                                  name="appr_occulaire_sansCorr_loin"
                                 >
-                                  <FormLabel> OG : </FormLabel>
+                                  <FormLabel> De loin : </FormLabel>
                                   <div className="flex gap-3 ">
                                     <RadioGroupItem
-                                      value="true"
-                                      id="appr_auditif_OG"
+                                      value="appr_occulaire_sansCorr_loin_OD"
+                                      id="appr_occulaire_sansCorr_loin_OD"
                                     />
-                                    <Label htmlFor="appr_auditif_OG">oui</Label>
+                                    <Label htmlFor="appr_occulaire_sansCorr_loin_OD">
+                                      OD
+                                    </Label>
                                     <RadioGroupItem
-                                      value="false"
-                                      id="appr_auditif_OG"
+                                      value="appr_occulaire_sansCorr_loin_OG"
+                                      id="appr_occulaire_sansCorr_loin_OG"
                                     />
-                                    <Label htmlFor="appr_auditif_OG">Non</Label>
+                                    <Label htmlFor="appr_occulaire_sansCorr_loin_OG">
+                                      OG
+                                    </Label>
                                   </div>
                                 </RadioGroup>
                               </div>
-                              <div className=" flex pl-2 ">
-                                <Drawer>
-                                  <DrawerTrigger asChild>
-                                    <Button
-                                      variant="outline"
-                                      className="bg-[#A9DAED] w-full"
-                                    >
-                                      Ajouter Scan
-                                    </Button>
-                                  </DrawerTrigger>
-                                  <DrawerContent>
-                                    <div className="mx-auto w-full max-w-sm text-center">
-                                      <DrawerHeader>
-                                        <DrawerTitle>Enter le scan</DrawerTitle>
-                                        <DrawerClose />
-                                      </DrawerHeader>
-                                      <div className="p-4 pb-0">
-                                        <img
-                                          className="flex items-center justify-center "
-                                          // src={selectedFile}
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <DrawerFooter></DrawerFooter>
-                                  </DrawerContent>
-                                </Drawer>
+                            </div>
+                            <div className="flex px-5 gap-5">
+                              <FormLabel className="">
+                                -- Sans Correction :
+                              </FormLabel>
+                              <div className="flex">
+                                <RadioGroup
+                                  defaultValue=""
+                                  name="appr_occulaire_sansCorr_pres"
+                                >
+                                  <FormLabel> De prés : </FormLabel>
+                                  <div className="flex  gap-3 ">
+                                    <RadioGroupItem
+                                      value="appr_occulaire_sansCorr_pres_OD"
+                                      id="appr_occulaire_sansCorr_pres_OD"
+                                    />
+                                    <Label htmlFor="appr_occulaire_sansCorr_pres_OD">
+                                      OD
+                                    </Label>
+                                    <RadioGroupItem
+                                      value="appr_occulaire_sansCorr_pres_OG"
+                                      id="appr_occulaire_sansCorr_pres_OG"
+                                    />
+                                    <Label htmlFor="appr_occulaire_sansCorr_pres_OG">
+                                      OG
+                                    </Label>
+                                  </div>
+                                </RadioGroup>
+                              </div>
+                              <Separator orientation="vertical" />
+                              <div className="flex">
+                                <RadioGroup
+                                  defaultValue=""
+                                  name="appr_occulaire_sansCorr_loin"
+                                >
+                                  <FormLabel> De loin : </FormLabel>
+                                  <div className="flex gap-3 ">
+                                    <RadioGroupItem
+                                      value="appr_occulaire_sansCorr_loin_OD"
+                                      id="appr_occulaire_sansCorr_loin_OD"
+                                    />
+                                    <Label htmlFor="appr_occulaire_sansCorr_loin_OD">
+                                      OD
+                                    </Label>
+                                    <RadioGroupItem
+                                      value="appr_occulaire_sansCorr_loin_OG"
+                                      id="appr_occulaire_sansCorr_loin_OG"
+                                    />
+                                    <Label htmlFor="appr_occulaire_sansCorr_loin_OG">
+                                      OG
+                                    </Label>
+                                  </div>
+                                </RadioGroup>
                               </div>
                             </div>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-full md:w-2/3 px-4 flex items-center ">
-                    <FormField
-                      // control={form.control}
-                      name="appr_Oculaire"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Appareil Oculaire : </FormLabel>
-                          <FormControl>
-                            <div className="flex justify-center items-center w-full  gap-5 ">
-                              <div className="flex justify-center items-center w-full  gap-5 ">
-                                <FormLabel className="w-full ">
-                                  Sans Correction
-                                </FormLabel>
-                                <div className="flex w-1/3   ">
-                                  <RadioGroup
-                                    defaultValue=""
-                                    name="appr_occulaire_sansCorr_pres"
-                                  >
-                                    <FormLabel> De prés : </FormLabel>
-                                    <div className="flex  gap-3 ">
-                                      <RadioGroupItem
-                                        value="appr_occulaire_sansCorr_pres_OD"
-                                        id="appr_occulaire_sansCorr_pres_OD"
-                                      />
-                                      <Label htmlFor="appr_occulaire_sansCorr_pres_OD">
-                                        OD
-                                      </Label>
-                                      <RadioGroupItem
-                                        value="appr_occulaire_sansCorr_pres_OG"
-                                        id="appr_occulaire_sansCorr_pres_OG"
-                                      />
-                                      <Label htmlFor="appr_occulaire_sansCorr_pres_OG">
-                                        OG
-                                      </Label>
-                                    </div>
-                                  </RadioGroup>
+                            <Drawer>
+                              <DrawerTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className="bg-[#A9DAED]"
+                                >
+                                  Ajouter Scan
+                                </Button>
+                              </DrawerTrigger>
+                              <DrawerContent>
+                                <div className="mx-auto w-full max-w-sm text-center">
+                                  <DrawerHeader>
+                                    <DrawerTitle>Enter le scan</DrawerTitle>
+                                    <DrawerClose />
+                                  </DrawerHeader>
+                                  <div className="p-4 pb-0">
+                                    <img
+                                      className="flex items-center justify-center "
+                                      // src={selectedFile}
+                                      alt=""
+                                    />
+                                  </div>
                                 </div>
-                                <div className="flex w-1/3  ">
-                                  <RadioGroup
-                                    defaultValue=""
-                                    name="appr_occulaire_sansCorr_loin"
-                                  >
-                                    <FormLabel> De loin : </FormLabel>
-                                    <div className="flex gap-3 ">
-                                      <RadioGroupItem
-                                        value="appr_occulaire_sansCorr_loin_OD"
-                                        id="appr_occulaire_sansCorr_loin_OD"
-                                      />
-                                      <Label htmlFor="appr_occulaire_sansCorr_loin_OD">
-                                        OD
-                                      </Label>
-                                      <RadioGroupItem
-                                        value="appr_occulaire_sansCorr_loin_OG"
-                                        id="appr_occulaire_sansCorr_loin_OG"
-                                      />
-                                      <Label htmlFor="appr_occulaire_sansCorr_loin_OG">
-                                        OG
-                                      </Label>
-                                    </div>
-                                  </RadioGroup>
-                                </div>
-                              </div>
-                              <div className="flex justify-center items-center w-full  gap-5 ">
-                                <FormLabel className="w-full ">
-                                  Avec Correction
-                                </FormLabel>
-                                <div className="flex w-1/3   ">
-                                  <RadioGroup
-                                    defaultValue=""
-                                    name="appr_occulaire_avecCorr_pres"
-                                  >
-                                    <FormLabel> De prés : </FormLabel>
-                                    <div className="flex  gap-3 ">
-                                      <RadioGroupItem
-                                        value="appr_occulaire_avecCorr_pres_OD"
-                                        id="appr_occulaire_avecCorr_pres_OD"
-                                        onClick={handlechange_Acc_Tra}
-                                      />
-                                      <Label htmlFor="appr_occulaire_avecCorr_pres_OD">
-                                        OD
-                                      </Label>
-                                      <RadioGroupItem
-                                        value="appr_occulaire_avecCorr_pres_OG"
-                                        id="appr_occulaire_avecCorr_pres_OG"
-                                      />
-                                      <Label htmlFor="appr_occulaire_avecCorr_pres_OG">
-                                        OG
-                                      </Label>
-                                    </div>
-                                  </RadioGroup>
-                                </div>
-                                <div className="flex w-1/3  ">
-                                  <RadioGroup
-                                    defaultValue=""
-                                    name="appr_occulaire_avecCorr_loin"
-                                  >
-                                    <FormLabel> De loin : </FormLabel>
-                                    <div className="flex gap-3 ">
-                                      <RadioGroupItem
-                                        value="appr_occulaire_avecCorr_loin_OD"
-                                        id="appr_occulaire_avecCorr_loin_OD"
-                                      />
-                                      <Label htmlFor="appr_occulaire_avecCorr_loin_OD">
-                                        OD
-                                      </Label>
-                                      <RadioGroupItem
-                                        value="appr_occulaire_avecCorr_loin_OG"
-                                        id="appr_occulaire_avecCorr_loin_OG"
-                                      />
-                                      <Label htmlFor="appr_occulaire_avecCorr_loin_OG">
-                                        OG
-                                      </Label>
-                                    </div>
-                                  </RadioGroup>
-                                </div>
-                              </div>
-                              <div className=" flex p1-2 ">
-                                <Drawer>
-                                  <DrawerTrigger asChild>
-                                    <Button
-                                      variant="outline"
-                                      className="bg-[#A9DAED] w-full"
-                                    >
-                                      Ajouter Scan
-                                    </Button>
-                                  </DrawerTrigger>
-                                  <DrawerContent>
-                                    <div className="mx-auto w-full max-w-sm text-center">
-                                      <DrawerHeader>
-                                        <DrawerTitle>Enter le scan</DrawerTitle>
-                                        <DrawerClose />
-                                      </DrawerHeader>
-                                      <div className="p-4 pb-0">
-                                        <img
-                                          className="flex items-center justify-center "
-                                          // src={selectedFile}
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <DrawerFooter></DrawerFooter>
-                                  </DrawerContent>
-                                </Drawer>
-                              </div>
-                            </div>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                                <DrawerFooter></DrawerFooter>
+                              </DrawerContent>
+                            </Drawer>
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center my-4">
                   <div className="w-[95%] h-2 border justify-center flex bg-[#66C3E8] border-[#A9DAED]  rounded-lg"></div>
                 </div>
                 <div className="flex flex-row w-full gap-2 ">
@@ -1541,17 +1482,24 @@ export default function RootPage() {
                                 </DrawerTrigger>
                                 <DrawerContent>
                                   <div className="mx-auto w-full text-center">
-                                  <h1 className="title text-xl font-bold">
+                                    <h1 className="title text-xl font-bold">
                                       Upload Files
                                     </h1>
                                     <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" />
                                   </div>
                                   <DrawerFooter>
                                     <div className="flex flex-col justify-center items-center">
-                                    <Button className="w-[50%]">Submit</Button>
-                                    <DrawerClose asChild>
-                                      <Button variant="outline" className="w-[50%]">Cancel</Button>
-                                    </DrawerClose>
+                                      <Button className="w-[50%]">
+                                        Submit
+                                      </Button>
+                                      <DrawerClose asChild>
+                                        <Button
+                                          variant="outline"
+                                          className="w-[50%]"
+                                        >
+                                          Cancel
+                                        </Button>
+                                      </DrawerClose>
                                     </div>
                                   </DrawerFooter>
                                 </DrawerContent>
@@ -1602,10 +1550,17 @@ export default function RootPage() {
                                   </div>
                                   <DrawerFooter>
                                     <div className="flex flex-col justify-center items-center">
-                                    <Button className="w-[50%]">Submit</Button>
-                                    <DrawerClose asChild>
-                                      <Button variant="outline" className="w-[50%]">Cancel</Button>
-                                    </DrawerClose>
+                                      <Button className="w-[50%]">
+                                        Submit
+                                      </Button>
+                                      <DrawerClose asChild>
+                                        <Button
+                                          variant="outline"
+                                          className="w-[50%]"
+                                        >
+                                          Cancel
+                                        </Button>
+                                      </DrawerClose>
                                     </div>
                                   </DrawerFooter>
                                 </DrawerContent>
@@ -1647,9 +1602,9 @@ export default function RootPage() {
                                   <div className="mx-auto w-full  text-center">
                                     <DrawerHeader>
                                       <DrawerTitle>
-                                      <div className="text-center">
-                                        Enter le scan de l'Appareil
-                                        hématologique et réticulaire
+                                        <div className="text-center">
+                                          Enter le scan de l'Appareil
+                                          hématologique et réticulaire
                                         </div>
                                       </DrawerTitle>
                                       <DrawerClose />
@@ -1661,10 +1616,17 @@ export default function RootPage() {
                                   </div>
                                   <DrawerFooter>
                                     <div className="flex flex-col justify-center items-center">
-                                    <Button className="w-[50%]">Submit</Button>
-                                    <DrawerClose asChild>
-                                      <Button variant="outline" className="w-[50%]">Cancel</Button>
-                                    </DrawerClose>
+                                      <Button className="w-[50%]">
+                                        Submit
+                                      </Button>
+                                      <DrawerClose asChild>
+                                        <Button
+                                          variant="outline"
+                                          className="w-[50%]"
+                                        >
+                                          Cancel
+                                        </Button>
+                                      </DrawerClose>
                                     </div>
                                   </DrawerFooter>
                                 </DrawerContent>
