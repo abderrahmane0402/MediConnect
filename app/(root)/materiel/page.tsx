@@ -28,11 +28,11 @@ const equipements: Equipement[] = [
 ];
 export default function Employes() {
   return (
-    <Card>
+    <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>
         <CardTitle>Liste des Équipements Médicaux Techniques</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 overflow-auto">
         <EquipementDataTable columns={equipementColumns} data={equipements} />
       </CardContent>
     </Card>

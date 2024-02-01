@@ -56,7 +56,7 @@ const data = [
 
 export function StatisticDossier() {
   return (
-    <ResponsiveContainer width="100%" height={295}>
+    <ResponsiveContainer width="100%" className={'h-full'}>
       <BarChart data={data}>
         <XAxis
           dataKey="name"

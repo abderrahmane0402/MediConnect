@@ -51,7 +51,7 @@ export function EquipementDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [selectColumn, setSelectColumn] = useState<string>("nom");
+  const [selectColumn, setSelectColumn] = useState<string>("nomEquipement");
   const table = useReactTable({
     data,
     columns,
@@ -79,8 +79,8 @@ export function EquipementDataTable<TData, TValue>({
   }, []);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-col-reverse md:flex-row md:px-3 gap-2">
+    <div className="flex flex-col gap-2 overflow-auto h-full">
+      <div className="flex flex-col-reverse md:flex-row md:px-3 gap-2 mt-1 mx-1">
         <Input
           placeholder="Entrez votre recherche ici"
           type="text"
@@ -92,21 +92,16 @@ export function EquipementDataTable<TData, TValue>({
             table.getColumn(selectColumn)?.setFilterValue(event.target.value)
           }
         />
-        <Select onValueChange={setSelectColumn}>
+        <Select defaultValue="nomEquipement" onValueChange={setSelectColumn}>
           <SelectTrigger className="w-full md:w-[250px] border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground">
             <SelectValue placeholder="Sélectionnez une colonne" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="nom">Nom de l'équipement</SelectItem>
-            <SelectItem value="prenom">État</SelectItem>
-            <SelectItem value="cin">Opérationnel</SelectItem>
+            <SelectItem value="nomEquipement">Nom de l'équipement</SelectItem>
           </SelectContent>
         </Select>
       </div>
-      <div
-        className="rounded-md border h-[510px] md:h-96 overflow-auto"
-        id="mytable"
-      >
+      <div className="rounded-md border overflow-auto max-h-full" id="mytable">
         <Table>
           <TableHeader className="bg-blue-100/70">
             {table.getHeaderGroups().map((headerGroup) => (

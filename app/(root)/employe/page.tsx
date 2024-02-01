@@ -33,14 +33,14 @@ const employees: employe[] = [
 
 export default function Employes() {
   return (
-    <Card>
+    <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>
         <CardTitle>Liste des employés du cabinet</CardTitle>
         <CardDescription>
           consulter , modifier et supprimer Les employés du cabinet
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 overflow-auto">
         <EmployerDataTable columns={employeColumns} data={employees} />
       </CardContent>
     </Card>

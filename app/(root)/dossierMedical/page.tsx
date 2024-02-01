@@ -91,7 +91,7 @@ const exampleData: Dossier[] = [
 ];
 export default function DossierMedical() {
   return (
-    <Card>
+    <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>
         <CardTitle>Liste des dossiers médicaux</CardTitle>
         <CardDescription>
@@ -99,7 +99,7 @@ export default function DossierMedical() {
           cette tableau
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 overflow-auto">
         <DossierDataTable columns={dossierColumns} data={exampleData} />
       </CardContent>
     </Card>

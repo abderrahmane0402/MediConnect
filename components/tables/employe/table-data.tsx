@@ -79,8 +79,8 @@ export function EmployerDataTable<TData, TValue>({
   }, []);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-col-reverse md:flex-row md:px-3 gap-2">
+    <div className="flex flex-col gap-2 h-full overflow-auto">
+      <div className="flex flex-col-reverse md:flex-row md:px-3 gap-2 mt-1 mx-1">
         <Input
           placeholder="Entrez votre recherche ici"
           type="text"
@@ -105,7 +105,7 @@ export function EmployerDataTable<TData, TValue>({
         </Select>
       </div>
       <div
-        className="rounded-md border h-[510px] md:h-96 overflow-auto"
+        className="rounded-md border overflow-auto max-h-full"
         id="mytable"
       >
         <Table>
