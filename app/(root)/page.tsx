@@ -4,13 +4,14 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FolderOpen, Stethoscope, TestTube } from "lucide-react";
+import { FolderArchive, FolderOpen, Stethoscope, TestTube } from "lucide-react";
 export default function RootPage() {
   return (
-    <main className="w-full">
+    <>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -49,7 +50,7 @@ export default function RootPage() {
             <CardTitle className="text-sm font-medium truncate">
               Dossier Medical ce mois
             </CardTitle>
-            <TestTube className="h-4 w-4" />
+            <FolderArchive className="h-4 w-4" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-center sm:text-start">
@@ -62,31 +63,33 @@ export default function RootPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <TestTube className="h-4 w-4" />
+            <CardTitle className="text-sm font-medium truncate">
+              Dossier Medical ce mois
+            </CardTitle>
+            <FolderArchive className="h-4 w-4" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-center sm:text-start">
-              $45,231.89
+              120
             </div>
             <p className="text-xs text-muted-foreground text-center sm:text-start">
-              +20.1% from last month
+              Dossier ajouter ce mois
             </p>
           </CardContent>
         </Card>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-7 mt-2 md:mt-3 gap-y-2 lg:gap-x-2 lg:gap-3">
-        <Card className="lg:col-span-4">
+      <div className="grid grid-cols-1 lg:grid-cols-7 mt-2 md:mt-3 gap-y-2 lg:gap-x-2 lg:gap-3 flex-1 lg:overflow-auto">
+        <Card className="lg:col-span-4 flex flex-col">
           <CardHeader>
             <CardTitle className="text-lg font-medium">
               Nombre de dossiers traités par mois.
             </CardTitle>
           </CardHeader>
-          <CardContent className="pl-2">
+          <CardContent className="pl-2 flex-1">
             <StatisticDossier />
           </CardContent>
         </Card>
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-3 overflow-auto">
           <CardHeader>
             <CardTitle className="text-lg font-medium">
               Les activités récentes
@@ -100,6 +103,6 @@ export default function RootPage() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </>
   );
 }

@@ -14,7 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function MobileNav() {
-  const route = usePathname()
+  const route = usePathname();
   return (
     <Sheet>
       <SheetTrigger className="md:hidden">
@@ -45,16 +45,20 @@ export default function MobileNav() {
             asChild
           >
             <span className="truncate">
-              <Link href="/">Dossier Medical</Link>
+              <Link href="/dossierMedical">Dossier Medical</Link>
             </span>
           </Button>
           <Button
             className="rounded-sm"
-            variant={route == "/dossierMedical/AjoutDossier" ? "default" : "secondary"}
+            variant={
+              route == "/dossierMedical/ajouter" ? "default" : "secondary"
+            }
             asChild
           >
             <span className="truncate">
-              <Link href="">Ajouter Dossier Medical</Link>
+              <Link href="/dossierMedical/ajouter">
+                Ajouter Dossier Medical
+              </Link>
             </span>
           </Button>
           <Button
@@ -62,7 +66,7 @@ export default function MobileNav() {
             variant={route == "/materiel" ? "default" : "secondary"}
             asChild
           >
-            <Link href="/">
+            <Link href="/materiel">
               <span className="truncate">Materiel de Cabinet</span>
             </Link>
           </Button>
@@ -72,25 +76,25 @@ export default function MobileNav() {
             variant={route == "/materiel/ajouter" ? "default" : "secondary"}
             asChild
           >
-            <Link href="/">
+            <Link href="/materiel/ajouter">
               <span className="truncate">Ajouter Materiel</span>
             </Link>
           </Button>
           <Button
             className="rounded-sm"
-            variant={route == "/employer" ? "default" : "secondary"}
+            variant={route == "/employe" ? "default" : "secondary"}
             asChild
           >
-            <Link href="/">
+            <Link href="/employe">
               <span className="truncate">Les Employer</span>
             </Link>
           </Button>
           <Button
             className="rounded-sm"
-            variant={route == "/employer/ajouter" ? "default" : "secondary"}
+            variant={route == "/employe/ajouter" ? "default" : "secondary"}
             asChild
           >
-            <Link href="/">
+            <Link href="/employe/ajouter">
               <span className="truncate">Ajouter Employer</span>
             </Link>
           </Button>
