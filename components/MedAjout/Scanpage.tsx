@@ -4,23 +4,19 @@ import {
     Drawer,
     DrawerClose,
     DrawerContent,
-    DrawerDescription,
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-  } from "@/components/ui/drawer";
-import { Checkbox } from "@radix-ui/react-checkbox";
+  } from "../../components/ui/drawer";
 import { CardTitle } from "../ui/card";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { FC, useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import Dropzone from "../Drag&Drop";
+
 export default function Scanpage() {
     return (
         <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
