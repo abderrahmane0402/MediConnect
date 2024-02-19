@@ -1,5 +1,5 @@
-"use client";
-import { Button } from "@/components/ui/button";
+"use client"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,27 +7,29 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ColumnDef } from "@tanstack/react-table";
+} from "@/components/ui/dropdown-menu"
+import { ColumnDef } from "@tanstack/react-table"
 import {
   ArrowUpDown,
   FileText,
+  FolderPlus,
   MoreHorizontal,
   SquarePen,
   Trash2,
-} from "lucide-react";
+} from "lucide-react"
+import Link from "next/link"
 
 export type Dossier = {
-  id: number;
-  nom: string;
-  prenom: string;
-  ppr: string;
-  natureEmploi: string;
-  sanguin: string;
-  dateExamen: string;
-  postTravail: string;
-  nbrVisite: string;
-};
+  id: number
+  nom: string
+  prenom: string
+  ppr: string
+  natureEmploi: string
+  sanguin: string
+  dateExamen: string
+  postTravail: string
+  nbrVisite: string
+}
 
 export const dossierColumns: ColumnDef<Dossier>[] = [
   {
@@ -61,7 +63,7 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
           Date d'examen
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
   },
   {
@@ -76,7 +78,7 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const payment = row.original
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -91,6 +93,12 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
               <FileText className="mr-2 h-4 w-4" />
               Plus de détails
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={"/visite"}>
+                <FolderPlus className="mr-2 h-4 w-4" />
+                Ajouter visite
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
               Modifer dossier
@@ -101,7 +109,7 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
-];
+]
