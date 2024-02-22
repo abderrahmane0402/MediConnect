@@ -16,7 +16,7 @@ export default function RootPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium truncate">
-              Total Dossier Medical
+              Total Dossier Médical
             </CardTitle>
             <FolderOpen className="h-4 w-4" />
           </CardHeader>
@@ -48,7 +48,7 @@ export default function RootPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium truncate">
-              Dossier Medical ce mois
+              Dossier Médical ce mois
             </CardTitle>
             <FolderArchive className="h-4 w-4" />
           </CardHeader>
@@ -64,7 +64,7 @@ export default function RootPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium truncate">
-              Dossier Medical ce mois
+              Dossier Médical ce mois
             </CardTitle>
             <FolderArchive className="h-4 w-4" />
           </CardHeader>

@@ -38,12 +38,12 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
   return (
     <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
       <div className="pt-2   text-center text-black text-2xl font-semibold font-serif">
-        Antecedents Medicaux / Professionnels et Vaccinations
+        Antécédents Médicaux / Professionnels et Vaccinations
         <br />
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
       <div className=" pl-[2%]  text-center  text-black text-xl font-semibold font-serif">
-        Antecedents Medicaux :
+        Antécédents Médicaux :
         <br />
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
@@ -94,7 +94,7 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
 
       <div className="border-2 border-green-600 border-lg"></div>
       <div className=" pl-[2%] text-center  text-black text-xl font-semibold font-serif">
-        Antecedents Professionnels :
+      Antécédents Professionnels :
         <br />
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
