@@ -1,4 +1,5 @@
 "use client"
+import DossierMedicalPDF from "@/components/pdfs/DossierMedicalPDF"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -8,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { PDFDownloadLink } from "@react-pdf/renderer"
 import { ColumnDef } from "@tanstack/react-table"
 import {
   ArrowUpDown,
@@ -89,9 +91,11 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Les actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <FileText className="mr-2 h-4 w-4" />
-              Plus de détails
+            <DropdownMenuItem asChild>
+              <PDFDownloadLink document={<DossierMedicalPDF />}>
+                <FileText className="mr-2 h-4 w-4" />
+                Plus de détails
+              </PDFDownloadLink>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={"/visite"}>

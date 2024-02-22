@@ -76,7 +76,7 @@ export default function Nav() {
               <ListItem href="/employe" title="Les Employés">
                 cette page contient une list des employees du cabinet
               </ListItem>
-              <ListItem href="/employe/ajouter" title="Ajouter Employé">
+            <ListItem href="/employe/ajouterheader" title="Ajouter Employé">
                 cette page demande les informations pour enregistrer un nouveau
                 employe
               </ListItem>
