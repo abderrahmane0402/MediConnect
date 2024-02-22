@@ -1,15 +1,5 @@
 "use client";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../../components/ui/drawer";
 import profilePic from "../../public/avatars/lungs-lung-svgrepo-com.svg";
-import { CardTitle } from "../ui/card";
 import {
   FormControl,
   FormField,
@@ -18,23 +8,15 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import Dropzone from "../Drag&Drop";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import DrawerScan from "./DrawerScan";
 
 export default function Scanpage() {
-  function handl(file: File): void {
-    throw new Error("Function not implemented.");
-  }
-
   return (
     <div className=" flex flex-col   {isVisible ? '' : 'hidden'} ">
       <div className=" py-2  text-center text-black text-2xl font-semibold font-serif">
-        Premier Examen Medical
+        Premier Examen Médical
         <br />
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
@@ -109,8 +91,9 @@ export default function Scanpage() {
                   <FormLabel>Poids : </FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      placeholder="Entrer le poids du patient"
+                      type="text"
+                      placeholder="Entrer le poids du patient (Kg)"
+                     
                       {...field}
                     />
                   </FormControl>
@@ -128,8 +111,8 @@ export default function Scanpage() {
                   <FormLabel>Taille : </FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      placeholder="Entrer taille du patient"
+                      type="text"
+                      placeholder="Entrer taille du patient (cm)"
                       {...field}
                     />
                   </FormControl>
@@ -140,81 +123,38 @@ export default function Scanpage() {
             />
           </div>
         </div>
-        <div className="border-l-2  border-green-600 border-lg">
-          <div className="pl-3 py-3">
-            <p>Appareil auditif :</p>
-            <FormField
-              name="og_appareil_auditif"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>OG : </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Remplire OG" {...field} />
-                  </FormControl>
+        <div className=" p-3 border-l-2 border-green-600 border-lg ">
+          <p>Appareil auditif :</p>
+          <FormField
+            name="og_appareil_auditif"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>OG : </FormLabel>
+                <FormControl>
+                  <Input placeholder="Remplire OG" {...field} />
+                </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="od_appareil_auditif"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>OD : </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Remplire OD" {...field} />
-                  </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="od_appareil_auditif"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>OD : </FormLabel>
+                <FormControl>
+                  <Input placeholder="Remplire OD" {...field} />
+                </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              // control={form.control}
-              name="Scan_appareil_auditif"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className=" flex p1-2 ">
-                      <Drawer>
-                        <DrawerTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="bg-[#A9DAED] w-full"
-                          >
-                            Ajouter Scan
-                          </Button>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                          <div className="mx-auto w-full  text-center">
-                            <DrawerHeader>
-                              <DrawerTitle>
-                                Enter le scan de l'appareil digestif
-                              </DrawerTitle>
-                              <DrawerClose />
-                            </DrawerHeader>
-                            <h1 className="title text-xl font-bold">
-                              Upload File
-                            </h1>
-                            {/* <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" onFileUpload={undefined} /> */}
-                          </div>
-                          <DrawerFooter>
-                            <div className="flex flex-col justify-center items-center">
-                              <Button className="w-[50%]">Submit</Button>
-                              <DrawerClose asChild>
-                                <Button variant="outline" className="w-[50%]">
-                                  Cancel
-                                </Button>
-                              </DrawerClose>
-                            </div>
-                          </DrawerFooter>
-                        </DrawerContent>
-                      </Drawer>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="pt-3">
+            <DrawerScan
+              name={"Scan_appareil_auditif"}
+              placeholder={"Appareil auditif"}
             />
           </div>
         </div>
@@ -381,6 +321,12 @@ export default function Scanpage() {
                 </div>
               </div>
             </div>
+            <div className="">
+              <DrawerScan
+                name={"Scan_appareil_oculaire"}
+                placeholder={"Appareil Oculaire"}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -406,7 +352,7 @@ export default function Scanpage() {
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
       <div className="grid grid-cols-5 gap-3 px-4">
-        <div className="py-4 grid grid-rows-4 gap-2 ">
+        <div className="py-4 grid grid-rows-5 gap-2 ">
           <p className="h-10">Examen radiologique :</p>
           <div className="row-span-2 flex justify-center">
             <Image
@@ -430,6 +376,12 @@ export default function Scanpage() {
               </FormItem>
             )}
           />
+          <div className="">
+            <DrawerScan
+              name={"Scan_examen_radiologique"}
+              placeholder={"Examen radiologique"}
+            />
+          </div>
         </div>
         <div className="border-l-2 col-span-4  border-green-600 border-lg grid grid-rows-3 p-4 gap-3">
           <div className="grid grid-cols-4 gap-3">
@@ -441,8 +393,7 @@ export default function Scanpage() {
                   <FormItem>
                     <FormLabel>Appareil respiratoire - rhinopharynx </FormLabel>
                     <FormControl>
-                      <Input
-                        type=""
+                      <Textarea
                         placeholder="observation sur le scan d'Appareil respiratoire - rhinopharynx"
                         {...field}
                       />
@@ -452,7 +403,14 @@ export default function Scanpage() {
                 )}
               />
             </div>
-            <div>drawer scan</div>
+            <div className="grid grid-row-4 gap-2">
+              <div className="row-start-4 row-span-2">
+                <DrawerScan
+                  name={"scan_Appareil_respir"}
+                  placeholder={"Appareil respiratoire - rhinopharynx"}
+                />
+              </div>
+            </div>
           </div>
           <div className="grid grid-cols-4 gap-3">
             <div className="col-span-3">
@@ -461,10 +419,9 @@ export default function Scanpage() {
                 name="observ_app_cardiovas"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Appareil cadiovasculaire </FormLabel>
+                    <FormLabel>Appareil cadiovasculaire: </FormLabel>
                     <FormControl>
-                      <Input
-                        type=""
+                      <Textarea
                         placeholder="observation sur le scan d'Appareil cadiovasculaire "
                         {...field}
                       />
@@ -474,7 +431,14 @@ export default function Scanpage() {
                 )}
               />
             </div>
-            <div>drawer scan</div>
+            <div className="grid grid-row-4 gap-2">
+              <div className="row-start-4 row-span-2">
+                <DrawerScan
+                  name={"scan_Appareil_cardiovas"}
+                  placeholder={"Appareil cadiovasculaire"}
+                />
+              </div>
+            </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <FormField
@@ -532,7 +496,10 @@ export default function Scanpage() {
               <FormItem>
                 <FormLabel>Appareil digestif :</FormLabel>
                 <FormControl>
-                  <Input placeholder="Entrer votre observation " {...field} />
+                  <Textarea
+                    placeholder="Entrer votre observation "
+                    {...field}
+                  />
                 </FormControl>
                 {/* <FormDescription>
                           This is your public display Delegation Medicale.
@@ -543,13 +510,13 @@ export default function Scanpage() {
           />
         </div>
         <div className="grid grid-row-4 gap-2">
-            <div className="row-start-4 row-span-2">
-              <DrawerScan
-                name={"scan_Appareil_digestif"}
-                placeholder={" Appareil digestif :"}
-              />
-            </div>
+          <div className="row-start-4 row-span-2">
+            <DrawerScan
+              name={"scan_Appareil_digestif"}
+              placeholder={" Appareil digestif :"}
+            />
           </div>
+        </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
       <div className="px-4 space-y-2 py-3">
@@ -562,7 +529,7 @@ export default function Scanpage() {
                 <FormItem>
                   <FormLabel>Appareil hématologique et réticulaire :</FormLabel>
                   <FormControl>
-                    <Input placeholder="Entrer observation :" {...field} />
+                    <Textarea placeholder="Entrer observation :" {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -638,22 +605,37 @@ export default function Scanpage() {
         />
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
-      <div className="grid grid-cols-5 gap-3 px-4 ">
-        <div className="py-4 col-span-3   ">
-          <FormField
-            //   control={form.control}
-            name="syst_nerveux"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Système nerveux :</FormLabel>
-                <FormControl>
-                  <Input placeholder="saisir votre observation " {...field} />
-                </FormControl>
+      <div className="grid grid-cols-5 gap-4 px-4 ">
+        <div className="py-4 col-span-3 grid grid-rows-3   ">
+          <div className="grid grid-cols-5 gap-3 ">
+            <div className="col-span-4">
+              <FormField
+                //   control={form.control}
+                name="syst_nerveux"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Système nerveux :</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="saisir votre observation "
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-row-4 gap-2">
+              <div className="row-start-4 row-span-2">
+                <DrawerScan
+                  name={"scan_Syst_nerveux"}
+                  placeholder={"Système nerveux"}
+                />
+              </div>
+            </div>
+          </div>
           <FormField
             //   control={form.control}
             name="tremblement"
@@ -708,10 +690,10 @@ export default function Scanpage() {
         <div className=" col-span-2 py-4 items-center pl-4 w-full grid grid-rows-1   border-l-2 border-green-600 border-lg">
           <FormField
             //   control={form.control}
-            name="syst_nerveux"
+            name="Psychisme"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Système nerveux :</FormLabel>
+                <FormLabel>Psychisme :</FormLabel>
                 <FormControl>
                   <Input placeholder="saisir votre observation " {...field} />
                 </FormControl>
@@ -732,7 +714,10 @@ export default function Scanpage() {
               <FormItem>
                 <FormLabel>Appareil locomoteur :</FormLabel>
                 <FormControl>
-                  <Input placeholder="Entrer votre observation " {...field} />
+                  <Textarea
+                    placeholder="Entrer votre observation "
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -740,13 +725,18 @@ export default function Scanpage() {
             )}
           />
         </div>
-        <div>
-          <p>fghjgjdfgghd</p>
+        <div className="grid grid-row-4 gap-2">
+          <div className="row-start-4 row-span-2">
+            <DrawerScan
+              name={"scan_Appareil_locomoteur"}
+              placeholder={"Appareil locomoteur"}
+            />
+          </div>
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
       <div className="grid grid-cols-3 gap-3 px-4 ">
-        <div className="grid grid-rows-2 gap-3  py-4">
+        <div className="py-4">
           <FormField
             //   control={form.control}
             name="obser_appr_génital"
@@ -754,7 +744,7 @@ export default function Scanpage() {
               <FormItem>
                 <FormLabel>Appareil génital :</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     placeholder="Entrer votre observation sur appareil génital  "
                     {...field}
                   />
@@ -763,12 +753,14 @@ export default function Scanpage() {
               </FormItem>
             )}
           />
-
-          <div>
-            <p>fghjgjdfgghd</p>
+          <div className="pt-2">
+            <DrawerScan
+              name={"scan_Appareil_génital"}
+              placeholder={"Appareil génital"}
+            />
           </div>
         </div>
-        <div className="grid grid-rows-2 gap-3  border-l-2 border-green-600 border-lg p-4  ">
+        <div className="  border-l-2 border-green-600 border-lg py-4 pl-2  ">
           <FormField
             //   control={form.control}
             name="obser_appr_urinaire"
@@ -776,7 +768,7 @@ export default function Scanpage() {
               <FormItem>
                 <FormLabel>Appareil urinaire :</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     placeholder="Entrer votre observation sur appareil urinaire  "
                     {...field}
                   />
@@ -786,8 +778,11 @@ export default function Scanpage() {
             )}
           />
 
-          <div>
-            <p>fghjgjdfgghd</p>
+          <div className="pt-2">
+            <DrawerScan
+              name={"scan_Appareil_urinaire"}
+              placeholder={"Appareil urinaire"}
+            />
           </div>
         </div>
 
@@ -829,7 +824,7 @@ export default function Scanpage() {
             <FormItem>
               <FormLabel>Autres constatations :</FormLabel>
               <FormControl>
-                <Input
+                <Textarea
                   placeholder="Entrer  Autres constatations  "
                   {...field}
                 />
@@ -848,7 +843,7 @@ export default function Scanpage() {
             <FormItem>
               <FormLabel> Examens complémentaires :</FormLabel>
               <FormControl>
-                <Input
+                <Textarea
                   placeholder="Entrer l'Examens complémentaires   "
                   {...field}
                 />
@@ -881,176 +876,4 @@ export default function Scanpage() {
     </div>
   );
 }
-{
-  /* <div className="flex flex-row w-full gap-2 ">
-        <div className="w-full md:w-1/4 p-4">
-        <DrawerScan name={"Examen_Radoilogique"} placeholder={"Examen Radoilogique :"} />
-          {/* <FormField
-            // control={form.control}
-            name="Examen_Radoilogique"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Examen Radoilogique : </FormLabel>
-                <FormControl>
-                  <div className=" flex p1-2 ">
-                    <Drawer>
-                      <DrawerTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="bg-[#A9DAED] w-full"
-                        >
-                          Ajouter Scan
-                        </Button>
-                      </DrawerTrigger>
-                      <DrawerContent>
-                        <div className="mx-auto w-full text-center">
-                          <h1 className="title text-xl font-bold">
-                            Upload Files
-                          </h1>
-                          {/* <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" onFileUpload={undefined} /> */
-}
-{
-  /* </div>
-                        <DrawerFooter>
-                          <div className="flex flex-col justify-center items-center">
-                            <Button className="w-[50%]">Submit</Button>
-                            <DrawerClose asChild>
-                              <Button variant="outline" className="w-[50%]">
-                                Cancel
-                              </Button>
-                            </DrawerClose>
-                          </div>
-                        </DrawerFooter>
-                      </DrawerContent>
-                    </Drawer>
-                  </div>
 
-                  {/* <Input
-                              type=""
-                              placeholder="Entrer Examen_Radoilogique"
-                              {...field}
-                            /> */
-}
-{
-  /* </FormControl>
-                <FormMessage />
-              </FormItem> */
-}
-
-//   </div>
-//   <div className="w-full md:w-1/4 px-4">
-//     <FormField
-//       // control={form.control}
-//       name="Examen_Radoilogique"
-//       render={({ field }) => (
-//         <FormItem>
-//           <FormLabel>Appareil digestif : </FormLabel>
-//           <FormControl>
-//             <div className=" flex p1-2 ">
-//               <Drawer>
-//                 <DrawerTrigger asChild>
-//                   <Button
-//                     variant="outline"
-//                     className="bg-[#A9DAED] w-full"
-//                   >
-//                     Ajouter Scan
-//                   </Button>
-//                 </DrawerTrigger>
-//                 <DrawerContent>
-//                   <div className="mx-auto w-full  text-center">
-//                     <DrawerHeader>
-//                       <DrawerTitle>
-//                         Enter le scan de l'appareil digestif
-//                       </DrawerTitle>
-//                       <DrawerClose />
-//                     </DrawerHeader>
-//                     <h1 className="title text-xl font-bold">
-//                       Upload Files
-//                     </h1>
-//                     {/* <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" onFileUpload={undefined} /> */}
-//                   </div>
-//                   <DrawerFooter>
-//                     <div className="flex flex-col justify-center items-center">
-//                       <Button className="w-[50%]">Submit</Button>
-//                       <DrawerClose asChild>
-//                         <Button variant="outline" className="w-[50%]">
-//                           Cancel
-//                         </Button>
-//                       </DrawerClose>
-//                     </div>
-//                   </DrawerFooter>
-//                 </DrawerContent>
-//               </Drawer>
-//             </div>
-
-//             {/* <Input
-//                         type=""
-//                         placeholder="Entrer Examen_Radoilogique"
-//                         {...field}
-//                       /> */}
-//           </FormControl>
-//           <FormMessage />
-//         </FormItem>
-//       )}
-//     />
-//   </div>
-//   <div className="w-full md:w-1/4 px-4">
-//     <FormField
-//       // control={form.control}
-//       name="Examen_Radoilogique"
-//       render={({ field }) => (
-//         <FormItem>
-//           <FormLabel>Appareil hématologique et réticulaire : </FormLabel>
-//           <FormControl>
-//             <div className=" flex p1-2 ">
-//               <Drawer>
-//                 <DrawerTrigger asChild>
-//                   <Button
-//                     variant="outline"
-//                     className="bg-[#A9DAED] w-full"
-//                   >
-//                     Ajouter Scan
-//                   </Button>
-//                 </DrawerTrigger>
-//                 <DrawerContent>
-//                   <div className="mx-auto w-full  text-center">
-//                     <DrawerHeader>
-//                       <DrawerTitle>
-//                         <div className="text-center">
-//                           Enter le scan de l'Appareil hématologique et
-//                           réticulaire
-//                         </div>
-//                       </DrawerTitle>
-//                       <DrawerClose />
-//                     </DrawerHeader>
-//                     <h1 className="title text-xl font-bold">
-//                       Upload Files
-//                     </h1>
-//                     <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" onFileUpload={handl} />
-//                   </div>
-//                   <DrawerFooter>
-//                     <div className="flex flex-col justify-center items-center">
-//                       <Button className="w-[50%]">Submit</Button>
-//                       <DrawerClose asChild>
-//                         <Button variant="outline" className="w-[50%]">
-//                           Cancel
-//                         </Button>
-//                       </DrawerClose>
-//                     </div>
-//                   </DrawerFooter>
-//                 </DrawerContent>
-//               </Drawer>
-//             </div>
-
-//             {/* <Input
-//                         type=""
-//                         placeholder="Entrer Examen_Radoilogique"
-//                         {...field}
-//                       /> */}
-//           </FormControl>
-//           <FormMessage />
-//         </FormItem>
-//       )}
-//     />
-//   </div>
-// </div> */}

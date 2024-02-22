@@ -10,9 +10,7 @@ import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
@@ -58,6 +56,16 @@ export default function InfoGeneral() {
                   <SelectItem value="A">A</SelectItem>
                   <SelectItem value="A+">A+</SelectItem>
                   <SelectItem value="A-">A-</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="B+">B+</SelectItem>
+                  <SelectItem value="B-">B-</SelectItem>
+                  <SelectItem value="AB">AB</SelectItem>
+                  <SelectItem value="AB+">AB+</SelectItem>
+                  <SelectItem value="AB-">AB-</SelectItem>
+                  <SelectItem value="O">O</SelectItem>
+                  <SelectItem value="O+">O+</SelectItem>
+                  <SelectItem value="O-">O-</SelectItem>
+
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -131,7 +139,7 @@ export default function InfoGeneral() {
             name="prenom"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Prenom </FormLabel>
+                <FormLabel>Prénom </FormLabel>
                 <FormControl>
                   <Input placeholder="Entrer le prenom du patient" {...field} />
                 </FormControl>

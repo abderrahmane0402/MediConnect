@@ -40,7 +40,7 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
   },
   {
     accessorKey: "ppr",
-    header: "PPR",
+    header: "DPPR",
   },
   {
     accessorKey: "natureEmploi",
