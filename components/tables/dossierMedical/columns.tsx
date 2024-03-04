@@ -92,10 +92,14 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
             <DropdownMenuLabel>Les actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <PDFDownloadLink document={<DossierMedicalPDF />}>
+              {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
                 <FileText className="mr-2 h-4 w-4" />
                 Plus de détails
-              </PDFDownloadLink>
+              </PDFDownloadLink> */}
+              <Link href={"/dossierMedical/update"}>
+                <FileText className="mr-2 h-4 w-4" />
+                Plus de détails
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={"/visite"}>
