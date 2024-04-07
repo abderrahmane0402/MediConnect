@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   ColumnDef,
@@ -9,7 +9,7 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 
 import {
   Table,
@@ -18,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 
 import {
   Pagination,
@@ -28,9 +28,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/pagination"
+import { useEffect, useState } from "react"
+import { Input } from "@/components/ui/input"
 
 import {
   Select,
@@ -38,20 +38,20 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
 }
 
 export function DossierDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [selectColumn, setSelectColumn] = useState<string>("nom");
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [selectColumn, setSelectColumn] = useState<string>("nom")
   const table = useReactTable({
     data,
     columns,
@@ -64,19 +64,19 @@ export function DossierDataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  });
+  })
 
   const overrideShadcnElement = () => {
-    const relativeDiv = document.querySelector("#mytable")?.childNodes[0];
+    const relativeDiv = document.querySelector("#mytable")?.childNodes[0]
     // @ts-ignore
-    relativeDiv.className = relativeDiv.className.replace("relative", "");
+    relativeDiv.className = relativeDiv.className.replace("relative", "")
     // @ts-ignore
-    console.log(relativeDiv.className);
-  };
+    console.log(relativeDiv.className)
+  }
 
   useEffect(() => {
-    overrideShadcnElement();
-  }, []);
+    overrideShadcnElement()
+  }, [])
 
   return (
     <div className="flex flex-col gap-2 h-full overflow-auto">
@@ -84,7 +84,7 @@ export function DossierDataTable<TData, TValue>({
         <Input
           placeholder="Entrez votre recherche ici"
           type="text"
-          className="w-full md:w-72 border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground"
+          className="w-full md:w-72 border-2 border-green-300 placeholder:tracking-wider placeholder:text-muted-foreground"
           value={
             (table.getColumn(selectColumn)?.getFilterValue() as string) ?? ""
           }
@@ -93,7 +93,7 @@ export function DossierDataTable<TData, TValue>({
           }
         />
         <Select onValueChange={setSelectColumn}>
-          <SelectTrigger className="w-full md:w-[250px] border-2 border-blue-300 placeholder:tracking-wider placeholder:text-muted-foreground">
+          <SelectTrigger className="w-full md:w-[250px] border-2 border-green-300 placeholder:tracking-wider placeholder:text-muted-foreground">
             <SelectValue placeholder="Sélectionnez une colonne" />
           </SelectTrigger>
           <SelectContent>
@@ -109,7 +109,7 @@ export function DossierDataTable<TData, TValue>({
       </div>
       <div className="rounded-md border overflow-auto max-h-full" id="mytable">
         <Table>
-          <TableHeader className="bg-blue-100/70">
+          <TableHeader className="bg-green-200/70">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -122,7 +122,7 @@ export function DossierDataTable<TData, TValue>({
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -158,5 +158,5 @@ export function DossierDataTable<TData, TValue>({
         </Table>
       </div>
     </div>
-  );
+  )
 }

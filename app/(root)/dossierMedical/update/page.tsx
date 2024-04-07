@@ -7,11 +7,9 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import InfoGeneral2 from "@/components/MedAjout/InfoGenerale2";
-import Antecedents from "@/components/MedAjout/Antecedents";
-import Scanpage from "@/components/MedAjout/Scanpage";
 
 const formSchema = z.object({
   nom: z.string().min(2, {
@@ -114,6 +112,11 @@ export default function RootPage() {
       form_scol_profss: "",
     },
   });
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleSubmit = () => {};
 
@@ -134,7 +137,9 @@ export default function RootPage() {
   };
 
   return (
+
     <>
+     { isClient ?
       <Form {...form}>
         <Card className="">
           <form
@@ -162,6 +167,8 @@ export default function RootPage() {
           </div>
         </Card>
       </Form>
+
+  : null}
     </>
   );
 }

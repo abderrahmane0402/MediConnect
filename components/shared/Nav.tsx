@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import Link from "next/link";
+import * as React from "react"
+import Link from "next/link"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,15 +12,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { usePathname } from "next/navigation";
+} from "@/components/ui/navigation-menu"
+import { usePathname } from "next/navigation"
 
 export default function Nav() {
-  let path = usePathname();
-  if (path == "/dossierMedical/ajouter") path = "/dossierMedical/ajouter";
-  if (path == "/materiel/ajouter") path = "/materiel";
-  if (path == "/employe/ajouter") path = "/employe";
-  if (path == "/rapport/ajouter") path = "/rapport";
+  let path = usePathname()
+  if (path == "/dossierMedical/ajouter") path = "/dossierMedical/ajouter"
+  if (path == "/materiel/ajouter") path = "/materiel"
+  if (path == "/employe/ajouter") path = "/employe"
+  if (path == "/rapport/ajouter") path = "/rapport"
   return (
     <NavigationMenu className="hidden md:block">
       <NavigationMenuList>
@@ -29,7 +29,7 @@ export default function Nav() {
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),
-                path == "/" && "border-b-2 text-blue-600 border-blue-600"
+                path == "/" && "border-b-2 text-green-600 border-green-600"
               )}
             >
               Acceuil
@@ -40,7 +40,7 @@ export default function Nav() {
           <NavigationMenuTrigger
             className={
               path == "/dossierMedical"
-                ? "border-b-2 text-blue-600 border-blue-600"
+                ? "border-b-2 text-green-600 border-green-600"
                 : ""
             }
           >
@@ -65,7 +65,7 @@ export default function Nav() {
           <NavigationMenuTrigger
             className={
               path == "/materiel" || path == "employer"
-                ? "border-b-2 text-blue-600 border-blue-600"
+                ? "border-b-2 text-green-600 border-green-600"
                 : ""
             }
           >
@@ -76,7 +76,7 @@ export default function Nav() {
               <ListItem href="/employe" title="Les Employés">
                 cette page contient une list des employees du cabinet
               </ListItem>
-            <ListItem href="/employe/ajouterheader" title="Ajouter Employé">
+              <ListItem href="/employe/ajouterheader" title="Ajouter Employé">
                 cette page demande les informations pour enregistrer un nouveau
                 employe
               </ListItem>
@@ -95,7 +95,8 @@ export default function Nav() {
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),
-                path == "/rapport" && "border-b-2 text-blue-600 border-blue-600"
+                path == "/rapport" &&
+                  "border-b-2 text-green-600 border-green-600"
               )}
             >
               Rapport
@@ -104,7 +105,7 @@ export default function Nav() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  );
+  )
 }
 
 function ListItem({
@@ -112,9 +113,9 @@ function ListItem({
   title,
   children,
 }: {
-  href: string;
-  title: string;
-  children: React.ReactNode;
+  href: string
+  title: string
+  children: React.ReactNode
 }) {
   return (
     <li className="w-full h-full p-4 rounded-lg hover:bg-blue-100/70 transition ease-linear delay-75">
@@ -125,5 +126,5 @@ function ListItem({
         </p>
       </Link>
     </li>
-  );
+  )
 }
