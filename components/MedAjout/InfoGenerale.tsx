@@ -101,17 +101,23 @@ export default function InfoGeneral() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Formation Santaire/Hopital </FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <Input
-                    placeholder="Entrer Formation Santaire/Hopital"
-                    {...field}
-                  />
+                  <SelectTrigger>
+                    <SelectValue placeholder="Entrer Formation Santaire/Hopital" />
+                  </SelectTrigger>
                 </FormControl>
-                {/* <FormDescription>
-                  This is your public display Formation.
-                </FormDescription> */}
+                <SelectContent>
+                <SelectItem value="rssp">RSSP </SelectItem>
+                  <SelectItem value="centre_hosp">Centre Hospitalier </SelectItem>
+                  <SelectItem value="person_delega">Personnel de la delegation </SelectItem>
+                
+                </SelectContent>
+              </Select>
+                
                 <FormMessage />
               </FormItem>
+       
             )}
           />
         </div>
@@ -206,15 +212,23 @@ export default function InfoGeneral() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Situation Familaile </FormLabel>
+                {/* //marié (M), pacsé (O), divorcé (D), séparé (D), célibataire (C) ou veuf (V). */}
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <Input
-                    placeholder="Entrer la Situation Familaile  du patient"
-                    {...field}
-                  />
+                  <SelectTrigger>
+                    <SelectValue placeholder="Entrer la Situation Familaile  du patient" />
+                  </SelectTrigger>
                 </FormControl>
-                {/* <FormDescription>
-                      This is your public display name.
-                    </FormDescription> */}
+                <SelectContent>
+                  <SelectItem value="Marié">Marié</SelectItem>
+                  <SelectItem value="Pacsé">Pacsé</SelectItem>
+                  <SelectItem value="Divorcé">Divorcé</SelectItem>
+                  <SelectItem value="Séparé">Séparé</SelectItem>
+                  <SelectItem value="Célibataire">Célibataire</SelectItem>
+                  <SelectItem value="Veuf">Veuf</SelectItem>
+                </SelectContent>
+              </Select>
+              
                 <FormMessage />
               </FormItem>
             )}
@@ -299,16 +313,26 @@ export default function InfoGeneral() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Nature de l'emploi occupé </FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <Input
-                    type=""
-                    placeholder="Entrer la Nature de l'emploi occupé  du patient"
-                    {...field}
-                  />
+                  <SelectTrigger>
+                    <SelectValue placeholder="Entrer la Nature de l'emploi occupé  du patient" />
+                  </SelectTrigger>
                 </FormControl>
-                {/* <FormDescription>
-                      This is your public display name.
-                    </FormDescription> */}
+                <SelectContent>
+                <SelectItem value="Medecin_génerale">Medecin génerale </SelectItem>
+                  <SelectItem value="Medecin_spécialiste">Medecin spécialiste </SelectItem>
+                  <SelectItem value="Infirmier_polyvalante">Infirmier polyvalante </SelectItem>
+                  <SelectItem value="Infirmier_auxiliaire">Infirmier auxiliaire </SelectItem>
+                  <SelectItem value="Infirmier_Auxthesite">Infirmier Auxthesite </SelectItem>
+                  <SelectItem value="Infirmier_psychiatrie">Infirmier psychiatrie </SelectItem>
+                  <SelectItem value="Agent_service">Agent de service </SelectItem>
+                  <SelectItem value="Agent_administration">Agent d'administration </SelectItem>
+                  <SelectItem value="Technicien_dohr">Technicien de dohr </SelectItem>
+                  <SelectItem value="Technicien_RX">Technicien de RX </SelectItem>
+                </SelectContent>
+              </Select>
+                
                 <FormMessage />
               </FormItem>
             )}
