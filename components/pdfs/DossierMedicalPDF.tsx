@@ -6,6 +6,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer"
+import profilePic from "../../public/avatars/lungs-lung-svgrepo-com.svg"
 
 const styles = StyleSheet.create({
   page: {
@@ -313,9 +314,240 @@ export default function DossierMedicalPDF() {
 
         <View style={styles.page1}>
           <View style={styles.i3}>
-            <Text style={{ fontSize: 8, height: 20 }}>Date de l'examen :</Text>
-            <Text style={{ fontSize: 8, height: 20 }}>Docteur :</Text>
+            <Text style={{ fontSize: 8 }}>Date de l'examen :</Text>
+            <Text style={{ fontSize: 8 }}>Docteur :</Text>
           </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>
+              Poste de travail (caracteristiques , risques ...) :
+            </Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", borderBottom: 1, width: "100%" }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                padding: 5,
+                paddingVertical: 10,
+                gap: 10,
+                width: "30%",
+                borderRight: 1,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Poinds (Kg) :</Text>
+              <Text style={{ fontSize: 8 }}>Taille (m) :</Text>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+              }}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  padding: 5,
+                  paddingVertical: 10,
+                  gap: 10,
+                  width: "30%",
+                }}
+              >
+                <Text style={{ fontSize: 8 }}>Appareil auditif :</Text>
+                <Text style={{ fontSize: 8 }}>OD :</Text>
+                <Text style={{ fontSize: 8 }}>OG :</Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  padding: 5,
+                  paddingVertical: 10,
+                  gap: 10,
+                  flex: 1,
+                }}
+              >
+                <Text style={{ fontSize: 8 }}>Appareil oculaire :</Text>
+                <View
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 20,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 30,
+                    }}
+                  >
+                    <Text style={{ fontSize: 8 }}>de pres :</Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 10,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{ fontSize: 8, position: "absolute", top: -10 }}
+                      >
+                        SC
+                      </Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 10,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{ fontSize: 8, position: "absolute", top: -10 }}
+                      >
+                        AC
+                      </Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 30,
+                    }}
+                  >
+                    <Text style={{ fontSize: 8 }}>de loin :</Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 10,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{ fontSize: 8, position: "absolute", top: -10 }}
+                      >
+                        SC
+                      </Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 10,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{ fontSize: 8, position: "absolute", top: -10 }}
+                      >
+                        AC
+                      </Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                      <Text style={{ fontSize: 8 }}>OD : 10/10</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>Tegumants :</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              borderBottom: 1,
+              width: "100%",
+            }}
+          >
+            <View
+              style={{
+                borderRight: 1,
+                padding: 15,
+                paddingVertical: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Examen radiologique :</Text>
+              <Image
+                src={"/image.png"}
+                style={{ height: "80px", width: "80px" }}
+              />
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                justifyContent: "space-around",
+                padding: 5,
+                paddingVertical: 10,
+                flex: 1,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>
+                Appareil respiratoire - rhino-pharynx :
+              </Text>
+              <Text style={{ fontSize: 8 }}>Appareil cardiovasculaire :</Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                }}
+              >
+                <Text style={{ fontSize: 8, width: "30%" }}>Pouls :</Text>
+                <Text style={{ fontSize: 8, width: "30%" }}>T.A :</Text>
+                <Text style={{ fontSize: 8, width: "30%" }}>Varices :</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>Appareil digestif :</Text>
+          </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>
+              Appareil hematologique et reticulaire :
+            </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+              }}
+            >
+              <Text style={{ fontSize: 8, width: "50%" }}>Ganglions :</Text>
+              <Text style={{ fontSize: 8, width: "50%" }}>Rate :</Text>
+            </View>
+          </View>
+
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>Glandes endocriniennes :</Text>
+          </View>
+          
         </View>
       </Page>
     </Document>
