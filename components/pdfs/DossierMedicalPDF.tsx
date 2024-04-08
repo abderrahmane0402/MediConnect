@@ -308,13 +308,20 @@ export default function DossierMedicalPDF() {
       </Page>
 
       <Page size="A4" style={styles.page}>
-        <View style={styles.title}>
+        <View
+          style={{
+            fontSize: 12,
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: 30,
+          }}
+        >
           <Text>PREMIER EXAMEN MEDICAL</Text>
         </View>
 
         <View style={styles.page1}>
           <View style={styles.i3}>
-            <Text style={{ fontSize: 8 }}>Date de l'examen :</Text>
+            <Text style={{ fontSize: 8 }}>Date de l'examen : </Text>
             <Text style={{ fontSize: 8 }}>Docteur :</Text>
           </View>
           <View style={styles.i3}>
@@ -547,7 +554,89 @@ export default function DossierMedicalPDF() {
           <View style={styles.i3}>
             <Text style={{ fontSize: 8 }}>Glandes endocriniennes :</Text>
           </View>
-          
+          <View
+            style={{ flexDirection: "row", borderBottom: 1, width: "100%" }}
+          >
+            <View
+              style={{
+                width: "70%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Systeme nerveux :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 10 }}>Tremblement :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 10 }}>Equilibre :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 10 }}>Reflexes :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Psychisme :</Text>
+            </View>
+          </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>Appareil locomoteur :</Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", borderBottom: 1, width: "100%" }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Appareil genital :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Appareil urinaire :</Text>
+            </View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Alb :</Text>
+              <Text style={{ fontSize: 8 }}>Sucre :</Text>
+            </View>
+          </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>Autres constatations :</Text>
+          </View>
+          <View style={styles.i3}>
+            <Text style={{ fontSize: 8 }}>Examens complémentaires :</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "center",
+              padding: 10,
+            }}
+          >
+            <Text style={{ fontSize: 10 }}>CONCLUSIONS MEDICALES</Text>
+          </View>
         </View>
       </Page>
     </Document>
