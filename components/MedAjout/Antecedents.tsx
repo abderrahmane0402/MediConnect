@@ -49,6 +49,7 @@ const antece = [
   },
   { label: "Asthme", value: "Asthme" },
 ];
+
 const maladie = [
   { id: "Travail_nuit", label: "Travail de nuit" },
   {

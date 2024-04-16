@@ -31,7 +31,7 @@ interface FileWithPreview extends File {
     accept: {
       "image/*": [],
     },
-    maxFiles:1,
+    
     maxSize: 1024 * 1000,
     onDrop,
   });
@@ -42,7 +42,7 @@ interface FileWithPreview extends File {
   };
   return (
     //@ts-ignore
-      <div className="flex flex-row items-center justify-center gap-10 ">
+      <div className="flex flex-row items-center justify-center gap-5 ">
         <div className=" w-full ">
           <div
             {...getRootProps({
@@ -61,15 +61,15 @@ interface FileWithPreview extends File {
           </div>
         </div>
       {/* Preview */}
-      <div className="flex flex-row items-center justify-center w-full md:w-1/3"></div>
-        <div className="flex mt-6 w-[50%] gap-10 items-start">
+      <div className=" grid grid-flow-row w-full md:w-1/3 "></div>
+        <div className="flex w-full gap-4 items-start p-4">
           {files.map((file) => (
             <div key={file.name} className="relative h-32 rounded-md shadow-lg">
               <Image
                 src={file.preview}
                 alt={file.name}
-                width={100}
-                height={100}
+                width={120}
+                height={120}
                 onLoad={() => {
                   URL.revokeObjectURL(file.preview);
                 }}
