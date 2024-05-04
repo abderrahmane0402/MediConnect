@@ -45,6 +45,7 @@ export default function Scanpage() {
   const [GlandesSelectGland, setGlandesSelectGland] = useState(false);
   const [Tremb_Obs, setTremb_Obs] = useState(false);
   const [Equil_Obs, setEquil_Obs] = useState(false);
+  const [Varice_Obs, setVarice_Obs] = useState(false);
   const [Reflex_Obs, setReflex_Obs] = useState(false);
   const [Membre_Sup, setMembre_Sup] = useState(false);
   const [Membre_Inf, setMembre_Inf] = useState(false);
@@ -57,19 +58,18 @@ export default function Scanpage() {
   //         app urinaire
   const [app_urinaire_Dysurie, setapp_urinaire_Dysurie] = useState(false);
   const [Dysurieautres, setDysurieautres] = useState(false);
-  const [app_urinaire_Pollokinire, setapp_urinaire_Pollokinire] = useState(false);
+  const [app_urinaire_Pollokinire, setapp_urinaire_Pollokinire] =
+    useState(false);
   const [Pollokinireautres, setPollokinireautres] = useState(false);
   const [app_urinaire_brûlures, setapp_urinaire_brûlures] = useState(false);
   const [brûluresautres, setbrûluresautres] = useState(false);
-  const [app_urinaire_mictionnelles, setapp_urinaire_mictionnelles] = useState(false);
+  const [app_urinaire_mictionnelles, setapp_urinaire_mictionnelles] =
+    useState(false);
   const [mictionnellesautres, setmictionnellesautres] = useState(false);
 
   const [Reinsautres, setReinsautres] = useState(false);
 
-
-
   /////////////////////////////////////
-
 
   const [Seins_autres, setSeins_autres] = useState(false);
   const [episiotomie_autres, setepisiotomie_autres] = useState(false);
@@ -161,6 +161,8 @@ export default function Scanpage() {
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
+
+      {/* ----------------  Post du travail  -------------------- */}
       <div className="w-full px-4 py-3 ">
         <FormField
           name="post_Trav"
@@ -181,6 +183,8 @@ export default function Scanpage() {
         />
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
+      {/* ----------------  Poids Tailles  -------------------- */}
+
       <div className=" px-4 grid grid-cols-4 gap-2 w-full ">
         <div className="grid grid-row-4 gap-2 py-4">
           <div className="w-full row-span-2 items-center ">
@@ -222,6 +226,8 @@ export default function Scanpage() {
             />
           </div>
         </div>
+        {/* ----------------  Appareil auditif  -------------------- */}
+
         <div className=" p-3 border-l-2 border-green-600 border-lg ">
           <p>Appareil auditif :</p>
           <FormField
@@ -258,6 +264,8 @@ export default function Scanpage() {
           </div>
         </div>
         <div className="col-span-2 border-l-2  border-green-600 border-lg">
+          {/* ----------------  appareil Oculairef  -------------------- */}
+
           <div className="pl-3 py-3">
             <p>Appareil Oculaire :</p>
 
@@ -446,15 +454,15 @@ export default function Scanpage() {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="bien_coloré" />
+                      <RadioGroupItem value="Bien Colorés" />
                     </FormControl>
                     <FormLabel className="font-normal">Bien Colorés</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="perles" />
+                      <RadioGroupItem value="pâle" />
                     </FormControl>
-                    <FormLabel className="font-normal">Perles</FormLabel>
+                    <FormLabel className="font-normal">Pâle</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -640,19 +648,63 @@ export default function Scanpage() {
                 </FormItem>
               )}
             />
+            <div>
+            <FormLabel>Varices :</FormLabel>
             <FormField
-              // control={form.control}
-              name="varices"
+              //   control={form.control}
+              name="Varice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Varices :</FormLabel>
                   <FormControl>
-                    <Input type="" placeholder="Varices " {...field} />
+                    <RadioGroup
+                      onValueChange={(radio) => {
+                        if (radio == "Oui") setVarice_Obs(true);
+                        else {
+                          setVarice_Obs(false);
+                        }
+                        field.onChange(radio);
+                      }}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1 pt-2 pl-6"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Non" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Non</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Oui" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Oui</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />{" "}
+            {Varice_Obs && (
+              <div className="pt-2 ">
+                <FormField
+                  // control={form.control}
+                  name={`Varice_autres`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="observation sur le Varice "
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+          </div>
           </div>
         </div>
       </div>
@@ -769,305 +821,310 @@ export default function Scanpage() {
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
-      <div className="p-4">
-        <FormField
-          //   control={form.control}
-          name="glande_endo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Glandes endocriniennes :</FormLabel>
-              <div className="grid grid-cols-3 gap-4 p-3 ">
-                {Glandes.map((item) => (
-                  <div key={item.id} className="grid grid-flow-row gap-2">
-                    <FormField
-                      key={item.id}
-                      // control={form.control}
-                      name={item.id}
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item.id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={
-                                  Array.isArray(field.value) &&
-                                  field.value.includes(item.id)
-                                }
-                                onCheckedChange={(checked) => {
-                                  const updatedValue = field.value || [];
-
-                                  return checked
-                                    ? field.onChange([...updatedValue, item.id])
-                                    : field.onChange(
-                                        updatedValue.filter(
-                                          (value: any) => value !== item.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {item.id}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
-
-                    {item.id == "Thyroïde" && (
-                      <div className="pl-2 pt-3 grid grid-flow-row gap-3 ">
-                        <div>
-                          <FormField
-                            name="Sous_Gland"
-                            render={({ field }) => (
-                              <FormItem>
-                                <Select
-                                  onValueChange={(selectedValue) => {
-                                    field.onChange(selectedValue);
+      <div>
+        <div className="p-4">
+          <FormField
+            //   control={form.control}
+            name="glande_endo"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Glandes endocriniennes :</FormLabel>
+                <div className="grid grid-cols-4 gap-4 p-3 ">
+                  {Glandes.map((item) => (
+                    <div key={item.id} className="grid grid-flow-row gap-2">
+                      <FormField
+                        key={item.id}
+                        // control={form.control}
+                        name={item.id}
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={item.id}
+                              className="flex flex-row items-start space-x-3 space-y-0"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={
+                                    Array.isArray(field.value) &&
+                                    field.value.includes(item.id)
+                                  }
+                                  onCheckedChange={(checked) => {
+                                    const updatedValue = field.value || [];
+                                    return checked
+                                      ? field.onChange([updatedValue, item.id])
+                                      : field.onChange(
+                                          updatedValue.filter(
+                                            (value: any) => value !== item.id
+                                          )
+                                        );
                                   }}
-                                  defaultValue={field.value}
-                                >
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {item.id}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        }}
+                      />
+
+                      {item.id == "Thyroïde" && (
+                        <div className="pl-2 pt-3 grid grid-flow-row gap-3 ">
+                          <div>
+                            <FormField
+                              name="Sous_Gland"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Select
+                                    onValueChange={(selectedValue) => {
+                                      field.onChange(selectedValue);
+                                    }}
+                                    defaultValue={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Entrer Maladies contractées au serice du patient" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {item.type?.map((itemType) => (
+                                        <SelectItem
+                                          key={itemType.id}
+                                          value={itemType.id}
+                                        >
+                                          {itemType.id}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div id={`${item.id}._obser`}>
+                            <FormField
+                              // control={form.control}
+                              name={`${item.id}._obser`}
+                              render={({ field }) => (
+                                <FormItem>
                                   <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Entrer Maladies contractées au serice du patient" />
-                                    </SelectTrigger>
+                                    <RadioGroup
+                                      onValueChange={(radio) => {
+                                        if (radio == "autres")
+                                          setGlandesSelectTer(true);
+                                        else {
+                                          setGlandesSelectTer(false);
+                                        }
+                                        field.onChange(radio);
+                                      }}
+                                      defaultValue={field.value}
+                                      className="flex flex-col space-y-1"
+                                    >
+                                      <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                          <RadioGroupItem value="RAS" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                          RAS
+                                        </FormLabel>
+                                      </FormItem>
+                                      <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                          <RadioGroupItem value="autres" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                          Autres
+                                        </FormLabel>
+                                      </FormItem>
+                                    </RadioGroup>
                                   </FormControl>
-                                  <SelectContent>
-                                    {item.type?.map((itemType) => (
-                                      <SelectItem
-                                        key={itemType.id}
-                                        value={itemType.id}
-                                      >
-                                        {itemType.id}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
 
-                                <FormMessage />
-                              </FormItem>
+                            {GlandesSelectTer && (
+                              <div className="pt-2">
+                                <FormField
+                                  // control={form.control}
+                                  name={`${item.id}._obser_autre`}
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormControl>
+                                        <Input
+                                          placeholder="observation sur le scan"
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
                             )}
-                          />
+                          </div>
                         </div>
-                        <div id={`${item.id}._obser`}>
-                          <FormField
-                            // control={form.control}
-                            name={`${item.id}._obser`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <RadioGroup
-                                    onValueChange={(radio) => {
-                                      if (radio == "autres")
-                                        setGlandesSelectTer(true);
-                                      else {
-                                        setGlandesSelectTer(false);
-                                      }
-                                      field.onChange(radio);
-                                    }}
-                                    defaultValue={field.value}
-                                    className="flex flex-col space-y-1"
-                                  >
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
-                                      <FormControl>
-                                        <RadioGroupItem value="RAS" />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        RAS
-                                      </FormLabel>
-                                    </FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
-                                      <FormControl>
-                                        <RadioGroupItem value="autres" />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        Autres
-                                      </FormLabel>
-                                    </FormItem>
-                                  </RadioGroup>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                      )}
+                      {item.id === "Hypophyse" && (
+                        <div className="pl-2 pt-3 grid grid-flow-row gap-3">
+                          <div id={`${item.id}._obser`}>
+                            <FormField
+                              // control={form.control}
+                              name={`${item.id}._obser`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <RadioGroup
+                                      onValueChange={(radio) => {
+                                        if (radio == "autres")
+                                          setGlandesSelectHyp(true);
+                                        else {
+                                          setGlandesSelectHyp(false);
+                                        }
+                                        field.onChange(radio);
+                                      }}
+                                      defaultValue={field.value}
+                                      className="flex flex-col space-y-1"
+                                    >
+                                      <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                          <RadioGroupItem value="RAS" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                          RAS
+                                        </FormLabel>
+                                      </FormItem>
+                                      <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                          <RadioGroupItem value="autres" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                          Autres
+                                        </FormLabel>
+                                      </FormItem>
+                                    </RadioGroup>
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
 
-                          {GlandesSelectTer && (
-                            <div className="pt-2">
-                              <FormField
-                                // control={form.control}
-                                name={`${item.id}._obser_autre`}
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormControl>
-                                      <Input
-                                        placeholder="observation sur le scan"
-                                        {...field}
-                                      />
-                                    </FormControl>
-                                    <FormMessage />
-                                  </FormItem>
-                                )}
-                              />
-                            </div>
-                          )}
-                        </div>
-                        <DrawerScan
-                          name={`${item.id}._Scan`}
-                          placeholder={item.id}
-                        />
-                      </div>
-                    )}
-                    {item.id === "Hypophyse" && (
-                      <div className="pl-2 pt-3 grid grid-flow-row gap-3">
-                        <div id={`${item.id}._obser`}>
-                          <FormField
-                            // control={form.control}
-                            name={`${item.id}._obser`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <RadioGroup
-                                    onValueChange={(radio) => {
-                                      if (radio == "autres")
-                                        setGlandesSelectHyp(true);
-                                      else {
-                                        setGlandesSelectHyp(false);
-                                      }
-                                      field.onChange(radio);
-                                    }}
-                                    defaultValue={field.value}
-                                    className="flex flex-col space-y-1"
-                                  >
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                            {GlandesSelectHyp && (
+                              <div className="pt-2">
+                                <FormField
+                                  // control={form.control}
+                                  name={`${item.id}._obser_autre`}
+                                  render={({ field }) => (
+                                    <FormItem>
                                       <FormControl>
-                                        <RadioGroupItem value="RAS" />
+                                        <Input
+                                          placeholder="observation sur le scan"
+                                          {...field}
+                                        />
                                       </FormControl>
-                                      <FormLabel className="font-normal">
-                                        RAS
-                                      </FormLabel>
+                                      <FormMessage />
                                     </FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
-                                      <FormControl>
-                                        <RadioGroupItem value="autres" />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        Autres
-                                      </FormLabel>
-                                    </FormItem>
-                                  </RadioGroup>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
+                                  )}
+                                />
+                              </div>
                             )}
-                          />
-
-                          {GlandesSelectHyp && (
-                            <div className="pt-2">
-                              <FormField
-                                // control={form.control}
-                                name={`${item.id}._obser_autre`}
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormControl>
-                                      <Input
-                                        placeholder="observation sur le scan"
-                                        {...field}
-                                      />
-                                    </FormControl>
-                                    <FormMessage />
-                                  </FormItem>
-                                )}
-                              />
-                            </div>
-                          )}
+                          </div>
                         </div>
-                        <DrawerScan
-                          name={`${item.id}._Scan`}
-                          placeholder={item.id}
-                        />
-                      </div>
-                    )}
-                    {item.id === "Glandes surrénales" && (
-                      <div className="pl-2 pt-3 grid grid-flow-row gap-3">
-                        <div id={`${item.id}._obser`}>
-                          <FormField
-                            // control={form.control}
-                            name={`${item.id}._obser`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <RadioGroup
-                                    onValueChange={(radio) => {
-                                      if (radio == "autres")
-                                        setGlandesSelectGland(true);
-                                      else {
-                                        setGlandesSelectGland(false);
-                                      }
-                                      field.onChange(radio);
-                                    }}
-                                    defaultValue={field.value}
-                                    className="flex flex-col space-y-1"
-                                  >
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      )}
+                      {item.id === "Glandes surrénales" && (
+                        <div className="pl-2 pt-3 grid grid-flow-row gap-3">
+                          <div id={`${item.id}._obser`}>
+                            <FormField
+                              // control={form.control}
+                              name={`${item.id}._obser`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <RadioGroup
+                                      onValueChange={(radio) => {
+                                        if (radio == "autres")
+                                          setGlandesSelectGland(true);
+                                        else {
+                                          setGlandesSelectGland(false);
+                                        }
+                                        field.onChange(radio);
+                                      }}
+                                      defaultValue={field.value}
+                                      className="flex flex-col space-y-1"
+                                    >
+                                      <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                          <RadioGroupItem value="RAS" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                          RAS
+                                        </FormLabel>
+                                      </FormItem>
+                                      <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                          <RadioGroupItem value="autres" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                          Autres
+                                        </FormLabel>
+                                      </FormItem>
+                                    </RadioGroup>
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            {GlandesSelectGland && (
+                              <div className="pt-2">
+                                <FormField
+                                  // control={form.control}
+                                  name={`${item.id}._obser_autre`}
+                                  render={({ field }) => (
+                                    <FormItem>
                                       <FormControl>
-                                        <RadioGroupItem value="RAS" />
+                                        <Input
+                                          placeholder="observation sur le scan"
+                                          {...field}
+                                        />
                                       </FormControl>
-                                      <FormLabel className="font-normal">
-                                        RAS
-                                      </FormLabel>
+                                      <FormMessage />
                                     </FormItem>
-                                    <FormItem className="flex items-center space-x-3 space-y-0">
-                                      <FormControl>
-                                        <RadioGroupItem value="autres" />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        Autres
-                                      </FormLabel>
-                                    </FormItem>
-                                  </RadioGroup>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
+                                  )}
+                                />
+                              </div>
                             )}
-                          />
-
-                          {GlandesSelectGland && (
-                            <div className="pt-2">
-                              <FormField
-                                // control={form.control}
-                                name={`${item.id}._obser_autre`}
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormControl>
-                                      <Input
-                                        placeholder="observation sur le scan"
-                                        {...field}
-                                      />
-                                    </FormControl>
-                                    <FormMessage />
-                                  </FormItem>
-                                )}
-                              />
-                            </div>
-                          )}
+                          </div>
                         </div>
-                        <DrawerScan
-                          name={`${item.id}._Scan`}
-                          placeholder={item.id}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                      )}
+                    </div>
+                  ))}
+                            <FormField
+                              // control={form.control}
+                              name={`glande_endo_autre`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Autre :</FormLabel>
+                                  <FormControl>
+                                    <Textarea
+                                      placeholder="observation sur le scan"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <DrawerScan name={`Glandes_endocriniennes_Scan`} placeholder={"Glandes endocriniennes"} />
+        </div>
       </div>
-
       <div className="border-2 border-green-600 border-lg"></div>
       <div className="grid grid-flow-col gap-4 px-4 ">
         <div className="py-4 col-span-3 grid grid-flow-row gap-2   ">
@@ -1518,9 +1575,9 @@ export default function Scanpage() {
               </div>
             )}
           </div>
-
+          {/*                 Equilibre                    */}
           <div>
-            <FormLabel>Equilibre :</FormLabel>
+            <FormLabel>Trouble de l'équilibre :</FormLabel>
             <FormField
               //   control={form.control}
               name="equilibre"
@@ -1529,7 +1586,7 @@ export default function Scanpage() {
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
-                        if (radio == "Non") setEquil_Obs(true);
+                        if (radio == "Oui") setEquil_Obs(true);
                         else {
                           setEquil_Obs(false);
                         }
@@ -1699,7 +1756,7 @@ export default function Scanpage() {
           <div className="pl-2">
             <FormItem>
               <FormLabel>Psychose : </FormLabel>
-              {Nevrose.map((item) => (
+              {Psychose.map((item) => (
                 <FormField
                   key={item.value}
                   name="Psychose"
@@ -1754,6 +1811,9 @@ export default function Scanpage() {
               </div>
             </FormItem>
           </div>
+          <div className="pt-2">
+            <DrawerScan name={`Psychisme_Scan`} placeholder={"Psychisme "} />
+          </div>
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
@@ -1795,7 +1855,6 @@ export default function Scanpage() {
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -1820,6 +1879,7 @@ export default function Scanpage() {
               </div>
             )}
           </div>
+
           <div className="grid grid-cols-5 ">
             <FormField
               //   control={form.control}
@@ -1935,6 +1995,12 @@ export default function Scanpage() {
                 />
               </div>
             )}
+          </div>
+          <div className="pt-2">
+            <DrawerScan
+              name={`Appareil_locomoteur_Scan`}
+              placeholder={"Appareil locomoteur Scan "}
+            />
           </div>
         </div>
       </div>
@@ -2489,7 +2555,7 @@ export default function Scanpage() {
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            Trouble menstruels 
+                            Trouble menstruels
                           </FormLabel>
                         </FormItem>
                       )}
@@ -2559,7 +2625,9 @@ export default function Scanpage() {
                           </div>
                           <DrawerScan
                             name={`App_genital_Troub_Sexu_Scan`}
-                            placeholder={"Appareil génital (Troubles menstruels )"}
+                            placeholder={
+                              "Appareil génital (Troubles menstruels )"
+                            }
                           />
                         </div>
                       </div>
@@ -2989,7 +3057,7 @@ export default function Scanpage() {
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                          Pollokinire{" "}
+                            Pollokinire{" "}
                           </FormLabel>
                         </FormItem>
                       )}
@@ -3172,7 +3240,8 @@ export default function Scanpage() {
                               checked={field.value}
                               onCheckedChange={(checked) => {
                                 field.onChange(checked);
-                                if (checked) setapp_urinaire_mictionnelles(true);
+                                if (checked)
+                                  setapp_urinaire_mictionnelles(true);
                                 else setapp_urinaire_mictionnelles(false);
                               }}
                             />
@@ -3255,77 +3324,75 @@ export default function Scanpage() {
                     )}
                   </div>
                 </div>
-
               </div>
             )}
             {app_urin == "Reins" && (
               <div className=" col-start-2  pl-6 ">
                 <div className="pl-6 pt-3 grid grid-flow-row gap-3">
-                          <div id={`App_urin_Reins_obser`}>
-                            <FormField
-                              // control={form.control}
-                              name={`App_urin_Reins_obser`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <RadioGroup
-                                      onValueChange={(radio) => {
-                                        if (radio == "Autres")
-                                          setReinsautres(true);
-                                        else setReinsautres(false);
+                  <div id={`App_urin_Reins_obser`}>
+                    <FormField
+                      // control={form.control}
+                      name={`App_urin_Reins_obser`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={(radio) => {
+                                if (radio == "Autres") setReinsautres(true);
+                                else setReinsautres(false);
 
-                                        field.onChange(radio);
-                                      }}
-                                      defaultValue={field.value}
-                                      className="flex flex-col space-y-1"
-                                    >
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="RAS" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          RAS
-                                        </FormLabel>
-                                      </FormItem>
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="Autres" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          Autres
-                                        </FormLabel>
-                                      </FormItem>
-                                    </RadioGroup>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            {Reinsautres && (
-                              <div className="pt-2">
-                                <FormField
-                                  // control={form.control}
-                                  name={`App_urin_Reins_autres`}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <Input
-                                          placeholder="observation sur le scan"
-                                          {...field}
-                                        />
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
+                                field.onChange(radio);
+                              }}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-1"
+                            >
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="RAS" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  RAS
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="Autres" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Autres
+                                </FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {Reinsautres && (
+                      <div className="pt-2">
+                        <FormField
+                          // control={form.control}
+                          name={`App_urin_Reins_autres`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  placeholder="observation sur le scan"
+                                  {...field}
                                 />
-                              </div>
-                            )}
-                          </div>
-                          <DrawerScan
-                            name={`App_urin_Reins_Scan`}
-                            placeholder={"Appareil urinaires (Reins)"}
-                          />
-                        </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <DrawerScan
+                    name={`App_urin_Reins_Scan`}
+                    placeholder={"Appareil urinaires (Reins)"}
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -3411,6 +3478,25 @@ export default function Scanpage() {
               <FormControl>
                 <Input
                   placeholder="Entrer conclusions Médicales  "
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      <div className="border-2 border-green-600 border-lg"></div>
+      <div className="p-4">
+        <FormField
+          //   control={form.control}
+          name="conclu_professional"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Conclusions Professionnels :</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Entrer conclusions  Professionnels  "
                   {...field}
                 />
               </FormControl>
