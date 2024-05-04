@@ -639,6 +639,301 @@ export default function DossierMedicalPDF() {
           </View>
         </View>
       </Page>
+      <Page size="A4" style={styles.page}>
+        <View
+          style={{
+            fontSize: 12,
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: 30,
+          }}
+        >
+          <Text>VISITES PERIODIQUES</Text>
+        </View>
+
+        <View style={styles.page1}>
+          <View
+            style={{ width: "100%", borderBottom: 1, flexDirection: "row" }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Date :</Text>
+              <Text style={{ fontSize: 8 }}>Docteur :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              borderBottom: 1,
+              flexDirection: "row",
+            }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Poinds (Kg) :</Text>
+              <Text style={{ fontSize: 8 }}>Taille (m) :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+          <View
+            style={{ width: "100%", borderBottom: 1, flexDirection: "row" }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Vision :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 20 }}>OG :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 20 }}>OD :</Text>
+              <Text style={{ fontSize: 8 }}>Audition :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 20 }}>OG :</Text>
+              <Text style={{ fontSize: 8, marginLeft: 20 }}>OD :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              borderBottom: 1,
+              flexDirection: "row",
+              minHeight: 150,
+            }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>
+                Maladies , accidents , arrets de travail depuis la dernier
+                examen :
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+
+          <View
+            style={{
+              width: "100%",
+              borderBottom: 1,
+              flexDirection: "row",
+              minHeight: 150,
+            }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Examen clinique :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              borderBottom: 1,
+              flexDirection: "row",
+              minHeight: 150,
+            }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Examen complémentaires :</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              borderBottom: 1,
+              flexDirection: "row",
+              flex: 1,
+            }}
+          >
+            <View
+              style={{
+                width: "33%",
+                borderRight: 1,
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            >
+              <Text style={{ fontSize: 8 }}>Conclusion medicales:</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                padding: 5,
+                paddingVertical: 10,
+                borderRight: 1,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+            <View
+              style={{
+                width: "33%",
+                padding: 5,
+                paddingVertical: 10,
+                flexDirection: "column",
+                gap: 5,
+              }}
+            ></View>
+          </View>
+        </View>
+      </Page>
     </Document>
   )
 }

@@ -1,14 +1,11 @@
-'use client'
-import DossierMedicalPDF from '@/components/pdfs/DossierMedicalPDF'
-import { PDFViewer } from '@react-pdf/renderer'
-import React from 'react'
+import { dbConnect } from "@/mongoose/dbConnect"
+import todo from "@/mongoose/models"
 
-const page = () => {
-  return (
-    <PDFViewer className='w-full h-full'>
-      <DossierMedicalPDF />
-    </PDFViewer>
-  )
+const page = async () => {
+  await dbConnect()
+
+  console.log(await todo.find())
+  return <></>
 }
 
 export default page

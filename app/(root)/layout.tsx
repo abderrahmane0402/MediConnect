@@ -8,7 +8,7 @@ export default function RoutLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen h-screen flex flex-col bg-[#E0F9FF]">
+    <div className="min-h-screen h-screen flex flex-col bg-[#E0F9FF] overflow-hidden">
       <Header />
       <div className="flex-1 flex flex-col py-1 md:py-4 lg:py-5 px-1 md:px-4 lg:px-14 overflow-auto">
         {children}

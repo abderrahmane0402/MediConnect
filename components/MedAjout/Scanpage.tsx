@@ -797,6 +797,7 @@ export default function Scanpage() {
                                 }
                                 onCheckedChange={(checked) => {
                                   const updatedValue = field.value || [];
+                                  
 
                                   return checked
                                     ? field.onChange([...updatedValue, item.id])
