@@ -108,13 +108,12 @@ export default function InfoGeneral() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                <SelectItem value="rssp">RSSP </SelectItem>
-                  <SelectItem value="centre_hosp">Centre Hospitalier </SelectItem>
-                  <SelectItem value="person_delega">Personnel de la delegation </SelectItem>
-                
+                <SelectItem value="RSSP">RSSP </SelectItem>
+                  <SelectItem value="Centre Hospitalier">Centre Hospitalier </SelectItem>
+                  <SelectItem value="Personnel de la delegation">Personnel de la delegation </SelectItem>
+                  <SelectItem value="SRES">SRES </SelectItem>
                 </SelectContent>
               </Select>
-                
                 <FormMessage />
               </FormItem>
        
@@ -320,16 +319,16 @@ export default function InfoGeneral() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                <SelectItem value="Medecin_génerale">Medecin génerale </SelectItem>
-                  <SelectItem value="Medecin_spécialiste">Medecin spécialiste </SelectItem>
-                  <SelectItem value="Infirmier_polyvalante">Infirmier polyvalante </SelectItem>
-                  <SelectItem value="Infirmier_auxiliaire">Infirmier auxiliaire </SelectItem>
-                  <SelectItem value="Infirmier_Auxthesite">Infirmier Auxthesite </SelectItem>
-                  <SelectItem value="Infirmier_psychiatrie">Infirmier psychiatrie </SelectItem>
-                  <SelectItem value="Agent_service">Agent de service </SelectItem>
-                  <SelectItem value="Agent_administration">Agent d'administration </SelectItem>
-                  <SelectItem value="Technicien_dohr">Technicien de dohr </SelectItem>
-                  <SelectItem value="Technicien_RX">Technicien de RX </SelectItem>
+                <SelectItem value="Medecin génerale">Medecin génerale </SelectItem>
+                  <SelectItem value="Medecin spécialiste">Medecin spécialiste </SelectItem>
+                  <SelectItem value="Infirmier polyvalante">Infirmier polyvalante </SelectItem>
+                  <SelectItem value="Infirmier auxiliaire">Infirmier auxiliaire </SelectItem>
+                  <SelectItem value="Infirmier Auxthesite">Infirmier Auxthesite </SelectItem>
+                  <SelectItem value="Infirmier psychiatrie">Infirmier psychiatrie </SelectItem>
+                  <SelectItem value="Agent service">Agent de service </SelectItem>
+                  <SelectItem value="Agent administration">Agent d'administration </SelectItem>
+                  <SelectItem value="Technicien Laboratoire">Technicien Laboratoire </SelectItem>
+                  <SelectItem value="Technicien RX">Technicien de RX </SelectItem>
                 </SelectContent>
               </Select>
                 

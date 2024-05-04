@@ -50,44 +50,60 @@ const antece = [
   { label: "Asthme", value: "Asthme" },
 ];
 
+// const maladie = [
+//   { id: "Travail_nuit", label: "Travail de nuit" },
+//   {
+//     id: "RayFonnenment_ionisants",
+//     label: "Rayonnenment ionisants",
+//     sousM: [
+//       { label: "Categorie A", id: "categorie_A" },
+//       { label: "Categorie B", id: "categorie_B" },
+//     ],
+//   },
+//   {
+//     id: "Risque_Biologique",
+//     label: "Risque Biologique",
+//     sousM: [
+//       { label: "VHD ,VHC ,VIH", id: "VHB_VIH" },
+//       { label: "Tuberculose", id: "Tuberculose" },
+//       { label: "Autres", id: "autres" },
+//     ],
+//   },
+//   {
+//     id: "Agents_chimiques",
+//     label: "Agents chimiques",
+//     sousM: [
+//       { label: "Formaldéhyde", id: "Formaldéhyde" },
+//       { label: "Halothane", id: "Halothane" },
+//       { label: "Autres", id: "autres" },
+//     ],
+//   },
+//   { id: "Manutention", label: "Manutention" },
+//   { id: "Posture_pénible", label: "Posture pénible" },
+//   { id: "RPS", label: "RPS" },
+// ];
 const maladie = [
-  { id: "Travail_nuit", label: "Travail de nuit" },
   {
-    id: "RayFonnenment_ionisants",
-    label: "Rayonnenment ionisants",
+    id: "Maladie du sang",
+    label: "Maladie du sang",
     sousM: [
-      { label: "Categorie A", id: "categorie_A" },
-      { label: "Categorie B", id: "categorie_B" },
+      { label: "VHD", id: "VHB" },
+      { label: "VHC", id: "VHC" },
+      { label: "VIH", id: "VIH" },
     ],
   },
   {
-    id: "Risque_Biologique",
-    label: "Risque Biologique",
-    sousM: [
-      { label: "VHD ,VHC ,VIH", id: "VHB_VIH" },
-      { label: "Tuberculose", id: "Tuberculose" },
-      { label: "Autres", id: "autres" },
-    ],
+    id: "Tuberculose",
+    label: "Tuberculose",
   },
-  {
-    id: "Agents_chimiques",
-    label: "Agents chimiques",
-    sousM: [
-      { label: "Formaldéhyde", id: "Formaldéhyde" },
-      { label: "Halothane", id: "Halothane" },
-      { label: "Autres", id: "autres" },
-    ],
-  },
-  { id: "Manutention", label: "Manutention" },
-  { id: "Posture_pénible", label: "Posture pénible" },
-  { id: "RPS", label: "RPS" },
+  { id: "Autres", label: "Autres" },
 ];
 
 const Antecedents: FC<FormProps> = ({ form, ...props }) => {
   const [isAutre, setAutres] = useState(false);
   const [isAcc_Tra_ant, setAcc_Tra_ants] = useState(false);
   const [sousmala, setSousmala] = useState("");
-  const [isAutreM, setAutresM] = useState(false);
+  // const [isAutreM, setAutresM] = useState(false);
 
   const handlechange_Autre = () => {
     setAutres(!isAutre!);
@@ -252,10 +268,10 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
             name="form_scol_profss"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Formation Scolaire et Professionnelle ::</FormLabel>
+                <FormLabel>Formation Scolaire et Professionnelle:</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Entrer Formation Scolaire et Professionnelle ::"
+                    placeholder="Entrer Formation Scolaire et Professionnelle "
                     {...field}
                   />
                 </FormControl>
@@ -273,7 +289,7 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
             name="actv_profss_anter"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Activités Professionnells Antèrieurs : </FormLabel>
+                <FormLabel>Activités Professionnells Antèrieurs  </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Entrer Activités Professionnells Antèrieurs "
@@ -314,7 +330,7 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
           <div>
             <FormField
               //   control={form.control}
-              name="mald_con_service"
+              name="mald_cont_service"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Maladies contractées au serice : </FormLabel>
@@ -334,7 +350,6 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
                       {maladie.map((item) => (
                         <SelectItem
                           value={item.id}
-                         
                         >
                           {item.label}
                         </SelectItem>
@@ -348,7 +363,7 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
             />
           </div>
 
-          {sousmala && (
+          {sousmala =="Maladie du sang" && (
             <FormField
               //   control={form.control}
               name="Sous_mald_con_service"
@@ -357,8 +372,6 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
                   <FormLabel>Maladies contractées au serice : </FormLabel>
                   <Select
                     onValueChange={(selectedValue) => {
-                      if (selectedValue == "autres"){
-                      setAutresM(true);} else  setAutresM(false);
                       field.onChange(selectedValue);
                     }}
                     defaultValue={field.value}
@@ -386,7 +399,7 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
               )}
             />
           )}
-          {isAutreM && ( <FormField
+          {sousmala=="Autres" && ( <FormField
             //   control={form.control}
             name="Autre_maladie"
             render={({ field }) => (
