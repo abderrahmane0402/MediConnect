@@ -867,53 +867,6 @@ export default function Scanpage() {
                           );
                         }}
                       />
-      <div className="p-4">
-        <FormField
-          //   control={form.control}
-          name="glande_endo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Glandes endocriniennes :</FormLabel>
-              <div className="grid grid-cols-3 gap-4 p-3 ">
-                {Glandes.map((item) => (
-                  <div key={item.id} className="grid grid-flow-row gap-2">
-                    <FormField
-                      key={item.id}
-                      // control={form.control}
-                      name={item.id}
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item.id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={
-                                  Array.isArray(field.value) &&
-                                  field.value.includes(item.id)
-                                }
-                                onCheckedChange={(checked) => {
-                                  const updatedValue = field.value || [];
-                                  
-
-                                  return checked
-                                    ? field.onChange([...updatedValue, item.id])
-                                    : field.onChange(
-                                        updatedValue.filter(
-                                          (value: any) => value !== item.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {item.id}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
 
                       {item.id == "Thyroïde" && (
                         <div className="pl-2 pt-3 grid grid-flow-row gap-3 ">
