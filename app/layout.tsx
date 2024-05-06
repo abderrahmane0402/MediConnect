@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Roboto } from "next/font/google"
 import "./globals.css"
-import prisma from "@/lib/prisma"
+import Server from "@/components/serverStart"
 
 const inter = Roboto({
   subsets: ["latin"],
@@ -20,6 +20,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" className="overflow-hidden">
+      <Server />
       <body className={inter.className}>
         {children}
         </body>

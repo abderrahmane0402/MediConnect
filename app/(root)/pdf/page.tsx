@@ -1,11 +1,11 @@
-import { dbConnect } from "@/mongoose/dbConnect"
-import todo from "@/mongoose/models"
+'use client'
+import { useEffect } from "react"
 
-const page = async () => {
-  await dbConnect()
-
-  console.log(await todo.find())
-  return <></>
+const page =  () => {
+  return (
+    <>
+    </>
+  )
 }
 
 export default page
