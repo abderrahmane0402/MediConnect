@@ -1,0 +1,327 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var Dossier = new Schema({
+  InfoPersonnel: {
+    nom: {
+      type: String,
+      required: true
+    },
+    prenom: {
+      type: String,
+      required: true
+    },
+    ville: {
+      type: String,
+      required: true
+    },
+    Date_naiss: {
+      type: Date,
+      required: true
+    },
+    Situation_Familiale: {
+      type: String,
+      required: true
+    },
+    Adresse: {
+      type: String,
+      required: true
+    },
+    Grade: {
+      type: String,
+      required: true
+    },
+    Nature_emploi: {
+      type: String,
+      required: true
+    },
+    depuis: {
+      type: Number,
+      required: true
+    },
+    DPPR: {
+      type: Number,
+      required: true
+    },
+    Groupe_sanguin: {
+      type: String,
+      required: true
+    }
+  },
+  nbr_Dossier: {
+    type: String,
+    required: true
+  },
+  delegation_Medicale: {
+    type: String,
+    required: true
+  },
+  Formation_Santaire: {
+    type: String,
+    required: true
+  },
+  Medecin: {
+    type: Schema.Types.ObjectId,
+    required: true
+  },
+  Antecedent_médicaux: {
+    Antecedents_Familiaux: [{
+      type: String
+    }],
+    Antecedents_Personnelle: [{
+      type: String
+    }]
+  },
+  Antecedent_Professionnels: {
+    Formation_Scolaire_Profess: {
+      type: String
+    },
+    Activités_Profess_Antérieur: {
+      type: String
+    },
+    Accidents_Contract_Service: {
+      type: String
+    },
+    Maladie_contracté_Service: {
+      type: String
+    }
+  },
+  Vaccination: [{
+    Type: {
+      type: String
+    },
+    date_V: {
+      type: Date
+    },
+    Rappels: {
+      type: String
+    },
+    observation: {
+      type: String
+    }
+  }],
+  PremierExam: {
+    Date_exam: {
+      type: Date
+    },
+    Docteur: {
+      type: String
+    },
+    Post de Travail: {
+      type: String
+    },
+    Poids: {
+      type: Schema.Types.Decimal128
+    },
+    Taille: {
+      type: Schema.Types.Decimal128
+    },
+    Appareil_auditif: {
+      OG: {
+        type: String
+      },
+      OD: {
+        type: String
+      },
+      Scan: [{
+        type: Buffer
+      }]
+    },
+    Appareil_Oculaire_SC: [{
+      OD_Pres: {
+        type: String
+      },
+      OG_Pres: {
+        type: String
+      },
+      OD_Loin: {
+        type: String
+      },
+      OG_Loin: {
+        type: String
+      },
+      Scan: [{
+        type: Buffer
+      }]
+    }],
+    Téguments: {
+      observation: {
+        type: String
+      },
+      autre: {
+        type: String
+      }
+    },
+    Examen radiologique: {
+      observation: {
+        type: String
+      },
+      Scan: [{
+        type: Buffer
+      }]
+    },
+    Appareil_respiratoire_rhinopharynx: {
+      type: String
+    },
+    Appareil_cadiovasculaire: {
+      type: String
+    },
+    Varices: {
+      type: String
+    },
+    T_A: {
+      type: String
+    },
+    Pouls: {
+      type: String
+    },
+    Appareil digestif: {
+      type: String
+    },
+    Appareil_hématologique_réticulaire: {
+      type: String
+    },
+    Gangloins: {
+      type: String
+    },
+    Rate: {
+      type: String
+    },
+    Glandes_endocriniennes: [{
+      Nom: {
+        type: String
+      },
+      observation: {
+        type: String
+      },
+      autre_observation: {
+        type: String
+      }
+    }],
+    Système_nerveux: [{
+      type: String
+    }],
+    Tremblement: {
+      observation: {
+        type: String
+      },
+      autre: {
+        type: String
+      }
+    },
+    Trouble_equilibre: {
+      observation: {
+        type: String
+      },
+      autre: {
+        type: String
+      }
+    },
+    Réflexes: {
+      observation: {
+        type: String
+      },
+      autre: {
+        type: String
+      }
+    },
+    Psychisme: {
+      Psychose: [{
+        type: String
+      }],
+      Nevrose: [{
+        type: String
+      }],
+      Autre: {
+        type: String
+      }
+    },
+    Appareil_locomoteur: {
+      Membres_Supérieurs: {
+        type: String
+      },
+      Articulations: {
+        type: String
+      },
+      Membres_Inférieur: {
+        type: String
+      }
+    },
+    Appareil_génital: [{
+      type: {
+        observation: {
+          type: String
+        },
+        autre: {
+          type: String
+        }
+      }
+    }],
+    Appareil_urinaire: [{
+      type: {
+        type: String
+      },
+      observartion: {
+        type: String
+      },
+      autre: {
+        type: String
+      }
+    }],
+    Alb: {
+      type: String
+    },
+    Sucre: {
+      type: String
+    },
+    Autres_constatations: {
+      type: String
+    },
+    Examens_complémentaires: {
+      type: String
+    },
+    Conclusions_Médicales: {
+      type: String
+    },
+    Conclusions_Professionnels: {
+      type: String
+    }
+  },
+  Scans: [{
+    name: {
+      type: String
+    },
+    observation: {
+      type: String
+    },
+    data: {
+      type: Buffer
+    }
+  }]
+});
+
+//////////////////////////////////////////////users////////////////////////////////
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var Users = new Schema({
+  Nom: {
+    type: String,
+    required: true
+  },
+  Prenom: {
+    type: String,
+    required: true
+  },
+  Role: {
+    type: String,
+    required: true,
+    ["secretaire", "Medecin"]
+  },
+  Login: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+});

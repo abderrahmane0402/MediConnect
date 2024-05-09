@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-
 const connection: { isConnected?: number } = {}
 
 async function dbConnect() {

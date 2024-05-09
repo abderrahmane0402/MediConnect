@@ -1,9 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -115,22 +113,43 @@ export default function RootPage() {
     },
   });
 
-  const handleSubmit = () => {};
-
   const last_page: number = 3;
   const [current_page, setCurrentPage] = useState(1);
- 
-
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, last_page));
   };
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  //@ts-ignore
+  const [formData, setFormData] = useState<any>({
+    // Initial form data
+    // Define the initial form data structure here
+  });
+
+  const handleFormSubmit = (data: any) => {
+    // Set the form data in the state
+    console.log(data);
+    setFormData(data);
+  };
+
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+  const handleFormSubmit1 = async () => {
+    try {
+    console.log(JSON.stringify(formData));
+      const response = await fetch("http://localhost:5661/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),// Use the formData from the state
+      });
+      const data = await response.json();
+      console.log(data); // Log the response from the server
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -138,18 +157,17 @@ export default function RootPage() {
       <Form {...form}>
         <Card className="">
           <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-8"
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+              e.preventDefault(); // Prevent default form submission
+              handleFormSubmit1(); // Call handleFormSubmit1 directly
+            }}
           >
-            {current_page === 1 && ( <InfoGeneral />
+            {current_page === 1 && (
+              <InfoGeneral onFormSubmit={handleFormSubmit} />
             )}
             {/* --------------------Anticedent Medicaux ----------------------------------- */}
-            {current_page === 2 && (
-              <Antecedents form={form} />
-            )}
-            {current_page === 3 && (
-              <Scanpage />
-            )}
+            {current_page === 2 && <Antecedents form={form} />}
+            {current_page === 3 && <Scanpage />}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">
@@ -161,11 +179,21 @@ export default function RootPage() {
               {current_page}/{last_page}{" "}
             </div>
             {current_page != 3 && (
-              <Button className=" " onClick={handleNextPage}>
+              <Button
+                className=""
+                onClick={() => {
+                  handleNextPage(); 
+                  handleFormSubmit1(); 
+                }}
+              >
                 Next
               </Button>
             )}
-            {current_page === 3 && <Button type="submit">Submit</Button>}
+            {current_page === 3 && (
+              <Button type="button" onClick={handleFormSubmit1}>
+                Submit
+              </Button>
+            )}
           </div>
         </Card>
       </Form>
