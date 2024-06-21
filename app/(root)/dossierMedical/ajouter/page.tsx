@@ -5,11 +5,12 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import InfoGeneral from "@/components/MedAjout/InfoGenerale";
 import Antecedents from "@/components/MedAjout/Antecedents";
 import Scanpage from "@/components/MedAjout/Scanpage";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   nom: z.string().min(2, {
@@ -85,6 +86,9 @@ const formSchema = z.object({
     message: "Formation sanitaire  must be at least 2 characters.",
   }),
 });
+const LOCAL_STORAGE_KEY = "formData";
+const LOCAL_STORAGE_KEY1 = "formData1";
+const LOCAL_STORAGE_KEY2 = "formData2";
 
 export default function RootPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -126,27 +130,39 @@ export default function RootPage() {
     // Define the initial form data structure here
   });
 
-  const handleFormSubmit = (data: any) => {
-    // Set the form data in the state
-    console.log(data);
-    setFormData(data);
-  };
-
+    const router = useRouter();
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
-  const handleFormSubmit1 = async () => {
+
+
+  const handleFormSubmit = (data :any) => {
+    console.log(JSON.stringify(data));
+    setFormData((prevData:any) => {
+      const newFormData = { ...prevData, ...data };
+      if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
+        return newFormData;
+      }
+      return prevData;
+    });
+  };
+  const handleFormSubmitglobale = async () => {
     try {
-    console.log(JSON.stringify(formData));
-      const response = await fetch("http://localhost:5661/add", {
+      console.log(JSON.stringify(formData));
+      const response = await fetch("http://localhost:5661/add_Dossier", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),// Use the formData from the state
+        body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(data); // Log the response from the server
+      // clearFormData();
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_KEY1);
+      localStorage.removeItem(LOCAL_STORAGE_KEY2);
+      router.push("/dossierMedical");
+      console.log(data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -159,15 +175,15 @@ export default function RootPage() {
           <form
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault(); // Prevent default form submission
-              handleFormSubmit1(); // Call handleFormSubmit1 directly
+              handleFormSubmitglobale(); 
             }}
           >
             {current_page === 1 && (
               <InfoGeneral onFormSubmit={handleFormSubmit} />
             )}
             {/* --------------------Anticedent Medicaux ----------------------------------- */}
-            {current_page === 2 && <Antecedents form={form} />}
-            {current_page === 3 && <Scanpage />}
+            {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit} />}
+            {current_page === 3 && <Scanpage  />}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">
@@ -183,14 +199,14 @@ export default function RootPage() {
                 className=""
                 onClick={() => {
                   handleNextPage(); 
-                  handleFormSubmit1(); 
+
                 }}
               >
                 Next
               </Button>
             )}
             {current_page === 3 && (
-              <Button type="button" onClick={handleFormSubmit1}>
+              <Button type="button" onClick={handleFormSubmitglobale}>
                 Submit
               </Button>
             )}

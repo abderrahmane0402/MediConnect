@@ -37,32 +37,37 @@ interface FormData {
     Groupe_sanguin: string;
   };
 }
+const LOCAL_STORAGE_KEY = "formData1";
+
 
 export default function InfoGeneral({ onFormSubmit }: FormProps) {
-  const [formData, setFormData] = useState({
-    nbr_Dossier: "",
-    delegation_Medicale: "",
-    Formation_Santaire: "",
-    InfoPersonnel: {
-      nom: "",
-      prenom: "",
-      ville: "",
-      Date_naiss: "",
-      Situation_Familiale: "",
-      Adresse: "",
-      Grade: "",
-      Nature_emploi: "",
-      depuis: "",
-      DPPR: "",
-      Groupe_sanguin: "",
-    },
+  const [formData, setFormData] = useState<FormData>(() => {
+    const savedFormData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return savedFormData ? JSON.parse(savedFormData) : {
+      nbr_Dossier: "",
+      delegation_Medicale: "",
+      Formation_Santaire: "",
+      InfoPersonnel: {
+        nom: "",
+        prenom: "",
+        ville: "",
+        Date_naiss: "",
+        Situation_Familiale: "",
+        Adresse: "",
+        Grade: "",
+        Nature_emploi: "",
+        depuis: "",
+        DPPR: "",
+        Groupe_sanguin: "",
+      },
+    };
   });
 
-  // Effect to watch for changes in formData and trigger submission
   useEffect(() => {
-    // Call the callback function passed from the parent component whenever formData changes
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
     onFormSubmit(formData);
   }, [formData, onFormSubmit]);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -101,9 +106,9 @@ export default function InfoGeneral({ onFormSubmit }: FormProps) {
                 <FormControl>
                   <Input
                     placeholder="Entrer le numero de dossier"
-                    name="nbr_Dossier" // Match the structure of formData
-                    value={formData.nbr_Dossier} // Provide the corresponding value from formData
-                    onChange={handleChange} // Use the existing handleChange function
+                    name="nbr_Dossier" 
+                    value={formData.nbr_Dossier} 
+                    onChange={handleChange} 
                   />
                 </FormControl>
                 <FormMessage />
@@ -328,14 +333,14 @@ export default function InfoGeneral({ onFormSubmit }: FormProps) {
                 <FormLabel>Situation Familiale </FormLabel>
                 <Select
                   onValueChange={(value) => {
-                    field.onChange(value); // Update the value using field.onChange
+                    field.onChange(value); 
                     handleChange({
                       target: { name: field.name, value },
                     } as React.ChangeEvent<HTMLInputElement>); // Cast the object to the expected type
                   }}
                   defaultValue={field.value}
-                  name="InfoPersonnel.Situation_Familiale" // Match the structure of formData
-                  value={formData.InfoPersonnel.Situation_Familiale} // Provide the corresponding value from formData
+                  name="InfoPersonnel.Situation_Familiale" 
+                  value={formData.InfoPersonnel.Situation_Familiale} 
                 >
                   <FormControl>
                     <SelectTrigger>

@@ -1,3 +1,4 @@
+"use client"
 import {
   Dossier,
   dossierColumns,
@@ -10,86 +11,57 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-const exampleData: Dossier[] = [
-  {
-    id: 1,
-    nom: "Dupont",
-    prenom: "Jean",
-    ppr: "PPR123",
-    natureEmploi: "Ingénieur",
-    sanguin: "A+",
-    dateExamen: "2023-12-15",
-    postTravail: "Développeur logiciel",
-    nbrVisite: "3",
-  },
-  {
-    id: 2,
-    nom: "Martin",
-    prenom: "Sophie",
-    ppr: "PPR456",
-    natureEmploi: "Médecin",
-    sanguin: "B-",
-    dateExamen: "2023-11-28",
-    postTravail: "Chirurgien",
-    nbrVisite: "5",
-  },
-  {
-    id: 2,
-    nom: "Martin",
-    prenom: "Sophie",
-    ppr: "PPR456",
-    natureEmploi: "Médecin",
-    sanguin: "B-",
-    dateExamen: "2023-11-28",
-    postTravail: "Chirurgien",
-    nbrVisite: "5",
-  },
-  {
-    id: 2,
-    nom: "Martin",
-    prenom: "Sophie",
-    ppr: "PPR456",
-    natureEmploi: "Médecin",
-    sanguin: "B-",
-    dateExamen: "2023-11-28",
-    postTravail: "Chirurgien",
-    nbrVisite: "5",
-  },
-  {
-    id: 2,
-    nom: "Martin",
-    prenom: "Sophie",
-    ppr: "PPR456",
-    natureEmploi: "Médecin",
-    sanguin: "B-",
-    dateExamen: "2023-11-28",
-    postTravail: "Chirurgien",
-    nbrVisite: "5",
-  },
-  {
-    id: 2,
-    nom: "Martin",
-    prenom: "Sophie",
-    ppr: "PPR456",
-    natureEmploi: "Médecin",
-    sanguin: "B-",
-    dateExamen: "2023-11-28",
-    postTravail: "Chirurgien",
-    nbrVisite: "5",
-  },
-  {
-    id: 2,
-    nom: "Martin",
-    prenom: "Sophie",
-    ppr: "PPR456",
-    natureEmploi: "Médecin",
-    sanguin: "B-",
-    dateExamen: "2023-11-28",
-    postTravail: "Chirurgien",
-    nbrVisite: "5",
-  },
-];
+import { useEffect, useState } from "react";
+export interface Dossier1 {
+  InfoPersonnel: {
+    nom: string;
+    prenom: string;
+    ville: string;
+    Date_naiss: Date;
+    Situation_Familiale: string;
+    Adresse: string;
+    Grade: string;
+    Nature_emploi: string;
+    depuis: number;
+    DPPR: number;
+    Groupe_sanguin: string;
+  };
+  nbr_Dossier: string;
+  delegation_Medicale: string;
+  Formation_Santaire: string;
+  Antecedent_médicaux: {
+    Antecedents_Familiaux: string[];
+    Antecedents_Personnelle: string[];
+  };
+  Antecedent_Professionnels: {
+    Formation_Scolaire_Profess: string;
+    Activités_Profess_Antérieur: string;
+    Accidents_Contract_Service: string;
+    Maladie_contracté_Service: string;
+  };
+  Vaccination: {
+    Type: string;
+    date_V: Date;
+    Rappels: string;
+    observation: string;
+  }[];
+}
 export default function DossierMedical() {
+  const [dossiers, setDossiers] = useState<Dossier[]>([]);
+
+  
+ 
+  useEffect(() => {
+    fetch('http://localhost:5661/get_all_Dossiers')
+      .then(response => response.json())
+      .then(data => {
+        console.log("API Response Data: ", data);
+        setDossiers(data); 
+      })
+      .catch(error => {
+        console.error("There was an error fetching the dossiers!", error);
+      });
+  }, []);
   return (
     <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>
@@ -100,7 +72,7 @@ export default function DossierMedical() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-auto">
-        <DossierDataTable columns={dossierColumns} data={exampleData} />
+        <DossierDataTable columns={dossierColumns} data={dossiers} />
       </CardContent>
     </Card>
   );

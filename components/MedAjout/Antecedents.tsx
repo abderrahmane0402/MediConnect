@@ -7,18 +7,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { ChangeEvent, FC, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
-import { Textarea } from "../ui/textarea";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Label } from "../ui/label";
+import { FC, useEffect, useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import Vaccination from "./Vaccination";
 import {
@@ -29,8 +18,38 @@ import {
   SelectValue,
 } from "../ui/select";
 interface FormProps {
-  form: any;
+  onFormSubmit: (formData: FormData) => void;
 }
+const LOCAL_STORAGE_KEY = "formData";
+interface AntecedentMédicaux {
+  Antecedents_Familiaux: string[];
+  Antecedents_Familiaux_autre: string;
+
+  Antecedents_Personnelle: string[];
+  Antecedents_Personnelle_autre: string;
+}
+
+interface AntecedentProfessionnels {
+  Formation_Scolaire_Profess: string;
+  Activités_Profess_Antérieur: string;
+  Accidents_Contract_Service: string;
+  Maladie_contracté_Service: string;
+  Sous_mald_con_service: string;
+}
+
+interface Vaccination {
+  Type: string;
+  date_V: string;
+  Rappels: string;
+  observation: string;
+}
+
+interface FormData {
+  Antecedent_médicaux: AntecedentMédicaux;
+  Antecedent_Professionnels: AntecedentProfessionnels;
+  Vaccination: Vaccination[];
+}
+
 const antece = [
   { label: "Hyperthyroïdie", value: "Hyperthyroïdie" },
   { label: "Hypothyroïdie", value: "Hypothyroïdie" },
@@ -50,38 +69,6 @@ const antece = [
   { label: "Asthme", value: "Asthme" },
 ];
 
-// const maladie = [
-//   { id: "Travail_nuit", label: "Travail de nuit" },
-//   {
-//     id: "RayFonnenment_ionisants",
-//     label: "Rayonnenment ionisants",
-//     sousM: [
-//       { label: "Categorie A", id: "categorie_A" },
-//       { label: "Categorie B", id: "categorie_B" },
-//     ],
-//   },
-//   {
-//     id: "Risque_Biologique",
-//     label: "Risque Biologique",
-//     sousM: [
-//       { label: "VHD ,VHC ,VIH", id: "VHB_VIH" },
-//       { label: "Tuberculose", id: "Tuberculose" },
-//       { label: "Autres", id: "autres" },
-//     ],
-//   },
-//   {
-//     id: "Agents_chimiques",
-//     label: "Agents chimiques",
-//     sousM: [
-//       { label: "Formaldéhyde", id: "Formaldéhyde" },
-//       { label: "Halothane", id: "Halothane" },
-//       { label: "Autres", id: "autres" },
-//     ],
-//   },
-//   { id: "Manutention", label: "Manutention" },
-//   { id: "Posture_pénible", label: "Posture pénible" },
-//   { id: "RPS", label: "RPS" },
-// ];
 const maladie = [
   {
     id: "Maladie du sang",
@@ -92,26 +79,115 @@ const maladie = [
       { label: "VIH", id: "VIH" },
     ],
   },
-  {
-    id: "Tuberculose",
-    label: "Tuberculose",
-  },
+  { id: "Tuberculose", label: "Tuberculose" },
   { id: "Autres", label: "Autres" },
+  // export default function InfoGeneral({ onFormSubmit }: FormProps) {
+];
+const vaccTable = [
+  { id: "B_C_G" },
+  { id: "Hépatite B" },
+  { id: "Hépatite A" },
+  { id: "Diphtérie" },
+  { id: "Tétanos" },
+  { id: "Polimyélite" },
+  { id: "Typhoide" },
+  { id: "Rubéole" },
+  { id: "Covid" },
 ];
 
-const Antecedents: FC<FormProps> = ({ form, ...props }) => {
+export default function Antecedents({ onFormSubmit }: FormProps) {
   const [isAutre, setAutres] = useState(false);
   const [isAcc_Tra_ant, setAcc_Tra_ants] = useState(false);
   const [sousmala, setSousmala] = useState("");
-  // const [isAutreM, setAutresM] = useState(false);
+  const [formData, setFormData] = useState<FormData>(() => {
+    const savedFormData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return savedFormData
+      ? JSON.parse(savedFormData)
+      : {
+          Antecedent_médicaux: {
+            Antecedents_Familiaux: [],
+            Antecedents_Familiaux_autre: "",
+            Antecedents_Personnelle: [],
+            Antecedents_Personnelle_autre: "",
+          },
+          Antecedent_Professionnels: {
+            Formation_Scolaire_Profess: "",
+            Activités_Profess_Antérieur: "",
+            Accidents_Contract_Service: "",
+            Maladie_contracté_Service: "",
+            Sous_mald_con_service: "",
+          },
+          Vaccination: vaccTable.map((vaccine) => ({
+            Type: vaccine.id,
+            date_V: "",
+            Rappels: "",
+            observation: "",
+          })),
+          
+          Vaccinationautre: [{
+            Type: "",
+            date_V: "",
+            Rappels: "",
+            observation: "",
+          }],
+        };
+  });
+  console.log(formData.Vaccination);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+    onFormSubmit(formData);
+  }, [formData, onFormSubmit]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    const [section, id, field] = name.split(".");
+
+    if (section === "Vaccination") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [section]: prevState[section].map((v : any) =>
+          v.Type === id ? { ...v, [field]: value } : v
+        ),
+      }));
+    } else if (section === "Vaccinationautre") {
+      setFormData((prevState : any) => {
+        const otherVaccIndex = prevState.Vaccinationautre.findIndex((v : any) => v.Type === id);
+        if (otherVaccIndex !== -1) {
+          return {
+            ...prevState,
+            [section]: prevState[section].map((v : any, index : any) =>
+              index === otherVaccIndex ? { ...v, [field]: value } : v
+            ),
+          };
+        } else {
+          return {
+            ...prevState,
+            [section]: [...prevState[section], { Type: id, [field]: value }],
+          };
+        }
+      });
+    }
+  };
+  const handleMaladieChange = (value: string) => {
+    handleChange({
+      target: {
+        name: "Antecedent_Professionnels.Maladie_contracté_Service",
+        value,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
+  if (!formData) {
+    return <div>Loading...</div>;
+  }
 
   const handlechange_Autre = () => {
     setAutres(!isAutre!);
   };
+
   const handlechange_Acc_Tra = () => {
     setAcc_Tra_ants(!isAcc_Tra_ant);
   };
-
   return (
     <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
       <div className="pt-2   text-center text-black text-2xl font-semibold font-serif">
@@ -129,56 +205,68 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
           <div className=" border-r-2 border-green-700">
             <FormItem>
               <FormLabel>Antécédents Familiaux: </FormLabel>
+
               {antece.map((item) => (
                 <FormField
                   key={item.value}
                   name="antc_fam"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.value}
-                        className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.value)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                field.onChange([
-                                  ...(field.value || []),
-                                  item.value,
-                                ]);
-                              } else {
-                                field.onChange(
-                                  (field.value || []).filter(
-                                    (value: string) => value !== item.value
-                                  )
-                                );
-                              }
-                            }}
-                          />
-                        </FormControl>
+                  render={({ field }) => (
+                    <FormItem
+                      key={item.value}
+                      className="flex flex-row items-start space-x-3 space-y-0"
+                    >
+                      <FormControl>
+                        <Checkbox
+                          checked={formData.Antecedent_médicaux.Antecedents_Familiaux.includes(
+                            //@ts-ignore
 
-                        <FormLabel className="font-normal">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
+                            item.value
+                          )}
+                          onCheckedChange={(checked) => {
+                            const updatedValue = checked
+                              ? [
+                                  ...formData.Antecedent_médicaux
+                                    .Antecedents_Familiaux,
+                                  item.value,
+                                ]
+                              : formData.Antecedent_médicaux.Antecedents_Familiaux.filter(
+                                  (value) => value !== item.value
+                                );
+                            setFormData({
+                              ...formData,
+                              Antecedent_médicaux: {
+                                ...formData.Antecedent_médicaux,
+                                //@ts-ignore
+                                Antecedents_Familiaux: updatedValue,
+                              },
+                            });
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        {item.label}
+                      </FormLabel>
+                    </FormItem>
+                  )}
                 />
               ))}
-
               <FormMessage />
             </FormItem>
+
             <div className="pt-2">
               <FormField
-                name="antc_fam_autres"
+                name="Antecedent_médicaux.Antecedents_Familiaux_autre"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
+                        name="Antecedent_médicaux.Antecedents_Familiaux_autre"
                         placeholder="Entrer autre antecedente Familiaux"
-                        {...field}
+                        value={
+                          formData.Antecedent_médicaux
+                            .Antecedents_Familiaux_autre
+                        }
+                        onChange={handleChange}
                       />
                     </FormControl>
 
@@ -196,60 +284,80 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
                   <FormField
                     key={item.value}
                     name="antc_pers"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={item.value}
-                          className="flex flex-row items-start space-x-3 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.value)}
-                              onCheckedChange={(checked) => {
-                                if (checked) {
-                                  field.onChange([
-                                    ...(field.value || []),
+                    render={({ field }) => (
+                      <FormItem
+                        key={item.value}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={formData.Antecedent_médicaux.Antecedents_Personnelle.includes(
+                              //@ts-ignore
+                              item.value
+                            )}
+                            onCheckedChange={(checked) => {
+                              const updatedValue = checked
+                                ? [
+                                    ...formData.Antecedent_médicaux
+                                      .Antecedents_Personnelle,
                                     item.value,
-                                  ]);
-                                } else {
-                                  field.onChange(
-                                    (field.value || []).filter(
-                                      (value: string) => value !== item.value
-                                    )
+                                  ]
+                                : formData.Antecedent_médicaux.Antecedents_Personnelle.filter(
+                                    (value) => value !== item.value
                                   );
-                                }
-                              }}
-                            />
-                          </FormControl>
-
-                          <FormLabel className="font-normal">
-                            {item.label}
-                          </FormLabel>
-                        </FormItem>
-                      );
-                    }}
+                              setFormData({
+                                ...formData,
+                                Antecedent_médicaux: {
+                                  ...formData.Antecedent_médicaux,
+                                  //@ts-ignore
+                                  Antecedents_Personnelle: updatedValue,
+                                },
+                              });
+                            }}
+                          />
+                          {/* <Checkbox
+                            checked={formData.Antecedent_médicaux.Antecedents_Personnelle.includes(
+                              item.value
+                            )}
+                            onCheckedChange={(checked) =>
+                              handleCheckboxChange(
+                                "Antecedents_Personnelle",
+                                item.value,
+                                checked!
+                              )
+                            }
+                          /> */}
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {item.label}
+                        </FormLabel>
+                      </FormItem>
+                    )}
                   />
                 ))}
-
                 <FormMessage />
               </FormItem>
-            </div>
-            <div className="pt-2">
-              <FormField
-                name="antc_pers_autres"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Entrer autre antecedente Personnelle"
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="pt-2">
+                <FormField
+                  name="Antecedent_médicaux.Antecedents_Personnelle_autre"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          name="Antecedent_médicaux.Antecedents_Personnelle_autre"
+                          placeholder="Entrer autre antecedente Personnelle"
+                          value={
+                            formData.Antecedent_médicaux
+                              .Antecedents_Personnelle_autre
+                          }
+                          onChange={handleChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -271,8 +379,14 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
                 <FormLabel>Formation Scolaire et Professionnelle:</FormLabel>
                 <FormControl>
                   <Input
+                    name="Antecedent_Professionnels.Formation_Scolaire_Profess"
                     placeholder="Entrer Formation Scolaire et Professionnelle "
-                    {...field}
+                    value={
+                      formData.Antecedent_Professionnels
+                        .Formation_Scolaire_Profess
+                    }
+                    onChange={handleChange}
+                    // {...field}
                   />
                 </FormControl>
                 {/* <FormDescription>
@@ -289,11 +403,16 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
             name="actv_profss_anter"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Activités Professionnells Antèrieurs  </FormLabel>
+                <FormLabel>Activités Professionnells Antèrieurs </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Entrer Activités Professionnells Antèrieurs "
-                    {...field}
+                    name="Antecedent_Professionnels.Activités_Profess_Antérieur"
+                    placeholder="Entrer Activités Professionnelles Antérieures"
+                    value={
+                      formData.Antecedent_Professionnels
+                        .Activités_Profess_Antérieur
+                    }
+                    onChange={handleChange}
                   />
                 </FormControl>
 
@@ -315,9 +434,13 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
                 <FormLabel>Accidents contractés au service : </FormLabel>
                 <FormControl>
                   <Input
-                    type=""
-                    placeholder="Entrer l' Accidents de Travail au service du patient"
-                    {...field}
+                    name="Antecedent_Professionnels.Accidents_Contract_Service"
+                    placeholder="Entrer les Accidents Contractés au Service"
+                    value={
+                      formData.Antecedent_Professionnels
+                        .Accidents_Contract_Service
+                    }
+                    onChange={handleChange}
                   />
                 </FormControl>
 
@@ -329,96 +452,105 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
         <div className="w-full grid grid-cols-3 gap-3 ">
           <div>
             <FormField
-              //   control={form.control}
-              name="mald_cont_service"
+              name="Antecedent_Professionnels.Maladie_contracté_Service"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Maladies contractées au serice : </FormLabel>
+                  <FormLabel>Maladies contractées au service:</FormLabel>
                   <Select
-                    defaultValue={field.value}
-                    onValueChange={(selectedValue) => {
-                      setSousmala(selectedValue);
-                      field.onChange(selectedValue);
+                    onValueChange={(value) => {
+                      setSousmala(value);
+
+                      handleMaladieChange(value);
+                      field.onChange(value);
                     }}
+                    defaultValue={field.value}
+                    value={
+                      formData.Antecedent_Professionnels
+                        .Maladie_contracté_Service
+                    }
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Entrer Maladies contractées au serice du patient" />
+                        <SelectValue placeholder="Entrer Maladies contractées au service du patient" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {maladie.map((item) => (
-                        <SelectItem
-                          value={item.id}
-                        >
+                        <SelectItem key={item.id} value={item.id}>
                           {item.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          {sousmala =="Maladie du sang" && (
+          {sousmala === "Maladie du sang" && (
             <FormField
-              //   control={form.control}
-              name="Sous_mald_con_service"
+              name="Antecedent_Professionnels.Sous_mald_con_service"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Maladies contractées au serice : </FormLabel>
+                  <FormLabel>Maladies contractées au service:</FormLabel>
                   <Select
-                    onValueChange={(selectedValue) => {
-                      field.onChange(selectedValue);
+                    onValueChange={(value) => {
+                      handleChange({
+                        target: {
+                          name: "Antecedent_Professionnels.Sous_mald_con_service",
+                          value,
+                        },
+                      } as React.ChangeEvent<HTMLInputElement>);
+                      field.onChange(value);
                     }}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Entrer Maladies contractées au serice du patient" />
+                        <SelectValue placeholder="Entrer Maladies contractées au service du patient" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {maladie.map(
-                        (item) =>
-                          item.id === sousmala &&
+                      {maladie
+                        .filter((item) => item.id === sousmala)
+                        .flatMap((item) =>
                           item.sousM?.map((sous) => (
                             <SelectItem key={sous.id} value={sous.id}>
                               {sous.label}
                             </SelectItem>
                           ))
-                      )}
+                        )}
                     </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
           )}
-          {sousmala=="Autres" && ( <FormField
-            //   control={form.control}
-            name="Autre_maladie"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Autres: </FormLabel>
-                <FormControl>
-                  <Input
-                    type=""
-                    placeholder="autres"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />)}
+          {sousmala === "Autres" && (
+            <FormField
+              name="Autre_maladie"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Autres:</FormLabel>
+                  <FormControl>
+                    <Input
+                      type=""
+                      name="Antecedent_Professionnels.Sous_mald_con_service"
+                      placeholder="Autres"
+                      onChange={handleChange}
+                      value={
+                        formData.Antecedent_Professionnels.Sous_mald_con_service
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
-        
       </div>
 
       <div className="border-2 border-green-600 border-lg"></div>
@@ -429,9 +561,8 @@ const Antecedents: FC<FormProps> = ({ form, ...props }) => {
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
       <div className="w-full  px-4">
-        <Vaccination />
-      </div>
+      <Vaccination formData={formData} handleChange={handleChange} />
+            </div>
     </div>
   );
-};
-export default Antecedents;
+}
