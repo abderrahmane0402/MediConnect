@@ -143,7 +143,15 @@ export default function Antecedents({ onFormSubmit }: FormProps) {
     const { name, value } = e.target;
     const [section, id, field] = name.split(".");
 
-    if (section === "Vaccination") {
+    if (section === "Antecedent_médicaux" || section === "Antecedent_Professionnels") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [section]: {
+          ...prevState[section],
+          [id]: value
+        }
+      }));
+    } if (section === "Vaccination") {
       setFormData((prevState) => ({
         ...prevState,
         [section]: prevState[section].map((v : any) =>
