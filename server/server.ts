@@ -11,12 +11,17 @@ fastify.register(cors)
 
 const PORT = 5661
 
-fastify.get("/add", async (req, res) => {
-  res.type("application/json").status(200).send("2")
-})
-
 fastify.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
+})
+
+
+// specification des api's
+
+
+
+fastify.get("/add", async (req, res) => {
+  res.type("application/json").status(200).send("6")
 })
 
 fastify.post("/add_Dossier", async (req, res) => {
