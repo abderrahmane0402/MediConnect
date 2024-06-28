@@ -48,15 +48,14 @@ export default function Nav() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/dossierMedical" title="les dossiers medicals">
-                cette page contient une list des dossiers medicals
+              <ListItem href="/dossierMedical" title="List des dossiers medicaux">
+                Cette page contient la list des dossiers medicaux
               </ListItem>
               <ListItem
                 href="/dossierMedical/ajouter"
-                title="Ajouter dossiers medical"
+                title="Ajouter un nouveau dossier medical"
               >
-                cette page demande les informations pour enregistrer un nouveau
-                dossier medical
+                Cette page enregistre un nouveau dossier medical. 
               </ListItem>
             </ul>
           </NavigationMenuContent>
@@ -64,29 +63,54 @@ export default function Nav() {
         <NavigationMenuItem>
           <NavigationMenuTrigger
             className={
-              path == "/materiel" || path == "employer"
+              path == "/materiel" 
                 ? "border-b-2 text-green-600 border-green-600"
                 : ""
             }
           >
-            Cabinet médical
+            Equipements médicaux
           </NavigationMenuTrigger>
           <NavigationMenuContent className="z-50">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/employe" title="Les Employés">
-                cette page contient une list des employees du cabinet
+              {/* <ListItem href="/employe" title="Employés">
+                Cette page contient la list des employés du cabinet
               </ListItem>
-              <ListItem href="/employe/ajouterheader" title="Ajouter Employé">
-                cette page demande les informations pour enregistrer un nouveau
-                employe
+              <ListItem href="/employe/ajouterheader" title="Ajouter un employé">
+                Cette page enregistre un nouveau employé
+              </ListItem> */}
+              <ListItem href="/materiel" title="Equipement médical">
+                Cette page affiche les informations sur les équipements médicaux
               </ListItem>
-              <ListItem href="/materiel" title="materiel du cabinet">
-                cette page affiche les informations sur le materiel du caninet
+              <ListItem href="/materiel/ajouter" title="Ajouter un Equipement médical">
+                Cette page enregistre un nouveau équipement médical
               </ListItem>
-              <ListItem href="/materiel/ajouter" title="ajouter un materiel">
-                cette page demande les informations pour enregistrer un nouveau
-                materiel
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger
+            className={
+               path == "employer"
+                ? "border-b-2 text-green-600 border-green-600"
+                : ""
+            }
+          >
+            Employés
+          </NavigationMenuTrigger>
+          <NavigationMenuContent className="z-50">
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              <ListItem href="/employe" title="Employés">
+                Cette page contient la list des employés du cabinet
               </ListItem>
+              <ListItem href="/employe/ajouterheader" title="Ajouter un employé">
+                Cette page enregistre un nouveau employé
+              </ListItem>
+              {/* <ListItem href="/materiel" title="Equipement médical">
+                Cette page affiche les informations sur les équipements médicaux
+              </ListItem>
+              <ListItem href="/materiel/ajouter" title="Ajouter un Equipement médical">
+                Cette page enregistre un nouveau équipement médical
+              </ListItem> */}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -103,7 +127,7 @@ export default function Nav() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link href="/pdf" legacyBehavior passHref>
             <NavigationMenuLink
               className={cn(
@@ -115,7 +139,7 @@ export default function Nav() {
               Pdf
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   )

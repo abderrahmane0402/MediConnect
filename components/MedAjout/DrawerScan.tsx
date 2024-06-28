@@ -1,83 +1,168 @@
 "use client"
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { Button } from "../ui/button";
-import Dropzone from "../Drag&Drop";
+
 import { FormControl, FormField, FormItem } from "../ui/form";
+import { FaTrash } from 'react-icons/fa';
+import Dropzone from "../Drag&Drop";
 
 interface FormProps {
-    name : string ;
-    placeholder : string;
-  }
-  const handleSubmit = (file: File) => {
-    // Handle the file data here, for example, you can upload it to a server.
-    console.log('File uploaded:', file);
-  };
-  
-  const DrawerScan: FC<FormProps> = ({ name,placeholder, ...props }) => {
-   
-    return (
-        <div className=" flex p1-2 ">
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button
-              variant="outline"
-              className="bg-[#A9DAED] w-full"
-            >
-              Ajouter Scan
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <div className=" w-full   ">
-              <DrawerHeader>
-                {/* <DrawerTitle className="text-center">
-                  Enter les scan de {placeholder}
-                </DrawerTitle> */}
-                <DrawerTitle className="text-center">
-                  Enter les scan 
-                </DrawerTitle>
-                
-                <DrawerClose />
-              </DrawerHeader>
-              <h1 className="title text-xl font-bold text-center">
-                Upload File
-              </h1>
-              <FormField
-               name={name}
+  name: string;
+  placeholder: string;
+  handleFilesChange: (files: string[]) => void;
+  selectedFiles: string[];
+  onDeleteFile: (index: number) => void;
+}
+
+const DrawerScan: FC<FormProps> = ({ name, placeholder, handleFilesChange, selectedFiles, onDeleteFile }) => {
+
+  return (
+    <div className="flex p1-2">
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button variant="outline" className="bg-[#A9DAED] w-full">
+            Ajouter Scan
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <div className="w-full">
+            <DrawerHeader>
+              <DrawerTitle className="text-center">Enter les scan</DrawerTitle>
+              <DrawerClose />
+            </DrawerHeader>
+            <h1 className="title text-xl font-bold text-center">Upload File</h1>
+            <FormField
+              name={name}
               render={({ field }) => (
                 <FormItem>
-              
-              <FormControl>
-                <Dropzone className="p-16 mt-10 border border-neutral-200 w-full" onFileUpload={handleSubmit} {...field}/>
-              </FormControl>
-            </FormItem>
-          )}
-        />
-              
+                  <FormControl>
+                    <Dropzone
+                      className="p-16 mt-10 border border-neutral-200 w-full"
+                      onFilesChange={handleFilesChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <div className="mt-4">
+              {selectedFiles.length > 0 && (
+                <ul className="flex flex-wrap">
+                  {selectedFiles.map((file, index) => (
+                    <li key={index} className="relative m-2">
+                      <img src={file} alt={`Scan ${index}`} className="w-20 h-20 object-cover" />
+                      <button
+                        className="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-full"
+                        onClick={() => onDeleteFile(index)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-            <DrawerFooter>
-              <div className="flex flex-col justify-center items-center">
-                <Button className="w-[50%]">Submit</Button>
-                <DrawerClose asChild>
-                  <Button variant="outline" className="w-[50%]">
-                    Cancel
-                  </Button>
-                </DrawerClose>
-              </div>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      </div>
-      )
-    
-    
-    }
-    export default DrawerScan ;
+          </div>
+          <DrawerFooter>
+            <div className="flex flex-col justify-center items-center w-full">
+              <DrawerClose asChild>
+                <Button variant="outline" className="w-[50%]">
+                  Cancel
+                </Button>
+              </DrawerClose>
+              <DrawerClose asChild>
+                <Button variant="outline" className="w-[50%] mt-2">
+                  Submit
+                </Button>
+              </DrawerClose>
+            </div>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </div>
+  );
+};
 
+export default DrawerScan;
+//////////////////////////////
+// "use client"
 // import { FC, useState } from "react";
 // import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 // import { Button } from "../ui/button";
 // import Dropzone from "../Drag&Drop";
+// import { FormControl, FormField, FormItem } from "../ui/form";
+
+// // import { FC } from "react";
+// // import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose } from "./ui/drawer";
+// // import { Button } from "./ui/button";
+// // import Dropzone from "./Dropzone";
+// // import { FormField, FormItem, FormControl } from "./ui/form";
+
+// interface FormProps {
+//   name: string;
+//   placeholder: string;
+// }
+
+// const handleSubmit = (file: string) => {
+//   // Handle the file data here, for example, you can upload it to a server.
+//   console.log('File uploaded:', file);
+// };
+
+// const DrawerScan: FC<FormProps> = ({ name, placeholder }) => {
+//   return (
+//     <div className="flex p1-2">
+//       <Drawer>
+//         <DrawerTrigger asChild>
+//           <Button variant="outline" className="bg-[#A9DAED] w-full">
+//             Ajouter Scan
+//           </Button>
+//         </DrawerTrigger>
+//         <DrawerContent>
+//           <div className="w-full">
+//             <DrawerHeader>
+//               <DrawerTitle className="text-center">Enter les scan</DrawerTitle>
+//               <DrawerClose />
+//             </DrawerHeader>
+//             <h1 className="title text-xl font-bold text-center">Upload File</h1>
+//             <FormField
+//               name={name}
+//               render={({ field }) => (
+//                 <FormItem>
+//                   <FormControl>
+//                     <Dropzone
+//                       className="p-16 mt-10 border border-neutral-200 w-full"
+//                       onFileUpload={handleSubmit}
+//                       {...field}
+//                     />
+//                   </FormControl>
+//                 </FormItem>
+//               )}
+//             />
+//           </div>
+//           <DrawerFooter>
+//             <div className="flex flex-col justify-center items-center">
+//               <Button className="w-[50%]">Submit</Button>
+//               <DrawerClose asChild>
+//                 <Button variant="outline" className="w-[50%]">
+//                   Cancel
+//                 </Button>
+//               </DrawerClose>
+//             </div>
+//           </DrawerFooter>
+//         </DrawerContent>
+//       </Drawer>
+//     </div>
+//   );
+// };
+
+// export default DrawerScan;
+
+
+///////////////
+// import { FC, useState } from "react";
+// import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
+// import { Button } from "../ui/button";
+// import Dropzone from "../Dr/ag&Drop";
 // import { FormControl, FormField, FormItem } from "../ui/form";
 // import { Input } from "../ui/input";
 // import { XMarkIcon } from "@heroicons/react/24/solid";

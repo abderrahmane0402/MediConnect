@@ -88,7 +88,7 @@ export default function InfoGeneral({ onFormSubmit }: FormProps) {
       }));
     }
   };
-
+ 
   return (
     <div className=" flex flex-col gap-3 w-full   {isVisible ? '' : 'hidden'}  ">
       <CardTitle className=" pt-2 text-center text-black text-2xl font-semibold font-serif	">

@@ -12,7 +12,7 @@ import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import DrawerScan from "./DrawerScan";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -21,24 +21,393 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
-import { tree } from "next/dist/build/templates/app-page";
-const Glandes = [
-  { id: "Thyroïde", type: [{ id: "TSH" }, { id: "T3" }, { id: "T4" }] },
-  { id: "Hypophyse" },
-  { id: "Glandes surrénales" },
-];
-const Nevrose = [
-  { id: "Anxiété", value: "Anxiété" },
-  { id: "Depression", value: "Depression" },
-  { id: "Stress", value: "Stress" },
-  { id: "TOC", value: "TOC" },
-];
-const Psychose = [
-  { id: "Bipolarité", value: "Bipolarité" },
-  { id: "Schizophrénie", value: "Schizophrénie" },
-  { id: "Paranoïaque ", value: "Paranoïaque " },
-];
-export default function Scanpage() {
+// import { tree } from "next/dist/build/templates/app-page";
+import { FormData, PremierExam } from "@/lib/FormData";
+import { Scan } from "lucide-react";
+import { boolean } from "zod";
+
+
+interface FormProps {
+  onFormSubmit: (formData: FormData1) => void;
+}
+interface FormData1 {
+  PremierExam: {
+    Date_exam: string;
+    Docteur: string;
+    Post_de_Travail: string;
+    Poids: string;
+    Taille: string;
+    Appareil_auditif: { OG: string; OD: string; Scan: any[] };
+    Appareil_Oculaire: {
+      Appareil_Oculaire_AC: {
+        OD_Pres: string;
+        OG_Pres: string;
+        OD_Loin: string;
+        OG_Loin: string;
+      };
+
+      Appareil_Oculaire_SC: {
+        OD_Pres: string;
+        OG_Pres: string;
+        OD_Loin: string;
+        OG_Loin: string;
+      };
+      Scan: any[];
+    };
+    Téguments: { observation: string; autre: string };
+    Examen_radiologique: { observation: string; Scan: any[]; autre: string };
+    Appareil_respiratoire_rhinopharynx: { observation: string; Scan: any[] };
+    Appareil_cadiovasculaire: { observation: string; Scan: any[] };
+    Varices: { observation: string; autre: string };
+    T_A: string;
+    Pouls: string;
+    Appareil_digestif: {observation : string , Scan: any[]};
+    Appareil_hématologique_réticulaire: {observation : string , Scan: any[]};
+    Gangloins: string;
+    Rate: string;
+    Glandes_endocriniennes: {
+      Thyroïde: {
+        Check: boolean;
+        sousNom: string;
+        observation: string;
+        autreobservation: string;
+      };
+      Glandes_surrénales: {
+        Check: boolean;
+        observation: string;
+        autreobservation: string;
+      };
+      Hypophyse: {
+        Check: boolean;
+        observation: string;
+        autreobservation: string;
+      };
+      Autres: string;
+      Scan: any[];
+    };
+    Système_nerveux: {
+      Lesion_cérébrale: {
+        Check: boolean;
+        observation: string;
+        autreobservation: string;
+      };
+      NCB: {
+        Check: boolean;
+        observation: string;
+        autreobservation: string;
+      };
+      Hernie_discale: {
+        Check: boolean;
+        observation: string;
+        autreobservation: string;
+      };
+      Maladie_neurologique: {
+        Check: boolean;
+        observation: string;
+        autreobservation: string;
+      };
+      Scan: any[];
+    };
+    Tremblement: { observation: string; autre: string };
+    Trouble_equilibre: { observation: string; autre: string };
+    Réflexes: { observation: string; autre: string };
+    Psychisme: { 
+      Nevrose: 
+      {
+        Anxiété : boolean,
+        Depression : boolean,
+        Stress : boolean,
+        TOC : boolean,
+        autre : string,
+      }, 
+      Psychose: 
+      {
+        Bipolarité : boolean,
+        Schizophrénie : boolean,
+        Paranoïaque : boolean,
+        autre : string,
+      }, 
+      Scan : any[],};
+    Appareil_locomoteur: {
+      Membres_Supérieurs: {
+        observation :string , autre :string
+      };
+      Articulations: {
+        observation :string , autre :string
+      };
+      Membres_Inférieur: {
+        observation :string , autre :string
+      };
+      Scan : any[],
+    };
+    Appareil_génital: {
+      type: string,
+      Prostate : {Check : boolean ,observation :string },
+      Troubles_érectiles : {Check : boolean ,observation :string }
+      MST : {Check : boolean ,observation :string , autre :string},
+      Leucorrhée : {Check : boolean ,observation :string , autre :string},
+      Trouble_menstruels : {Check : boolean ,observation :string , autre :string},
+      Seins : {Check : boolean ,observation :string , autre :string},
+      Episiotomie : {Check : boolean ,observation :string , autre :string},
+      autre : {Check : boolean ,nom : string , observation : string},
+      Scan : any[],
+    };
+    Appareil_urinaire: {
+      Reins : {observation :string , autre :string},
+      Trouble_urinaires : {
+        Mictionnelles  : {Check : boolean ,observation :string , autre :string},
+        Brûlures : {Check : boolean ,observation :string , autre :string},
+        Pollokinire : {Check : boolean ,observation :string , autre :string},
+        Dysurie : {Check : boolean ,observation :string , autre :string},
+      },
+      Scan : any[],
+    };
+    Alb: string;
+    Sucre: string;
+    Autres_constatations: string;
+    Examens_complémentaires: string;
+    Conclusions_Médicales: string;
+    Conclusions_Professionnels: string;
+  };
+}
+export default function Scanpage({ onFormSubmit }: FormProps) {
+  const [formData, setFormData] = useState<FormData1>({
+    PremierExam: {
+      Date_exam: "", // Initialize with today's date in YYYY-MM-DD format
+      Docteur: "Dr Najdioui",
+      Post_de_Travail: "",
+      Poids: "",
+      Taille: "",
+      Appareil_auditif: { OG: "", OD: "", Scan: [] },
+      Appareil_Oculaire: {
+        Appareil_Oculaire_AC: {
+          OD_Pres: "",
+          OG_Pres: "",
+          OD_Loin: "",
+          OG_Loin: "",
+        },
+        Appareil_Oculaire_SC: {
+          OD_Pres: "",
+          OG_Pres: "",
+          OD_Loin: "",
+          OG_Loin: "",
+        },
+        Scan: [],
+      },
+      Téguments: { observation: "", autre: "" },
+      Examen_radiologique: { observation: "", Scan: [], autre: "" },
+      Appareil_respiratoire_rhinopharynx: { observation: "", Scan: [] },
+      Appareil_cadiovasculaire: { observation: "", Scan: [] },
+      Varices: { observation: "", autre: "" },
+      T_A: "",
+      Pouls: "",
+      Appareil_digestif: { observation: '', Scan: [] },
+    Appareil_hématologique_réticulaire: { observation: '', Scan: [] },
+      Gangloins: "",
+      Rate: "",
+
+      Glandes_endocriniennes: {
+        Thyroïde: {
+          Check: false,
+          sousNom: "",
+          observation: "",
+          autreobservation: "",
+        },
+        Glandes_surrénales: {
+          Check: false,
+          observation: "",
+          autreobservation: "",
+        },
+        Hypophyse: {
+          Check: false,
+          observation: "",
+          autreobservation: "",
+        },
+        Autres: "",
+        Scan: [],
+      },
+      Système_nerveux: {
+        Lesion_cérébrale: {
+          Check: false,
+          observation: "",
+          autreobservation: "",
+        },
+        NCB: {
+          Check: false,
+          observation: "",
+          autreobservation: "",
+        },
+        Hernie_discale: {
+          Check: false,
+          observation: "",
+          autreobservation: "",
+        },
+        Maladie_neurologique: {
+          Check: false,
+          observation: "",
+          autreobservation: "",
+        },
+        Scan : [],
+      },
+      Tremblement: { observation: "", autre: "" },
+      Trouble_equilibre: { observation: "", autre: "" },
+      Réflexes: { observation: "", autre: "" },
+      Psychisme: {
+        Nevrose : 
+        {
+          Anxiété : false,
+          Depression : false,
+          Stress : false,
+          TOC : false,
+          autre : ''
+        }, 
+        Psychose: 
+        {
+          Bipolarité : false,
+          Schizophrénie : false,
+          Paranoïaque : false,
+          autre : ''
+        },
+        Scan : [],
+      
+      },
+      Appareil_locomoteur: {
+        Membres_Supérieurs: {
+          observation : "" , 
+          autre :""
+        },
+        Articulations: {
+          observation :"" , 
+          autre :""
+        },
+        Membres_Inférieur: {
+          observation :"" , 
+          autre :""
+        },
+        Scan : [],
+      },
+      Appareil_génital:  {
+        type: '',
+        Prostate : { Check : false , observation :''},
+        Troubles_érectiles : {Check : false , observation :'' },
+        MST : {Check : false , observation :'' , autre :''},
+        Leucorrhée : {Check : false , observation :'' , autre :''},
+        Trouble_menstruels : {Check : false , observation :'' , autre :''},
+        Seins : {Check : false , observation :'' , autre :''},
+        Episiotomie : {Check : false , observation :'' , autre :''},
+        autre : {Check : false , nom : '' , observation : ''},
+        Scan : [],
+      },
+      Appareil_urinaire: {
+        Reins : {observation :"" , autre :""},
+        Trouble_urinaires : {
+          Mictionnelles  : {Check : false ,observation :"" , autre :""},
+          Brûlures : {Check : false ,observation :"" , autre :""},
+          Pollokinire : {Check : false ,observation :"" , autre :""},
+          Dysurie : {Check : false ,observation :"" , autre :""},
+        },
+        Scan : [],
+      },
+      Alb: "",
+      Sucre: "",
+      Autres_constatations: "",
+      Examens_complémentaires: "",
+      Conclusions_Médicales: "",
+      Conclusions_Professionnels: "",
+    },
+  });
+  useEffect(() => {
+    onFormSubmit(formData);
+  }, [formData, onFormSubmit]);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const keys = name.split(".");
+    let updatedData = { ...formData };
+
+    let obj: any = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        obj[key] = value;
+      } else {
+        obj = obj[key];
+      }
+    });
+    setFormData(updatedData);
+  };
+  const handleRadioChange = (name: string, value: string) => {
+    const keys = name.split(".");
+    let updatedData = { ...formData };
+
+    let obj: any = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        obj[key] = value;
+      } else {
+        obj = obj[key];
+      }
+    });
+    setFormData(updatedData);
+  };
+
+  const handleChangeSelect = (value: string, name: string) => {
+    const keys = name.split(".");
+    let updatedData = { ...formData };
+
+    let obj: any = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        obj[key] = value;
+      } else {
+        obj = obj[key];
+      }
+    });
+
+    setFormData(updatedData);
+  };
+  const handleChangecheck = (value: string | boolean, name: string) => {
+    const keys = name.split(".");
+    let updatedData = { ...formData };
+
+    let obj: any = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        obj[key] = value;
+      } else {
+        obj = obj[key];
+      }
+    });
+
+    setFormData(updatedData);
+  };
+  const handleFilesChange = (files: string[] , name : string ) => {
+    updateFormData(name, files);
+  };
+
+  const handleDeleteFile = (index: number , name : string) => {
+    const updatedFiles = [...formData.PremierExam.Appareil_auditif.Scan];
+    updatedFiles.splice(index, 1);
+    updateFormData(name, updatedFiles);
+  };
+
+  const updateFormData = (name: string, value: any) => {
+    const keys = name.split(".");
+    let updatedData = { ...formData };
+
+    let obj: any = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        obj[key] = value;
+      } else {
+        obj = obj[key];
+      }
+    });
+
+    setFormData(updatedData);
+  };
+  ////////////////////////////////////////////////////////////////////////////////
   const [autresObs_ExaRad, setAutresObs_ExaRad] = useState(false);
   const [GlandesSelectTer, setGlandesSelectTer] = useState(false);
   const [GlandesSelectHyp, setGlandesSelectHyp] = useState(false);
@@ -123,7 +492,7 @@ export default function Scanpage() {
       <div className="px-4 space-y-2 py-3">
         <div className="w-full  ">
           <FormField
-            name="date_exam"
+            name="PremierExam.Date_exam"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Date d'Examen </FormLabel>
@@ -131,10 +500,11 @@ export default function Scanpage() {
                   <Input
                     placeholder="Entrer la Date d'Examen"
                     type="date"
-                    {...field}
+                    name="PremierExam.Date_exam"
+                    value={formData.PremierExam.Date_exam}
+                    onChange={handleChange}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -142,14 +512,16 @@ export default function Scanpage() {
         </div>
         <div className="w-full">
           <FormField
-            name="name_Doc"
+            name="PremierExam.Docteur"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Docteur </FormLabel>
                 <FormControl>
                   <Input
+                    name="PremierExam.Docteur"
                     placeholder="Entrer Docteur"
-                    {...field}
+                    value={formData.PremierExam?.Docteur}
+                    onChange={handleChange}
                     defaultValue="Dr Najdiwi"
                   />
                 </FormControl>
@@ -165,7 +537,7 @@ export default function Scanpage() {
       {/* ----------------  Post du travail  -------------------- */}
       <div className="w-full px-4 py-3 ">
         <FormField
-          name="post_Trav"
+          name="PremierExam.Post_de_Travail"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
@@ -173,8 +545,10 @@ export default function Scanpage() {
               </FormLabel>
               <FormControl>
                 <Textarea
+                  name="PremierExam.Post_de_Travail"
+                  value={formData.PremierExam?.Post_de_Travail}
+                  onChange={handleChange}
                   placeholder="Entrer le Poste de travail  du patient"
-                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -189,15 +563,17 @@ export default function Scanpage() {
         <div className="grid grid-row-4 gap-2 py-4">
           <div className="w-full row-span-2 items-center ">
             <FormField
-              name="poids"
+              name="PremierExam.Poids"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Poids : </FormLabel>
                   <FormControl>
                     <Input
-                      type="text"
+                      name="PremierExam.Poids"
+                      type="number"
                       placeholder="Entrer le poids du patient (Kg)"
-                      {...field}
+                      value={formData.PremierExam?.Poids}
+                      onChange={handleChange}
                     />
                   </FormControl>
 
@@ -208,15 +584,17 @@ export default function Scanpage() {
           </div>
           <div className="w-full py-3 row-span-2 ">
             <FormField
-              name="taille"
+              name="PremierExam.Taille"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Taille : </FormLabel>
                   <FormControl>
                     <Input
-                      type="text"
+                      type="number"
                       placeholder="Entrer taille du patient (cm)"
-                      {...field}
+                      name="PremierExam.Taille"
+                      value={formData.PremierExam.Taille}
+                      onChange={handleChange}
                     />
                   </FormControl>
 
@@ -231,12 +609,18 @@ export default function Scanpage() {
         <div className=" p-3 border-l-2 border-green-600 border-lg ">
           <p>Appareil auditif :</p>
           <FormField
-            name="og_appareil_auditif"
+            name="PremierExam.Appareil_auditif.OG"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>OG : </FormLabel>
                 <FormControl>
-                  <Input placeholder="Remplire OG" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Remplire OG"
+                    name="PremierExam.Appareil_auditif.OG"
+                    value={formData.PremierExam.Appareil_auditif.OG}
+                    onChange={handleChange}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -244,12 +628,18 @@ export default function Scanpage() {
             )}
           />
           <FormField
-            name="od_appareil_auditif"
+            name="PremierExam.Appareil_auditif.OD"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>OD : </FormLabel>
                 <FormControl>
-                  <Input placeholder="Remplire OD" {...field} />
+                  <Input
+                    placeholder="Remplire OD"
+                    type="number"
+                    name="PremierExam.Appareil_auditif.OD"
+                    value={formData.PremierExam.Appareil_auditif.OD}
+                    onChange={handleChange}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -257,10 +647,14 @@ export default function Scanpage() {
             )}
           />
           <div className="pt-3">
-            <DrawerScan
-              name={"Scan_appareil_auditif"}
-              placeholder={"Appareil auditif"}
-            />
+          <DrawerScan
+          // handleFilesChange={handleFilesChange(files,"PremierExam.Appareil_auditif.Scan" )}
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_auditif.Scan')}
+          name={"PremierExam.Appareil_auditif.Scan"}
+          placeholder={"Appareil auditif"}
+          selectedFiles={formData.PremierExam.Appareil_auditif.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_auditif.Scan')}
+        />
           </div>
         </div>
         <div className="col-span-2 border-l-2  border-green-600 border-lg">
@@ -280,15 +674,20 @@ export default function Scanpage() {
                 <p className="text-center ">SC :</p>
                 <div className="grid grid-cols-2 gap-2 row-span-3">
                   <FormField
-                    name="SC_pres_og_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OG_Pres"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OG : </FormLabel>
                         <FormControl>
                           <Input
-                            type="number"
                             placeholder="Remplire OG "
-                            {...field}
+                            type="number"
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OG_Pres"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_SC.OG_Pres
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -297,7 +696,7 @@ export default function Scanpage() {
                     )}
                   />
                   <FormField
-                    name="SC_pres_od_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OD_Pres"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OD : </FormLabel>
@@ -305,7 +704,12 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OD "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OD_Pres"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_SC.OD_Pres
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -316,7 +720,7 @@ export default function Scanpage() {
                 </div>
                 <div className="grid grid-cols-2 gap-2 row-span-3">
                   <FormField
-                    name="SC_loin_og_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OG_Loin"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OG : </FormLabel>
@@ -324,7 +728,12 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OG "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OG_Loin"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_SC.OG_Loin
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -333,7 +742,7 @@ export default function Scanpage() {
                     )}
                   />
                   <FormField
-                    name="SC_loin_od_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OD_Loin"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OD : </FormLabel>
@@ -341,10 +750,14 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OD "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OD_Loin"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_SC.OD_Loin
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
-
                         <FormMessage />
                       </FormItem>
                     )}
@@ -356,7 +769,7 @@ export default function Scanpage() {
 
                 <div className=" grid grid-cols-2 gap-2 row-span-3">
                   <FormField
-                    name="AC_pres_og_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OG_Pres"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OG : </FormLabel>
@@ -364,7 +777,12 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OG "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OG_Pres"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_AC.OG_Pres
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -373,7 +791,7 @@ export default function Scanpage() {
                     )}
                   />
                   <FormField
-                    name="AC_pres_od_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OD_Pres"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OD : </FormLabel>
@@ -381,7 +799,12 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OD "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OD_Pres"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_AC.OD_Pres
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -392,7 +815,7 @@ export default function Scanpage() {
                 </div>
                 <div className="grid grid-cols-2 gap-2 row-span-3">
                   <FormField
-                    name="AC_loin_og_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OG_Loin"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OG : </FormLabel>
@@ -400,7 +823,12 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OG "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OG_Loin"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_AC.OG_Loin
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -409,7 +837,7 @@ export default function Scanpage() {
                     )}
                   />
                   <FormField
-                    name="AC_loin_od_appareil_oculaire"
+                    name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OD_Loin"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>OD : </FormLabel>
@@ -417,7 +845,12 @@ export default function Scanpage() {
                           <Input
                             type="number"
                             placeholder="Remplire OD "
-                            {...field}
+                            name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OD_Loin"
+                            value={
+                              formData.PremierExam.Appareil_Oculaire
+                                .Appareil_Oculaire_AC.OD_Loin
+                            }
+                            onChange={handleChange}
                           />
                         </FormControl>
 
@@ -429,29 +862,39 @@ export default function Scanpage() {
               </div>
             </div>
             <div className="">
+           
               <DrawerScan
-                name={"Scan_appareil_oculaire"}
-                placeholder={"Appareil Oculaire"}
-              />
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_Oculaire.Scan')}
+          name={"PremierExam.Appareil_Oculaire.Scan"}
+          placeholder={"Appareil Oculaire"}
+          selectedFiles={formData.PremierExam.Appareil_Oculaire.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_Oculaire.Scan')}
+        />
             </div>
           </div>
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
 
+      {/* {/*  */}
       <div className="w-full p-4 grid grid-cols-4 gap-2 ">
         <FormField
-          // control={form.control}
-          name="teguments"
+          name="PremierExam.Téguments.observation"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Téguments </FormLabel>
+              <FormLabel>Téguments</FormLabel>
               <FormControl>
+                {/* <RadioGroup */}
                 <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
+                  onValueChange={(value) =>
+                    handleRadioChange(field.name, value)
+                  }
+                  value={formData.PremierExam.Téguments.observation}
+                  name="PremierExam.Téguments.observation"
                 >
+                  {/* value={formData.PremierExam.Téguments.observation}
+                  name="PremierExam.Téguments.observation"
+                > */}
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="Bien Colorés" />
@@ -466,25 +909,23 @@ export default function Scanpage() {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="col-span-3 pt-4">
           <FormField
-            // control={form.control}
-            name="autre_teguments"
+            name="PremierExam.Téguments.autre"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="autre observation sur le teguments  "
-                    {...field}
+                    placeholder="autre observation sur le teguments"
+                    name="PremierExam.Téguments.autre"
+                    value={formData.PremierExam.Téguments.autre}
+                    onChange={handleChange}
                   />
                 </FormControl>
-                <FormMessage />
-
                 <FormMessage />
               </FormItem>
             )}
@@ -507,7 +948,7 @@ export default function Scanpage() {
 
           <FormField
             // control={form.control}
-            name="observation_examen_radiologique"
+            name="PremierExam.Examen_radiologique.observation"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -518,7 +959,10 @@ export default function Scanpage() {
                         setAutresObs_ExaRad(false);
                       }
                       field.onChange(radio);
+                      handleRadioChange(field.name, radio);
                     }}
+                    value={formData.PremierExam.Examen_radiologique.observation}
+                    name="PremierExam.Examen_radiologique.observation"
                     defaultValue={field.value}
                     className="flex flex-col space-y-1"
                   >
@@ -543,11 +987,16 @@ export default function Scanpage() {
           {autresObs_ExaRad && (
             <FormField
               // control={form.control}
-              name="autres_observation_examen_radiologique"
+              name="PremierExam.Examen_radiologique.autre"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="observation sur le scan" {...field} />
+                    <Input
+                      placeholder="observation sur le scan"
+                      name="PremierExam.Examen_radiologique.autre"
+                      value={formData.PremierExam.Examen_radiologique.autre}
+                      onChange={handleChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -555,10 +1004,17 @@ export default function Scanpage() {
             />
           )}
           <div className="">
-            <DrawerScan
-              name={"Scan_examen_radiologique"}
+            {/* <DrawerScan
+ handleFilesChange={handleChange}              name={"Scan_examen_radiologique"}
               placeholder={"Examen radiologique"}
-            />
+            /> */}
+             <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Examen_radiologique.Scan')}
+          name={"PremierExam.Examen_radiologique.Scan"}
+          placeholder={"Examen radiologique"}
+          selectedFiles={formData.PremierExam.Examen_radiologique.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Examen_radiologique.Scan')}
+        />
           </div>
         </div>
         <div className="border-l-2 col-span-4  border-green-600 border-lg grid grid-rows-3 p-4 gap-3">
@@ -566,14 +1022,19 @@ export default function Scanpage() {
             <div className="col-span-3">
               <FormField
                 // control={form.control}
-                name="obser_respir"
+                name="PremierExam.Appareil_respiratoire_rhinopharynx.observation"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Appareil respiratoire - rhinopharynx </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="observation sur le scan d'Appareil respiratoire - rhinopharynx"
-                        {...field}
+                        name="PremierExam.Appareil_respiratoire_rhinopharynx.observation"
+                        value={
+                          formData.PremierExam
+                            .Appareil_respiratoire_rhinopharynx.observation
+                        }
+                        onChange={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -583,10 +1044,17 @@ export default function Scanpage() {
             </div>
             <div className="grid grid-row-4 gap-2">
               <div className="row-start-4 row-span-2">
-                <DrawerScan
-                  name={"scan_Appareil_respir"}
+                {/* <DrawerScan
+ handleFilesChange={handleChange}                  name={"scan_Appareil_respir"}
                   placeholder={"Appareil respiratoire - rhinopharynx"}
-                />
+                /> */}
+                <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_respiratoire_rhinopharynx.Scan')}
+          name={"PremierExam.Appareil_respiratoire_rhinopharynx.Scan"}
+          placeholder={"Appareil respiratoire - rhinopharynx"}
+          selectedFiles={formData.PremierExam.Appareil_respiratoire_rhinopharynx.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_respiratoire_rhinopharynx.Scan')}
+        />
               </div>
             </div>
           </div>
@@ -594,14 +1062,19 @@ export default function Scanpage() {
             <div className="col-span-3">
               <FormField
                 // control={form.control}
-                name="observ_app_cardiovas"
+                name="PremierExam.Appareil_cadiovasculaire.observation"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Appareil cadiovasculaire: </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="observation sur le scan d'Appareil cadiovasculaire "
-                        {...field}
+                        name="PremierExam.Appareil_cadiovasculaire.observation"
+                        value={
+                          formData.PremierExam.Appareil_cadiovasculaire
+                            .observation
+                        }
+                        onChange={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -611,17 +1084,21 @@ export default function Scanpage() {
             </div>
             <div className="grid grid-row-4 gap-2">
               <div className="row-start-4 row-span-2">
-                <DrawerScan
-                  name={"scan_Appareil_cardiovas"}
-                  placeholder={"Appareil cadiovasculaire"}
-                />
+                
+                  <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_cadiovasculaire.Scan')}
+          name={"PremierExam.Appareil_cadiovasculaire.Scan"}
+          placeholder={"Appareil cadiovasculaire"}
+          selectedFiles={formData.PremierExam.Appareil_cadiovasculaire.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_cadiovasculaire.Scan')}
+        />
               </div>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <FormField
               // control={form.control}
-              name="pouls"
+              name="PremierExam.Pouls"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pouls : </FormLabel>
@@ -629,7 +1106,9 @@ export default function Scanpage() {
                     <Input
                       type="text"
                       placeholder="entrer le nombre de pulsation "
-                      {...field}
+                      name="PremierExam.Pouls"
+                      value={formData.PremierExam.Pouls}
+                      onChange={handleChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -637,74 +1116,83 @@ export default function Scanpage() {
               )}
             />
             <FormField
-              name="ta"
+              name="PremierExam.T_A"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel> T.A :</FormLabel>
                   <FormControl>
-                    <Input type="" placeholder="saisir le T.A  " {...field} />
+                    <Input
+                      type=""
+                      placeholder="saisir le T.A  "
+                      name="PremierExam.T_A"
+                      value={formData.PremierExam.T_A}
+                      onChange={handleChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div>
-            <FormLabel>Varices :</FormLabel>
-            <FormField
-              //   control={form.control}
-              name="Varice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={(radio) => {
-                        if (radio == "Oui") setVarice_Obs(true);
-                        else {
-                          setVarice_Obs(false);
-                        }
-                        field.onChange(radio);
-                      }}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1 pt-2 pl-6"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+              <FormLabel>Varices :</FormLabel>
+              <FormField
+                //   control={form.control}
+                name="PremierExam.Varices.observation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={(radio) => {
+                          if (radio == "Oui") setVarice_Obs(true);
+                          else {
+                            setVarice_Obs(false);
+                          }
+                          handleRadioChange(field.name, radio);
+                          field.onChange(radio);
+                        }}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1 pt-2 pl-6"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Non" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Non</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Oui" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Oui</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />{" "}
+              {Varice_Obs && (
+                <div className="pt-2 ">
+                  <FormField
+                    // control={form.control}
+                    name="PremierExam.Varices.autre"
+                    render={({ field }) => (
+                      <FormItem>
                         <FormControl>
-                          <RadioGroupItem value="Non" />
+                          <Input
+                            placeholder="observation sur le Varice "
+                            name="PremierExam.Varices.autre"
+                            value={formData.PremierExam.Varices.autre}
+                            onChange={handleChange}
+                          />
                         </FormControl>
-                        <FormLabel className="font-normal">Non</FormLabel>
+                        <FormMessage />
                       </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="Oui" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Oui</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                    )}
+                  />
+                </div>
               )}
-            />{" "}
-            {Varice_Obs && (
-              <div className="pt-2 ">
-                <FormField
-                  // control={form.control}
-                  name={`Varice_autres`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="observation sur le Varice "
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -713,14 +1201,16 @@ export default function Scanpage() {
         <div className="col-span-4">
           <FormField
             //   control={form.control}
-            name="obser_appr_digestif"
+            name="PremierExam.Appareil_digestif.observation"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Appareil digestif :</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Entrer votre observation "
-                    {...field}
+                    name="PremierExam.Appareil_digestif.observation"
+                    value={formData.PremierExam.Appareil_digestif.observation}
+                    onChange={handleChange}
                   />
                 </FormControl>
                 {/* <FormDescription>
@@ -733,10 +1223,18 @@ export default function Scanpage() {
         </div>
         <div className="grid grid-row-4 gap-2">
           <div className="row-start-4 row-span-2">
-            <DrawerScan
-              name={"scan_Appareil_digestif"}
+            {/* <DrawerScan
+ handleFilesChange={handleChange}              name={"scan_Appareil_digestif"}
               placeholder={" Appareil digestif :"}
-            />
+            /> */}
+             <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_digestif.Scan')}
+          name={"PremierExam.Appareil_digestif.Scan"}
+          placeholder={" Appareil digestif :"}
+
+          selectedFiles={formData.PremierExam.Appareil_digestif.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_digestif.Scan')}
+        />
           </div>
         </div>
       </div>
@@ -746,12 +1244,19 @@ export default function Scanpage() {
           <div className="col-span-4">
             <FormField
               //   control={form.control}
-              name="obser_appr_hema_rétic"
+              name="PremierExam.Appareil_hématologique_réticulaire.observation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Appareil hématologique et réticulaire :</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Entrer observation :" {...field} />
+                    <Textarea
+                      placeholder="Entrer observation :"
+                      name="PremierExam.Appareil_hématologique_réticulaire.observation"
+                      value={
+                        formData.PremierExam.Appareil_hématologique_réticulaire.observation
+                      }
+                      onChange={handleChange}
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -761,10 +1266,17 @@ export default function Scanpage() {
           </div>
           <div className="grid grid-row-4 gap-2">
             <div className="row-start-4 row-span-2">
-              <DrawerScan
-                name={"scan_Examen_Radoilogique"}
+              {/* <DrawerScan
+ handleFilesChange={handleChange}                name={"scan_Examen_Radoilogique"}
                 placeholder={"Appareil hématologique et réticulaire :"}
-              />
+              /> */}
+              <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_hématologique_réticulaire.Scan')}
+          name={"PremierExam.Appareil_hématologique_réticulaire.Scan"}
+          placeholder={"Appareil hématologique et réticulaire :"}
+          selectedFiles={formData.PremierExam.Appareil_hématologique_réticulaire.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_hématologique_réticulaire.Scan')}
+        />
             </div>
           </div>
         </div>
@@ -772,7 +1284,7 @@ export default function Scanpage() {
           <div className="w-auto  ">
             <FormField
               // control={form.control}
-              name="gangloins"
+              name="PremierExam.Gangloins"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gangloins : </FormLabel>
@@ -780,7 +1292,9 @@ export default function Scanpage() {
                     <Input
                       type="text"
                       placeholder="Entrer la Gangloins "
-                      {...field}
+                      name="PremierExam.Gangloins"
+                      value={formData.PremierExam.Gangloins}
+                      onChange={handleChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -790,13 +1304,18 @@ export default function Scanpage() {
           </div>
           <div className="w-auto ">
             <FormField
-              name="rate"
+              name="PremierExam.Rate"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Rate </FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      handleChangeSelect(value, "PremierExam.Rate");
+                      field.onChange(value);
+                    }}
                     defaultValue={field.value}
+                    name="PremierExam.Rate"
+                    value={formData.PremierExam.Rate}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -820,309 +1339,304 @@ export default function Scanpage() {
           </div>
         </div>
       </div>
+
       <div className="border-2 border-green-600 border-lg"></div>
       <div>
         <div className="p-4">
           <FormField
-            //   control={form.control}
-            name="glande_endo"
+            name={`PremierExam.Glandes_endocriniennes.maladie`}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Glandes endocriniennes :</FormLabel>
                 <div className="grid grid-cols-4 gap-4 p-3 ">
-                  {Glandes.map((item) => (
-                    <div key={item.id} className="grid grid-flow-row gap-2">
-                      <FormField
-                        key={item.id}
-                        // control={form.control}
-                        name={item.id}
-                        render={({ field }) => {
-                          return (
-                            <FormItem
-                              key={item.id}
-                              className="flex flex-row items-start space-x-3 space-y-0"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={
-                                    Array.isArray(field.value) &&
-                                    field.value.includes(item.id)
-                                  }
-                                  onCheckedChange={(checked) => {
-                                    const updatedValue = field.value || [];
-                                    return checked
-                                      ? field.onChange([updatedValue, item.id])
-                                      : field.onChange(
-                                          updatedValue.filter(
-                                            (value: any) => value !== item.id
-                                          )
-                                        );
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {item.id}
-                              </FormLabel>
-                            </FormItem>
-                          );
+                <div className="grid grid-flow-row gap-2">
+        <FormField
+          name="PremierExam.Glandes_endocriniennes.Thyroïde.Check"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    handleChangecheck(checked, field.name);
+                  }}
+                />
+              </FormControl>
+              <FormLabel className="font-normal">Thyroïde</FormLabel>
+            </FormItem>
+          )}
+        />
+        {formData.PremierExam.Glandes_endocriniennes.Thyroïde.Check && (
+          <div className="pl-2 pt-3 grid grid-flow-row gap-3">
+            <div>
+              <FormField
+                name="PremierExam.Glandes_endocriniennes.Thyroïde.sousNom"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={(selectedValue) => {
+                        field.onChange(selectedValue);
+                        handleChangeSelect( selectedValue ,field.name );
+                      }}
+                         name="PremierExam.Glandes_endocriniennes.Thyroïde.sousNom"
+
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Entrer Maladies contractées au serice du patient" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="TSH">TSH</SelectItem>
+                        <SelectItem value="T3">T3</SelectItem>
+                        <SelectItem value="T4">T4</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div id="PremierExam.Glandes_endocriniennes.Thyroïde.observation">
+              <FormField
+                name="PremierExam.Glandes_endocriniennes.Thyroïde.observation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={(radio) => {
+                          setGlandesSelectTer(radio === "autres");
+                          handleRadioChange(field.name, radio);
+                          field.onChange(radio);
                         }}
-                      />
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="RAS" />
+                          </FormControl>
+                          <FormLabel className="font-normal">RAS</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="autres" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Autres</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {GlandesSelectTer && (
+                <div className="pt-2">
+                  <FormField
+                    name="PremierExam.Glandes_endocriniennes.Thyroïde.autreobservation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="observation sur le scan"  
+                    name="PremierExam.Glandes_endocriniennes.Thyroïde.autreobservation"
+                          onChange={handleChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
-                      {item.id == "Thyroïde" && (
-                        <div className="pl-2 pt-3 grid grid-flow-row gap-3 ">
-                          <div>
-                            <FormField
-                              name="Sous_Gland"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <Select
-                                    onValueChange={(selectedValue) => {
-                                      field.onChange(selectedValue);
-                                    }}
-                                    defaultValue={field.value}
-                                  >
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Entrer Maladies contractées au serice du patient" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      {item.type?.map((itemType) => (
-                                        <SelectItem
-                                          key={itemType.id}
-                                          value={itemType.id}
-                                        >
-                                          {itemType.id}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
+      {/* Hypophyse */}
+      <div className="grid grid-flow-row gap-2">
+        <FormField
+          name="PremierExam.Glandes_endocriniennes.Hypophyse.Check"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    handleChangecheck(checked, field.name);
+                  }}
+                />
+              </FormControl>
+              <FormLabel className="font-normal">Hypophyse</FormLabel>
+            </FormItem>
+          )}
+        />
+        {formData.PremierExam.Glandes_endocriniennes.Hypophyse.Check && (
+          <div className="pl-2 pt-3 grid grid-flow-row gap-3">
+            <div id="PremierExam.Glandes_endocriniennes.Hypophyse.observation">
+              <FormField
+                name="PremierExam.Glandes_endocriniennes.Hypophyse.observation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={(radio) => {
+                          setGlandesSelectHyp(radio === "autres");
+                          handleRadioChange(field.name, radio);
+                          field.onChange(radio);
+                        }}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="RAS" />
+                          </FormControl>
+                          <FormLabel className="font-normal">RAS</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="autres" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Autres</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {GlandesSelectHyp && (
+                <div className="pt-2">
+                  <FormField
+                    name="PremierExam.Glandes_endocriniennes.Hypophyse.autreobservation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="observation sur le scan"
+                           name="PremierExam.Glandes_endocriniennes.Hypophyse.autreobservation"     onChange={handleChange} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <div id={`${item.id}._obser`}>
-                            <FormField
-                              // control={form.control}
-                              name={`${item.id}._obser`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <RadioGroup
-                                      onValueChange={(radio) => {
-                                        if (radio == "autres")
-                                          setGlandesSelectTer(true);
-                                        else {
-                                          setGlandesSelectTer(false);
-                                        }
-                                        field.onChange(radio);
-                                      }}
-                                      defaultValue={field.value}
-                                      className="flex flex-col space-y-1"
-                                    >
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="RAS" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          RAS
-                                        </FormLabel>
-                                      </FormItem>
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="autres" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          Autres
-                                        </FormLabel>
-                                      </FormItem>
-                                    </RadioGroup>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
+      {/* Glandes surrénales */}
+      <div className="grid grid-flow-row gap-2">
+        <FormField
+          name="PremierExam.Glandes_endocriniennes.Glandes_surrénales.Check"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    handleChangecheck(checked, field.name);
+                  }}
+                />
+              </FormControl>
+              <FormLabel className="font-normal">Glandes surrénales</FormLabel>
+            </FormItem>
+          )}
+        />
+        {formData.PremierExam.Glandes_endocriniennes.Glandes_surrénales.Check && (
+          <div className="pl-2 pt-3 grid grid-flow-row gap-3">
+            <div id="PremierExam.Glandes_endocriniennes.Glandes_surrénales.observation">
+              <FormField
+                name="PremierExam.Glandes_endocriniennes.Glandes_surrénales.observation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={(radio) => {
+                          setGlandesSelectGland(radio === "autres");
+                          handleRadioChange(field.name, radio);
+                          field.onChange(radio);
+                        }}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="RAS" />
+                          </FormControl>
+                          <FormLabel className="font-normal">RAS</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="autres" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Autres</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {GlandesSelectGland && (
+                <div className="pt-2">
+                  <FormField
+                    name="PremierExam.Glandes_endocriniennes.Glandes_surrénales.autreobservation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="observation sur le scan" 
+                    name="PremierExam.Glandes_endocriniennes.Glandes_surrénales.autreobservation"
+                          onChange={handleChange} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+                  <FormField
+                 name="PremierExam.Glandes_endocriniennes.Autres"
 
-                            {GlandesSelectTer && (
-                              <div className="pt-2">
-                                <FormField
-                                  // control={form.control}
-                                  name={`${item.id}._obser_autre`}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <Input
-                                          placeholder="observation sur le scan"
-                                          {...field}
-                                        />
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      {item.id === "Hypophyse" && (
-                        <div className="pl-2 pt-3 grid grid-flow-row gap-3">
-                          <div id={`${item.id}._obser`}>
-                            <FormField
-                              // control={form.control}
-                              name={`${item.id}._obser`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <RadioGroup
-                                      onValueChange={(radio) => {
-                                        if (radio == "autres")
-                                          setGlandesSelectHyp(true);
-                                        else {
-                                          setGlandesSelectHyp(false);
-                                        }
-                                        field.onChange(radio);
-                                      }}
-                                      defaultValue={field.value}
-                                      className="flex flex-col space-y-1"
-                                    >
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="RAS" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          RAS
-                                        </FormLabel>
-                                      </FormItem>
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="autres" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          Autres
-                                        </FormLabel>
-                                      </FormItem>
-                                    </RadioGroup>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-
-                            {GlandesSelectHyp && (
-                              <div className="pt-2">
-                                <FormField
-                                  // control={form.control}
-                                  name={`${item.id}._obser_autre`}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <Input
-                                          placeholder="observation sur le scan"
-                                          {...field}
-                                        />
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      {item.id === "Glandes surrénales" && (
-                        <div className="pl-2 pt-3 grid grid-flow-row gap-3">
-                          <div id={`${item.id}._obser`}>
-                            <FormField
-                              // control={form.control}
-                              name={`${item.id}._obser`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <RadioGroup
-                                      onValueChange={(radio) => {
-                                        if (radio == "autres")
-                                          setGlandesSelectGland(true);
-                                        else {
-                                          setGlandesSelectGland(false);
-                                        }
-                                        field.onChange(radio);
-                                      }}
-                                      defaultValue={field.value}
-                                      className="flex flex-col space-y-1"
-                                    >
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="RAS" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          RAS
-                                        </FormLabel>
-                                      </FormItem>
-                                      <FormItem className="flex items-center space-x-3 space-y-0">
-                                        <FormControl>
-                                          <RadioGroupItem value="autres" />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          Autres
-                                        </FormLabel>
-                                      </FormItem>
-                                    </RadioGroup>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-
-                            {GlandesSelectGland && (
-                              <div className="pt-2">
-                                <FormField
-                                  // control={form.control}
-                                  name={`${item.id}._obser_autre`}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <Input
-                                          placeholder="observation sur le scan"
-                                          {...field}
-                                        />
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                            <FormField
-                              // control={form.control}
-                              name={`glande_endo_autre`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Autre :</FormLabel>
-                                  <FormControl>
-                                    <Textarea
-                                      placeholder="observation sur le scan"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Autre :</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="observation sur le scan"
+                            name="PremierExam.Glandes_endocriniennes.Autres"
+                            value={formData.PremierExam.Glandes_endocriniennes.Autres}
+                            onChange={handleChange} />
+                         
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <DrawerScan name={`Glandes_endocriniennes_Scan`} placeholder={"Glandes endocriniennes"} />
+          {/* <DrawerScan
+ handleFilesChange={handleChange}            name={`Glandes_endocriniennes_Scan`}
+            placeholder={"Glandes endocriniennes"}
+          /> */}
+          <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Glandes_endocriniennes.Scan')}
+          name={"PremierExam.Glandes_endocriniennes.Scan"}
+          placeholder={"Glandes endocriniennes"}
+          selectedFiles={formData.PremierExam.Glandes_endocriniennes.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Glandes_endocriniennes.Scan')}
+        />
+          
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
@@ -1134,7 +1648,7 @@ export default function Scanpage() {
             <div className="pt-2 pl-6">
               <div>
                 <FormField
-                  name="SystNerv_Maladie_neurologique"
+                  name="PremierExam.Système_nerveux.Maladie_neurologique.Check"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
@@ -1142,9 +1656,15 @@ export default function Scanpage() {
                           checked={field.value}
                           onCheckedChange={(checked) => {
                             field.onChange(checked);
-                            if (checked) setSystNerv_Maladie_neurologique(true);
-                            else setSystNerv_Maladie_neurologique(false);
+                            if (checked) {
+                              setSystNerv_Maladie_neurologique(true);
+                              handleChangecheck(true, field.name);
+                            } else {
+                              setSystNerv_Maladie_neurologique(false);
+                              handleChangecheck(false, field.name);
+                            }
                           }}
+                          //  value={formData.PremierExam.Système_nerveux.Maladie_neurologique.}
                         />
                       </FormControl>
                       <FormLabel className="font-normal">
@@ -1159,12 +1679,15 @@ export default function Scanpage() {
                       <div id={`SystNerv_Maladie_neurologique_obser`}>
                         <FormField
                           // control={form.control}
-                          name={`SystNerv_Maladie_neurologique_obser`}
+                          // name={`SystNerv_Maladie_neurologique_obser`}
+                          name="PremierExam.Système_nerveux.Maladie_neurologique.observation"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
                                 <RadioGroup
                                   onValueChange={(radio) => {
+                                    // handleRadioChange(radio ,'PremierExam.Système_nerveux.Maladie_neurologique.observation');
+                                    handleRadioChange(field.name, radio);
                                     if (radio == "autres")
                                       setMaladie_neurologique_Obs(true);
                                     else {
@@ -1172,6 +1695,11 @@ export default function Scanpage() {
                                     }
                                     field.onChange(radio);
                                   }}
+                                  value={
+                                    formData.PremierExam.Système_nerveux
+                                      .Maladie_neurologique.observation
+                                  }
+                                  name="PremierExam.Système_nerveux.Maladie_neurologique.observation"
                                   defaultValue={field.value}
                                   className="flex flex-col space-y-1"
                                 >
@@ -1202,13 +1730,18 @@ export default function Scanpage() {
                           <div className="pt-2">
                             <FormField
                               // control={form.control}
-                              name={`SystNerv_Maladie_neurologique_obser_autre`}
+                              name="PremierExam.Système_nerveux.Maladie_neurologique.autreobservation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <Input
                                       placeholder="observation sur le scan"
-                                      {...field}
+                                      name="PremierExam.Système_nerveux.Maladie_neurologique.autreobservation"
+                                      value={
+                                        formData.PremierExam.Système_nerveux
+                                          .Maladie_neurologique.autreobservation
+                                      }
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -1218,10 +1751,11 @@ export default function Scanpage() {
                           </div>
                         )}
                       </div>
-                      <DrawerScan
-                        name={`SystNerv_Maladie_neurologique_Scan`}
+                      {/* <DrawerScan
+                  handleFilesChange={handleChange}                        name={`SystNerv_Maladie_neurologique_Scan`}
                         placeholder={"Maladie neurologique"}
-                      />
+                      /> */}
+                       
                     </div>
                   </div>
                 )}
@@ -1231,7 +1765,8 @@ export default function Scanpage() {
             <div className="pl-6">
               <div>
                 <FormField
-                  name="SystNerv_Hernie_discale"
+                  name="PremierExam.Système_nerveux.Hernie_discale.Check"
+                  // name="SystNerv_Hernie_discale"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
@@ -1239,8 +1774,13 @@ export default function Scanpage() {
                           checked={field.value}
                           onCheckedChange={(checked) => {
                             field.onChange(checked);
-                            if (checked) setSystNerv_Hernie_discale(true);
-                            else setSystNerv_Hernie_discale(false);
+                            if (checked) {
+                              setSystNerv_Hernie_discale(true);
+                              handleChangecheck(true, field.name);
+                            } else {
+                              setSystNerv_Hernie_discale(false);
+                              handleChangecheck(false, field.name);
+                            }
                           }}
                         />
                       </FormControl>
@@ -1256,12 +1796,13 @@ export default function Scanpage() {
                       <div id={`SystNerv_Hernie_discale_obser`}>
                         <FormField
                           // control={form.control}
-                          name={`SystNerv_Hernie_discale_obser`}
+                          name="PremierExam.Système_nerveux.Hernie_discale.observation"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
                                 <RadioGroup
                                   onValueChange={(radio) => {
+                                    handleRadioChange(field.name, radio);
                                     if (radio == "autres")
                                       setHernie_discale_Obs(true);
                                     else {
@@ -1269,6 +1810,11 @@ export default function Scanpage() {
                                     }
                                     field.onChange(radio);
                                   }}
+                                  value={
+                                    formData.PremierExam.Système_nerveux
+                                      .Hernie_discale.observation
+                                  }
+                                  name="PremierExam.Système_nerveux.Hernie_discale.observation"
                                   defaultValue={field.value}
                                   className="flex flex-col space-y-1"
                                 >
@@ -1299,13 +1845,18 @@ export default function Scanpage() {
                           <div className="pt-2">
                             <FormField
                               // control={form.control}
-                              name={`SystNerv_Hernie_discale_obser_autre`}
+                              name="PremierExam.Système_nerveux.Hernie_discale.autreobservation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <Input
                                       placeholder="observation sur le scan"
-                                      {...field}
+                                      value={
+                                        formData.PremierExam.Système_nerveux
+                                          .Hernie_discale.autreobservation
+                                      }
+                                      name="PremierExam.Système_nerveux.Hernie_discale.autreobservation"
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -1315,20 +1866,21 @@ export default function Scanpage() {
                           </div>
                         )}
                       </div>
-                      <DrawerScan
-                        name={`SystNerv_Hernie_discale_Scan`}
+                      {/* <DrawerScan
+            handleFilesChange={handleChange}                        name={`SystNerv_Hernie_discale_Scan`}
                         placeholder={"Hernie discale"}
-                      />
+                      /> */}
                     </div>
                   </div>
                 )}
               </div>
             </div>
             {/* NCB  */}
+         
             <div className="pl-6">
               <div>
                 <FormField
-                  name="SystNerv_NCB"
+                  name="PremierExam.Système_nerveux.NCB.Check"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
@@ -1336,8 +1888,13 @@ export default function Scanpage() {
                           checked={field.value}
                           onCheckedChange={(checked) => {
                             field.onChange(checked);
-                            if (checked) setSystNerv_NCB(true);
-                            else setSystNerv_NCB(false);
+                            if (checked) {
+                              setSystNerv_NCB(true);
+                              handleChangecheck(true, field.name);
+                            } else {
+                              setSystNerv_NCB(false);
+                              handleChangecheck(false, field.name);
+                            }
                           }}
                         />
                       </FormControl>
@@ -1348,21 +1905,27 @@ export default function Scanpage() {
                 {SystNerv_NCB && (
                   <div>
                     <div className="pl-6 pt-3 grid grid-flow-row gap-3">
-                      <div id={`SystNerv_NCB_obser`}>
+                      <div id="SystNerv_NCB_obser">
                         <FormField
-                          // control={form.control}
-                          name={`SystNerv_NCB_obser`}
+                          name="PremierExam.Système_nerveux.NCB.observation"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
                                 <RadioGroup
                                   onValueChange={(radio) => {
-                                    if (radio == "autres") setNCB_Obs(true);
-                                    else {
+                                    handleRadioChange(field.name, radio);
+                                    if (radio === "autres") {
+                                      setNCB_Obs(true);
+                                    } else {
                                       setNCB_Obs(false);
                                     }
                                     field.onChange(radio);
                                   }}
+                                  value={
+                                    formData.PremierExam.Système_nerveux.NCB
+                                      .observation
+                                  }
+                                  name="PremierExam.Système_nerveux.NCB.observation"
                                   defaultValue={field.value}
                                   className="flex flex-col space-y-1"
                                 >
@@ -1388,18 +1951,21 @@ export default function Scanpage() {
                             </FormItem>
                           )}
                         />
-
                         {NCB_Obs && (
                           <div className="pt-2">
                             <FormField
-                              // control={form.control}
-                              name={`SystNerv_NCB_obser_autre`}
+                              name="PremierExam.Système_nerveux.NCB.autreobservation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <Input
                                       placeholder="observation sur le scan"
-                                      {...field}
+                                      value={
+                                        formData.PremierExam.Système_nerveux.NCB
+                                          .autreobservation
+                                      }
+                                      name="PremierExam.Système_nerveux.NCB.autreobservation"
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -1409,21 +1975,21 @@ export default function Scanpage() {
                           </div>
                         )}
                       </div>
-                      <DrawerScan
-                        name={`SystNerv_NCB_Scan`}
+                      {/* <DrawerScan
+              handleFilesChange={handleChange}                        name="SystNerv_NCB_Scan"
                         placeholder={"NCB"}
-                      />
+                      /> */}
                     </div>
                   </div>
                 )}
               </div>
             </div>
-
             {/* Lesion_cérébrale */}
+            {/* Lesion cérébrale */}
             <div className="pl-6">
               <div>
                 <FormField
-                  name="SystNerv_Lesion_cérébrale"
+                  name="PremierExam.Système_nerveux.Lesion_cérébrale.Check"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
@@ -1431,8 +1997,13 @@ export default function Scanpage() {
                           checked={field.value}
                           onCheckedChange={(checked) => {
                             field.onChange(checked);
-                            if (checked) setSystNerv_Lesion_cérébrale(true);
-                            else setSystNerv_Lesion_cérébrale(false);
+                            if (checked) {
+                              setSystNerv_Lesion_cérébrale(true);
+                              handleChangecheck(true, field.name);
+                            } else {
+                              setSystNerv_Lesion_cérébrale(false);
+                              handleChangecheck(false, field.name);
+                            }
                           }}
                         />
                       </FormControl>
@@ -1445,22 +2016,27 @@ export default function Scanpage() {
                 {SystNerv_Lesion_cérébrale && (
                   <div>
                     <div className="pl-6 pt-3 grid grid-flow-row gap-3">
-                      <div id={`SystNerv_Lesion_cérébrale_obser`}>
+                      <div id="SystNerv_Lesion_cérébrale_obser">
                         <FormField
-                          // control={form.control}
-                          name={`SystNerv_Lesion_cérébrale_obser`}
+                          name="PremierExam.Système_nerveux.Lesion_cérébrale.observation"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
                                 <RadioGroup
                                   onValueChange={(radio) => {
-                                    if (radio == "autres")
+                                    handleRadioChange(field.name, radio);
+                                    if (radio === "autres") {
                                       setLesion_cérébrale_Obs(true);
-                                    else {
+                                    } else {
                                       setLesion_cérébrale_Obs(false);
                                     }
                                     field.onChange(radio);
                                   }}
+                                  value={
+                                    formData.PremierExam.Système_nerveux
+                                      .Lesion_cérébrale.observation
+                                  }
+                                  name="PremierExam.Système_nerveux.Lesion_cérébrale.observation"
                                   defaultValue={field.value}
                                   className="flex flex-col space-y-1"
                                 >
@@ -1486,18 +2062,21 @@ export default function Scanpage() {
                             </FormItem>
                           )}
                         />
-
                         {Lesion_cérébrale_Obs && (
                           <div className="pt-2">
                             <FormField
-                              // control={form.control}
-                              name={`SystNerv_Lesion_cérébrale_obser_autre`}
+                              name="PremierExam.Système_nerveux.Lesion_cérébrale.autreobservation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <Input
                                       placeholder="observation sur le scan"
-                                      {...field}
+                                      value={
+                                        formData.PremierExam.Système_nerveux
+                                          .Lesion_cérébrale.autreobservation
+                                      }
+                                      name="PremierExam.Système_nerveux.Lesion_cérébrale.autreobservation"
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -1507,33 +2086,45 @@ export default function Scanpage() {
                           </div>
                         )}
                       </div>
-                      <DrawerScan
-                        name={`SystNerv_Lesion_cérébrale_Scan`}
+                      {/* <DrawerScan
+            handleFilesChange={handleChange}                        name="SystNerv_Lesion_cérébrale_Scan"
                         placeholder={"Lesion cérébrale"}
-                      />
+                      /> */}
                     </div>
                   </div>
                 )}
               </div>
             </div>
+            <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Système_nerveux.Scan')}
+          name={"PremierExam.Système_nerveux.Scan"}
+          placeholder={"Système nerveux"}
+          selectedFiles={formData.PremierExam.Système_nerveux.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Système_nerveux.Scan')}
+        />
           </div>
 
           <div>
             <FormLabel>Tremblement :</FormLabel>
             <FormField
               //   control={form.control}
-              name="tremblement"
+              name="PremierExam.Tremblement.observation"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
+                        handleRadioChange(field.name , radio);
                         if (radio == "Oui") setTremb_Obs(true);
                         else {
                           setTremb_Obs(false);
                         }
                         field.onChange(radio);
                       }}
+                      value={
+                        formData.PremierExam.Tremblement.observation
+                      }
+                      name="PremierExam.Tremblement.observation"
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -1559,13 +2150,17 @@ export default function Scanpage() {
               <div className="pt-2 ">
                 <FormField
                   // control={form.control}
-                  name={`tremblement_autres`}
+                  name="PremierExam.Tremblement.autre"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="observation sur le tremblement "
-                          {...field}
+                          value={
+                            formData.PremierExam.Tremblement.autre
+                          }
+                          name="PremierExam.Tremblement.autre"
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -1580,18 +2175,23 @@ export default function Scanpage() {
             <FormLabel>Trouble de l'équilibre :</FormLabel>
             <FormField
               //   control={form.control}
-              name="equilibre"
+              name="PremierExam.Trouble_equilibre.observation"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
+                        handleRadioChange(field.name , radio);
                         if (radio == "Oui") setEquil_Obs(true);
                         else {
                           setEquil_Obs(false);
                         }
                         field.onChange(radio);
                       }}
+                      value={
+                        formData.PremierExam.Trouble_equilibre.observation
+                      }
+                      name="PremierExam.Trouble_equilibre.observation"
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -1617,13 +2217,17 @@ export default function Scanpage() {
               <div className="pt-2 ">
                 <FormField
                   // control={form.control}
-                  name={`Equilibre_autres`}
+                  name="PremierExam.Trouble_equilibre.autre"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="observation sur le Equilibre "
-                          {...field}
+                          value={
+                            formData.PremierExam.Trouble_equilibre.autre
+                          }
+                          name="PremierExam.Trouble_equilibre.autre"
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -1638,18 +2242,24 @@ export default function Scanpage() {
             <FormLabel>Réflexes :</FormLabel>
             <FormField
               //   control={form.control}
-              name="réflexes"
+              name="PremierExam.Réflexes.observation"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
+                        handleRadioChange(field.name , radio);
+
                         if (radio == "Non") setReflex_Obs(true);
                         else {
                           setReflex_Obs(false);
                         }
                         field.onChange(radio);
                       }}
+                      value={
+                        formData.PremierExam.Réflexes.observation
+                      }
+                      name="PremierExam.Réflexes.observation"
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -1675,14 +2285,18 @@ export default function Scanpage() {
               <div className="pt-2 ">
                 <FormField
                   // control={form.control}
-                  name={`Réflexes_autres`}
+                  name="PremierExam.Réflexes.autre"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="observation sur le Réflexes "
-                          {...field}
-                        />
+                          value={
+                            formData.PremierExam.Réflexes.autre
+                          }
+                          name="PremierExam.Réflexes.autre"
+                          onChange={handleChange}
+                          />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1694,126 +2308,175 @@ export default function Scanpage() {
         </div>
 
         <div className=" col-span-2 py-4  pl-4 w-full grid grid-flow-row    border-l-2 border-green-600 border-lg">
-          <FormLabel>Psychisme :</FormLabel>
-          <div className="pl-2">
-            <FormItem>
-              <FormLabel>Nevrose : </FormLabel>
-              {Nevrose.map((item) => (
-                <FormField
-                  key={item.value}
-                  name="Nevrose"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.value}
-                        className="flex flex-row items-start space-x-3 space-y-0 pl-3"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.value)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                field.onChange([
-                                  ...(field.value || []),
-                                  item.value,
-                                ]);
-                              } else {
-                                field.onChange(
-                                  (field.value || []).filter(
-                                    (value: string) => value !== item.value
-                                  )
-                                );
-                              }
-                            }}
-                          />
-                        </FormControl>
+        <FormLabel>Psychisme :</FormLabel>
 
-                        <FormLabel className="font-normal">{item.id}</FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
-              <div className="pt-2">
-                <FormField
-                  name="Nevrose_autres"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="Entrer autre maladie Nevrose"
-                          {...field}
-                        />
-                      </FormControl>
+{/* Nevrose */}
+<div className="pl-2">
+  <FormItem>
+    <FormLabel>Nevrose :</FormLabel>
+    <FormField
+              name="PremierExam.Psychisme.Nevrose.Anxiété"        
+              render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Nevrose.Anxiété"        
+                  />
+          </FormControl>
+          <FormLabel className="font-normal">Anxiété</FormLabel>
+        </FormItem>
+      )}
+    />
+    <FormField
+              name="PremierExam.Psychisme.Nevrose.Depression"        
+              render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Nevrose.Depression"        
+                  />
+          </FormControl>
+          <FormLabel className="font-normal">Depression</FormLabel>
+        </FormItem>
+      )}
+    />
+    <FormField
+              name="PremierExam.Psychisme.Nevrose.Stress"
+              render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+           onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Nevrose.Stress"
+            />
+          </FormControl>
+          <FormLabel className="font-normal">Stress</FormLabel>
+        </FormItem>
+      )}
+    />
+    <FormField
+      name="PremierExam.Psychisme.Nevrose.TOC"
+      render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Nevrose.TOC"
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </FormItem>
-          </div>
-          <div className="pl-2">
-            <FormItem>
-              <FormLabel>Psychose : </FormLabel>
-              {Psychose.map((item) => (
-                <FormField
-                  key={item.value}
-                  name="Psychose"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.value}
-                        className="flex flex-row items-start space-x-3 space-y-0 pl-3"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.value)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                field.onChange([
-                                  ...(field.value || []),
-                                  item.value,
-                                ]);
-                              } else {
-                                field.onChange(
-                                  (field.value || []).filter(
-                                    (value: string) => value !== item.value
-                                  )
-                                );
-                              }
-                            }}
-                          />
-                        </FormControl>
+            />
+          </FormControl>
+          <FormLabel className="font-normal">TOC</FormLabel>
+        </FormItem>
+      )}
+    />
+    <div className="pt-2">
+      <FormField
+        name="PremierExam.Psychisme.Nevrose_autres"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input
+                placeholder="Entrer autre maladie Nevrose"
+                name="PremierExam.Psychisme.Nevrose.autre"
+                value={formData.PremierExam.Psychisme.Nevrose.autre}
+                onChange={handleChange}
+               />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  </FormItem>
+</div>
 
-                        <FormLabel className="font-normal">{item.id}</FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
-              <div className="pt-2">
-                <FormField
-                  name="Psychose_autres"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="Entrer autre maladie Psychose"
-                          {...field}
-                        />
-                      </FormControl>
+{/* Psychose */}
+<div className="pl-2">
+  <FormItem>
+    <FormLabel>Psychose :</FormLabel>
+    <FormField
+        name="PremierExam.Psychisme.Psychose.Bipolarité"
+        render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+             onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Psychose.Bipolarité"
+            />
+          </FormControl>
+          <FormLabel className="font-normal">Bipolarité</FormLabel>
+        </FormItem>
+      )}
+    />
+    <FormField
+       name="PremierExam.Psychisme.Psychose.Schizophrénie"
+      render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Psychose.Schizophrénie"
+            />
+          </FormControl>
+          <FormLabel className="font-normal">Schizophrénie</FormLabel>
+        </FormItem>
+      )}
+    />
+    <FormField
+        name="PremierExam.Psychisme.Psychose.Paranoïaque"
+        render={({ field }) => (
+        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pl-3">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+              // onCheckedChange={(checked) => handleChangecheck(checked, "PremierExam.Psychisme.Paranoïaque")}
+               onCheckedChange={(checked) => handleChangecheck(checked, field.name)}
+              name="PremierExam.Psychisme.Psychose.Paranoïaque"
+            />
+          </FormControl>
+          <FormLabel className="font-normal">Paranoïaque</FormLabel>
+        </FormItem>
+      )}
+    />
+    <div className="pt-2">
+      <FormField
+          name="PremierExam.Psychisme.Psychose.autre"
+          render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input
+                placeholder="Entrer autre maladie Psychose"
+              name="PremierExam.Psychisme.Psychose.autre"
+               value={formData.PremierExam.Psychisme.Psychose.autre}
+               onChange={handleChange}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  </FormItem>
+</div>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </FormItem>
-          </div>
-          <div className="pt-2">
-            <DrawerScan name={`Psychisme_Scan`} placeholder={"Psychisme "} />
-          </div>
+<div className="pt-2">
+  {/* <DrawerScan  handleFilesChange={handleChange}name="Psychisme_Scan" placeholder="Psychisme" /> */}
+  <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Psychisme.Scan')}
+          name={"PremierExam.Psychisme.Scan"}
+          placeholder="Psychisme"
+          selectedFiles={formData.PremierExam.Psychisme.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Psychisme.Scan')}
+        />
+</div>
         </div>
       </div>
       <div className="border-2 border-green-600 border-lg"></div>
@@ -1825,19 +2488,22 @@ export default function Scanpage() {
           <div className="grid grid-cols-5 ">
             <FormField
               //   control={form.control}
-              name="appr_locom_Mem_Sup"
+            name="PremierExam.Appareil_locomoteur.Membres_Supérieurs.observation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Membres Supérieurs :</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
+                          handleRadioChange(field.name, radio);
                         if (radio == "Autres") setMembre_Sup(true);
                         else {
                           setMembre_Sup(false);
                         }
                         field.onChange(radio);
                       }}
+                       name="PremierExam.Appareil_locomoteur.Membres_Supérieurs.observation"
+                      value={formData.PremierExam.Appareil_locomoteur.Membres_Supérieurs.observation}
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -1863,13 +2529,15 @@ export default function Scanpage() {
               <div className="pt-2 content-end col-span-4 justify-start items-start">
                 <FormField
                   // control={form.control}
-                  name={`appr_locom_Mem_Sup_autres`}
+                         name="PremierExam.Appareil_locomoteur.Membres_Supérieurs.autre"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="Entrer votre observation "
-                          {...field}
+                         name="PremierExam.Appareil_locomoteur.Membres_Supérieurs.autre"
+                           value={formData.PremierExam.Appareil_locomoteur.Membres_Supérieurs.autre}
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -1883,19 +2551,23 @@ export default function Scanpage() {
           <div className="grid grid-cols-5 ">
             <FormField
               //   control={form.control}
-              name="appr_locom_Mem_Inf"
+              name="PremierExam.Appareil_locomoteur.Membres_Inférieur.observation"
+
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Membres Inférieur :</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
+                       handleRadioChange(field.name, radio);
                         if (radio == "Autres") setMembre_Inf(true);
                         else {
                           setMembre_Inf(false);
                         }
                         field.onChange(radio);
-                      }}
+                      }} 
+                      name="PremierExam.Appareil_locomoteur.Membres_Inférieur.observation"
+                      value={formData.PremierExam.Appareil_locomoteur.Membres_Inférieur.observation}
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -1922,13 +2594,15 @@ export default function Scanpage() {
               <div className="pt-2 content-end col-span-4 justify-start items-start">
                 <FormField
                   // control={form.control}
-                  name={`appr_locom_Mem_Inf_autres`}
+                       name="PremierExam.Appareil_locomoteur.Membres_Inférieur.autre"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="Entrer votre observation"
-                          {...field}
+                       name="PremierExam.Appareil_locomoteur.Membres_Inférieur.autre"
+                           value={formData.PremierExam.Appareil_locomoteur.Membres_Inférieur.autre}
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -1941,19 +2615,24 @@ export default function Scanpage() {
           <div className="grid grid-cols-5 ">
             <FormField
               //   control={form.control}
-              name="appr_locom_Articulation"
+            name="PremierExam.Appareil_locomoteur.Articulations.observation"
+
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Articulations :</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={(radio) => {
+                      handleRadioChange(field.name, radio);
                         if (radio == "Autres") setArticula(true);
                         else {
                           setArticula(false);
                         }
                         field.onChange(radio);
                       }}
+                       name="PremierExam.Appareil_locomoteur.Articulations.observation"
+                           value={formData.PremierExam.Appareil_locomoteur.Articulations.observation}
+                       
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -1980,13 +2659,15 @@ export default function Scanpage() {
               <div className="pt-2 content-end col-span-4 justify-start items-start">
                 <FormField
                   // control={form.control}
-                  name={`appr_locom_Articulation_autres`}
+                    name="PremierExam.Appareil_locomoteur.Articulations.autre"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="Entrer votre observation "
-                          {...field}
+                        name="PremierExam.Appareil_locomoteur.Articulations.autre"
+                           value={formData.PremierExam.Appareil_locomoteur.Articulations.autre}
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -1997,10 +2678,17 @@ export default function Scanpage() {
             )}
           </div>
           <div className="pt-2">
-            <DrawerScan
-              name={`Appareil_locomoteur_Scan`}
+            {/* <DrawerScan
+ handleFilesChange={handleChange}              name={`Appareil_locomoteur_Scan`}
               placeholder={"Appareil locomoteur Scan "}
-            />
+            /> */}
+             <DrawerScan
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_locomoteur.Scan')}
+          name={"PremierExam.Appareil_locomoteur.Scan"}
+          placeholder={"Appareil locomoteur Scan "}
+          selectedFiles={formData.PremierExam.Appareil_locomoteur.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_locomoteur.Scan')}
+        />
           </div>
         </div>
       </div>
@@ -2011,7 +2699,7 @@ export default function Scanpage() {
         <div>
           <FormField
             //   control={form.control}
-            name="Appareil_génital"
+            name="PremierExam.Appareil_génital.type"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -2021,8 +2709,11 @@ export default function Scanpage() {
                       else {
                         setSex("Femme");
                       }
+                      handleRadioChange(field.name,radio);
                       field.onChange(radio);
                     }}
+                    value={formData.PremierExam.Appareil_génital.type}
+                    name="PremierExam.Appareil_génital.type"
                     defaultValue={field.value}
                     className="flex flex-rows space-y-1 pt-2 pl-6"
                   >
@@ -2051,7 +2742,7 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_prostate_homme"
+                        name="PremierExam.Appareil_génital.Prostate.Check"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2062,8 +2753,11 @@ export default function Scanpage() {
                                 if (checked)
                                   setApp_genital_prostate_homme(true);
                                 else setApp_genital_prostate_homme(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                              name="PremierExam.Appareil_génital.Prostate.Check"
+                              // value={formData.PremierExam.Appareil_génital.Prostate.Check}
+                              />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Prostate
@@ -2077,14 +2771,17 @@ export default function Scanpage() {
                           <div id={`App_genital_prostate_homme_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_prostate_homme_obser`}
+                              name="PremierExam.Appareil_génital.Prostate.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <RadioGroup
                                       onValueChange={(radio) => {
+                                        handleRadioChange(field.name, radio)
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_génital.Prostate.observation"
+                                      value={formData.PremierExam.Appareil_génital.Prostate.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2119,10 +2816,12 @@ export default function Scanpage() {
                               )}
                             />
                           </div>
-                          <DrawerScan
-                            name={`App_genital_prostate_homme_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_prostate_homme_Scan`}
                             placeholder={"Appareil génital (Prostate) "}
-                          />
+                          /> */}
+                         
+                          
                         </div>
                       </div>
                     )}
@@ -2131,7 +2830,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_MST_homme"
+                          name="PremierExam.Appareil_génital.MST.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2141,7 +2841,10 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setApp_genital_MST_homme(true);
                                 else setApp_genital_MST_homme(false);
+                                handleChangecheck(checked,field.name)
                               }}
+                              name="PremierExam.Appareil_génital.MST.Check"
+                              // value={formData.PremierExam.Appareil_génital.MST.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">MST</FormLabel>
@@ -2154,7 +2857,8 @@ export default function Scanpage() {
                           <div id={`App_genital_MST_homme_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_MST_homme_obser`}
+                              name="PremierExam.Appareil_génital.MST.observation"
+
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2162,9 +2866,10 @@ export default function Scanpage() {
                                       onValueChange={(radio) => {
                                         if (radio == "Oui") setMSTautres(true);
                                         else setMSTautres(false);
-
+                                        handleRadioChange(field.name,radio);
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_génital.MST.observation"
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2194,13 +2899,17 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_genital_MST_homme_obser_autres`}
+                                  name="PremierExam.Appareil_génital.MST.autre"
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_génital.MST.autre"
+
+                                          value={formData.PremierExam.Appareil_génital.MST.autre}
+                                            onChange={handleChange}
+
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -2210,10 +2919,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_genital_MST_homme_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_MST_homme_Scan`}
                             placeholder={"Appareil génital (MST)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2222,7 +2931,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_troubles_erectiles_homme"
+                  name="PremierExam.Appareil_génital.Troubles_érectiles.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2236,8 +2946,13 @@ export default function Scanpage() {
                                   setApp_genital_troubles_erectiles_homme(
                                     false
                                   );
-                              }}
-                            />
+                                  handleChangecheck(checked,field.name)
+                                }}
+                                name="PremierExam.Appareil_génital.Troubles_érectiles.Check"
+                                // value={formData.PremierExam.Appareil_génital.Troubles_érectiles.Check}
+                                />
+
+            
                           </FormControl>
                           <FormLabel className="font-normal">
                             Troubles érectiles
@@ -2253,13 +2968,15 @@ export default function Scanpage() {
                           >
                             <FormField
                               // control={form.control}
-                              name={`App_genital_troubles_erectiles_homme_obser`}
+                              name="PremierExam.Appareil_génital.Troubles_érectiles.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <Input
                                       placeholder="Entrer votre observation   "
-                                      {...field}
+                                      name="PremierExam.Appareil_génital.Troubles_érectiles.observation"
+                                value={formData.PremierExam.Appareil_génital.Troubles_érectiles.observation}
+                                onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -2267,12 +2984,12 @@ export default function Scanpage() {
                               )}
                             />
                           </div>
-                          <DrawerScan
-                            name={`App_genital_troubles_erectiles_homme_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_troubles_erectiles_homme_Scan`}
                             placeholder={
-                              "Appareil génital (Troubles érectiles) "
-                            }
-                          />
+                              "Appareil génital (Troubles érectiles) " */}
+                            {/* }
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2281,7 +2998,7 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_AutresMaladies_homme"
+                      name="PremierExam.Appareil_génital.autre.Check"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2292,8 +3009,11 @@ export default function Scanpage() {
                                 if (checked)
                                   setApp_genital_AutresMaladie_homme(true);
                                 else setApp_genital_AutresMaladie_homme(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                              name="PremierExam.Appareil_génital.autre.Check"
+                              // value={formData.PremierExam.Appareil_génital.autre.Check}
+                              />
                           </FormControl>
                           <FormLabel className="font-normal">Autres</FormLabel>
                         </FormItem>
@@ -2305,14 +3025,16 @@ export default function Scanpage() {
                           <div id={`App_genital_troubles_erectiles_homme`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_AutresMaladie_homme`}
+                              name="PremierExam.Appareil_génital.autre.nom"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel>Nom de la maladies :</FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Entrer le nom de la maladies"
-                                      {...field}
+                                      name="PremierExam.Appareil_génital.autre.nom"
+                                      value={formData.PremierExam.Appareil_génital.autre.nom}
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -2321,7 +3043,7 @@ export default function Scanpage() {
                             />
                             <FormField
                               // control={form.control}
-                              name={`App_genital_AutresMaladie_homme_obser`}
+                              name="PremierExam.Appareil_génital.autre.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel>
@@ -2330,7 +3052,9 @@ export default function Scanpage() {
                                   <FormControl>
                                     <Input
                                       placeholder="Entrer votre observation"
-                                      {...field}
+                                      name="PremierExam.Appareil_génital.autre.observation"
+                                      value={formData.PremierExam.Appareil_génital.autre.observation}
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -2338,10 +3062,10 @@ export default function Scanpage() {
                               )}
                             />
                           </div>
-                          <DrawerScan
-                            name={`App_genital_AutresMaladie_homme_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_AutresMaladie_homme_Scan`}
                             placeholder={"Appareil génital () "}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2354,7 +3078,7 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_MST_femme"
+                        name="PremierExam.Appareil_génital.MST.Check"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2363,8 +3087,10 @@ export default function Scanpage() {
                               onCheckedChange={(checked) => {
                                 field.onChange(checked);
                                 if (checked) setApp_genital_MST_femme(true);
-                                else setApp_genital_MST_femme(false);
+                                handleChangecheck(checked,field.name)
                               }}
+                              name="PremierExam.Appareil_génital.MST.Check"
+                              // value={formData.PremierExam.Appareil_génital.Prostate.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">MST</FormLabel>
@@ -2377,7 +3103,8 @@ export default function Scanpage() {
                           <div id={`App_genital_MST_femme_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_MST_femme_obser`}
+                              name="PremierExam.Appareil_génital.MST.observation"
+
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2386,9 +3113,10 @@ export default function Scanpage() {
                                         if (radio == "Oui")
                                           setMSTautresFemme(true);
                                         else setMSTautresFemme(false);
-
+                                          handleRadioChange(field.name , radio);
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_génital.MST.observation"
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2418,13 +3146,15 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_genital_MST_femme_obser_autres`}
+                                  name="PremierExam.Appareil_génital.MST.autre"
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_génital.MST.autre"
+                                          value={formData.PremierExam.Appareil_génital.MST.autre}
+                                          onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -2434,10 +3164,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_genital_MST_femme_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_MST_femme_Scan`}
                             placeholder={"Appareil génital (MST)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2447,7 +3177,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_leucorrhée"
+                        name="PremierExam.Appareil_génital.Leucorrhée.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2457,8 +3188,11 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setApp_genital_leucorrhée(true);
                                 else setApp_genital_leucorrhée(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                              name="PremierExam.Appareil_génital.Leucorrhée.Check"
+                              // value={formData.PremierExam.Appareil_génital.Leucorrhée.Check}
+                               />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Leucorrhée
@@ -2472,7 +3206,7 @@ export default function Scanpage() {
                           <div id={`App_genital_leucorrhée_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_leucorrhée_obser`}
+                              name="PremierExam.Appareil_génital.Leucorrhée.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2484,6 +3218,8 @@ export default function Scanpage() {
 
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_génital.Leucorrhée.observation"
+                                      value={formData.PremierExam.Appareil_génital.Leucorrhée.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2513,13 +3249,16 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_genital_leucorrhée_obser_autres`}
+                                  name="PremierExam.Appareil_génital.Leucorrhée.autre"
+
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_génital.Leucorrhée.autre"
+                                          value={formData.PremierExam.Appareil_génital.Leucorrhée.autre}
+                                          onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -2529,10 +3268,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_genital_leucorrhée_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_leucorrhée_Scan`}
                             placeholder={"Appareil génital (Leucorrhée)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2541,8 +3280,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_Troub_Menstruels"
-                      render={({ field }) => (
+                              name="PremierExam.Appareil_génital.Trouble_menstruels.Check"
+                              render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
                             <Checkbox
@@ -2551,8 +3290,11 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setApp_genital_Troub_Sexu(true);
                                 else setApp_genital_Troub_Sexu(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                              name="PremierExam.Appareil_génital.Trouble_menstruels.Check"
+                              // value={formData.PremierExam.Appareil_génital.Trouble_menstruels.Check}
+                               />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Trouble menstruels
@@ -2566,7 +3308,7 @@ export default function Scanpage() {
                           <div id={`App_genital_Troub_Sexu_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_Troub_Sexu_obser`}
+                              name="PremierExam.Appareil_génital.Trouble_menstruels.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2575,9 +3317,11 @@ export default function Scanpage() {
                                         if (radio == "Oui")
                                           setTrouble_sexuel_autres(true);
                                         else setTrouble_sexuel_autres(false);
-
+                                        handleRadioChange(field.name, radio);
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_génital.Trouble_menstruels.observation"
+                                      value={formData.PremierExam.Appareil_génital.Trouble_menstruels.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2607,13 +3351,16 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_genital_Troub_Sexu_obser_autres`}
+                                  name="PremierExam.Appareil_génital.Trouble_menstruels.autre"
+
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_génital.Trouble_menstruels.autre"
+                                      value={formData.PremierExam.Appareil_génital.Trouble_menstruels.autre}
+                                     onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -2623,12 +3370,12 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_genital_Troub_Sexu_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_Troub_Sexu_Scan`}
                             placeholder={
-                              "Appareil génital (Troubles menstruels )"
-                            }
-                          />
+                              "Appareil génital (Troubles menstruels )" */}
+                            {/* }
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2638,7 +3385,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_seins"
+                         name="PremierExam.Appareil_génital.Seins.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2648,8 +3396,11 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setApp_genital_seins(true);
                                 else setApp_genital_seins(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                                name="PremierExam.Appareil_génital.Seins.Check"
+                                // value={formData.PremierExam.Appareil_génital.Trouble_menstruels.Check}
+                                 />
                           </FormControl>
                           <FormLabel className="font-normal">Seins</FormLabel>
                         </FormItem>
@@ -2661,7 +3412,8 @@ export default function Scanpage() {
                           <div id={`App_genital_seins_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_seins_obser`}
+                              name="PremierExam.Appareil_génital.Seins.observation"
+
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2672,9 +3424,13 @@ export default function Scanpage() {
                                         else setSeins_autres(false);
 
                                         field.onChange(radio);
+                                        handleRadioChange(field.name,radio);
                                       }}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
+                                      name="PremierExam.Appareil_génital.Seins.observation"
+                                      // value={formData.PremierExam.Appareil_génital.Trouble_menstruels.Check}
+                                
                                     >
                                       <FormItem className="flex items-center space-x-3 space-y-0">
                                         <FormControl>
@@ -2702,13 +3458,15 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_genital_seins_obser_autres`}
+                                  name="PremierExam.Appareil_génital.Seins.autre"
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_génital.Seins.autre"
+                                          value={formData.PremierExam.Appareil_génital.Seins.autre}
+                                onChange={handleChange}    
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -2718,10 +3476,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_genital_seins_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_seins_Scan`}
                             placeholder={"Appareil génital (Seins)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2731,7 +3489,7 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_episiotomie"
+                        name="PremierExam.Appareil_génital.Episiotomie.Check"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2741,8 +3499,11 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setApp_genital_episiotomie(true);
                                 else setApp_genital_episiotomie(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                                name="PremierExam.Appareil_génital.Episiotomie.Check"
+                                // value={formData.PremierExam.Appareil_génital.Episiotomie.Check}
+                                 />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Episiotomie
@@ -2756,7 +3517,8 @@ export default function Scanpage() {
                           <div id={`App_genital_episiotomie_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_episiotomie_obser`}
+                              name="PremierExam.Appareil_génital.Episiotomie.observation"
+
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2765,9 +3527,11 @@ export default function Scanpage() {
                                         if (radio == "Autres")
                                           setepisiotomie_autres(true);
                                         else setepisiotomie_autres(false);
-
+                                        handleRadioChange(field.name, radio);
                                         field.onChange(radio);
                                       }}
+                                     name="PremierExam.Appareil_génital.Episiotomie.observation"
+
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2797,13 +3561,15 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_genital_episiotomie_obser_autres`}
+                                  name="PremierExam.Appareil_génital.Episiotomie.autre"
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_génital.Episiotomie.autre"
+                                value={formData.PremierExam.Appareil_génital.Episiotomie.autre}
+                                      onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -2813,10 +3579,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_genital_episiotomie_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_episiotomie_Scan`}
                             placeholder={"Appareil génital (Episiotomie)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2826,7 +3592,7 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_genital_AutresMaladies_Femme"
+                      name="PremierExam.Appareil_génital.autre.Check"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2837,8 +3603,11 @@ export default function Scanpage() {
                                 if (checked)
                                   setApp_genital_AutresMaladie_Femme(true);
                                 else setApp_genital_AutresMaladie_Femme(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                                name="PremierExam.Appareil_génital.autre.Check"
+                                // value={formData.PremierExam.Appareil_génital..Check}
+                                 />
                           </FormControl>
                           <FormLabel className="font-normal">Autres</FormLabel>
                         </FormItem>
@@ -2850,14 +3619,16 @@ export default function Scanpage() {
                           <div id={`App_genital_troubles_erectiles_Femme`}>
                             <FormField
                               // control={form.control}
-                              name={`App_genital_AutresMaladie_Femme`}
+                              name="PremierExam.Appareil_génital.autre.nom"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel>Nom de la maladies :</FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="Entrer le nom de la maladies"
-                                      {...field}
+                                      name="PremierExam.Appareil_génital.autre.nom"
+                                      value={formData.PremierExam.Appareil_génital.autre.nom}
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -2866,7 +3637,7 @@ export default function Scanpage() {
                             />
                             <FormField
                               // control={form.control}
-                              name={`App_genital_AutresMaladie_Femme_obser`}
+                              name="PremierExam.Appareil_génital.autre.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel>
@@ -2875,7 +3646,9 @@ export default function Scanpage() {
                                   <FormControl>
                                     <Input
                                       placeholder="Entrer votre observation"
-                                      {...field}
+                                      name="PremierExam.Appareil_génital.autre.observation"
+                                      value={formData.PremierExam.Appareil_génital.autre.observation}
+                                      onChange={handleChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -2883,10 +3656,10 @@ export default function Scanpage() {
                               )}
                             />
                           </div>
-                          <DrawerScan
-                            name={`App_genital_AutresMaladie_Femme_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_genital_AutresMaladie_Femme_Scan`}
                             placeholder={"Appareil génital () "}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -2895,6 +3668,15 @@ export default function Scanpage() {
               </div>
             )}
           </div>
+       <div className="p-2"> 
+        <DrawerScan 
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_génital.Scan')}
+          name={"PremierExam.Appareil_génital.Scan"}
+          placeholder="Appareil génital "
+          selectedFiles={formData.PremierExam.Appareil_génital.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_génital.Scan')}
+        />
+        </div>  
         </div>
       </div>
 
@@ -2915,8 +3697,12 @@ export default function Scanpage() {
                       else {
                         setapp_urin("Reins");
                       }
+                      // handleRadioChange(field.name , radio);
                       field.onChange(radio);
                     }}
+            
+                
+  
                     defaultValue={field.value}
                     className="flex flex-rows space-y-1 pt-2 pl-6"
                   >
@@ -2948,7 +3734,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_urin_Dysurie"
+                            name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -2958,7 +3745,10 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setapp_urinaire_Dysurie(true);
                                 else setapp_urinaire_Dysurie(false);
+                                handleChangecheck(checked,field.name);
                               }}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check"
+                              // value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -2973,7 +3763,7 @@ export default function Scanpage() {
                           <div id={`App_urin_Dysurie_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_urin_Dysurie_obser`}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -2982,9 +3772,11 @@ export default function Scanpage() {
                                         if (radio == "Autres")
                                           setDysurieautres(true);
                                         else setDysurieautres(false);
-
+                                              handleRadioChange(field.name, radio);
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation"
+                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3013,14 +3805,15 @@ export default function Scanpage() {
                             {Dysurieautres && (
                               <div className="pt-2">
                                 <FormField
-                                  // control={form.control}
-                                  name={`App_urin_Dysurie_autres`}
+                               name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.autre"
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.autre"
+                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.autre}
+                                        onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -3030,10 +3823,11 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_urin_Dysurie_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_urin_Dysurie_Scan`}
                             placeholder={"Appareil urinaires (Dysurie)"}
-                          />
+                          /> */}
+                      
                         </div>
                       </div>
                     )}
@@ -3043,7 +3837,7 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_urin_Pollokinire"
+                                   name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.Check"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -3053,7 +3847,10 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setapp_urinaire_Pollokinire(true);
                                 else setapp_urinaire_Pollokinire(false);
+                                handleChangecheck(checked,field.name)
                               }}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.Check"
+                              // value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3068,7 +3865,8 @@ export default function Scanpage() {
                           <div id={`App_urin_Pollokinire_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_urin_Pollokinire_obser`}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.observation"
+
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -3077,9 +3875,12 @@ export default function Scanpage() {
                                         if (radio == "Autres")
                                           setPollokinireautres(true);
                                         else setPollokinireautres(false);
+                                        handleRadioChange(field.name, radio);
 
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation"
+                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3109,13 +3910,16 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_urin_Pollokinire_autres`}
+                                  name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.autre"
+
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.autre"
+                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.autre}
+                                         onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -3125,10 +3929,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_urin_Pollokinire_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_urin_Pollokinire_Scan`}
                             placeholder={"Appareil urinaires (Pollokinire)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -3138,7 +3942,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_urin_brûlures"
+                                name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -3148,7 +3953,9 @@ export default function Scanpage() {
                                 field.onChange(checked);
                                 if (checked) setapp_urinaire_brûlures(true);
                                 else setapp_urinaire_brûlures(false);
+                                handleChangecheck(checked,field.name)
                               }}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.Check"
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3163,7 +3970,8 @@ export default function Scanpage() {
                           <div id={`App_urin_brûlures_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_urin_brûlures_obser`}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.observation"
+
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
@@ -3172,9 +3980,13 @@ export default function Scanpage() {
                                         if (radio == "Autres")
                                           setbrûluresautres(true);
                                         else setbrûluresautres(false);
+                                        handleRadioChange(field.name, radio);
 
                                         field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.observation"
+                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.observation}
+                                     
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3204,13 +4016,16 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_urin_brûlures_autres`}
+                                  name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.autre"
+
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.autre"
+                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.autre}
+                                         onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -3220,10 +4035,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_urin_brûlures_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_urin_brûlures_Scan`}
                             placeholder={"Appareil urinaires (Brûlures)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -3232,7 +4047,8 @@ export default function Scanpage() {
                 <div className="pt-2 pl-6">
                   <div>
                     <FormField
-                      name="App_urin_mictionnelles"
+                      name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.Check"
+
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
@@ -3243,8 +4059,10 @@ export default function Scanpage() {
                                 if (checked)
                                   setapp_urinaire_mictionnelles(true);
                                 else setapp_urinaire_mictionnelles(false);
+                                handleChangecheck(checked,field.name)
                               }}
-                            />
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.Check"
+                              />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Mictionnelles{" "}
@@ -3258,18 +4076,24 @@ export default function Scanpage() {
                           <div id={`App_urin_mictionnelles_obser`}>
                             <FormField
                               // control={form.control}
-                              name={`App_urin_mictionnelles_obser`}
+                              name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.observation"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormControl>
                                     <RadioGroup
                                       onValueChange={(radio) => {
                                         if (radio == "Autres")
-                                          setmictionnellesautres(true);
+                                        setmictionnellesautres(true);
                                         else setmictionnellesautres(false);
 
                                         field.onChange(radio);
+                                        handleRadioChange(field.name, radio);
+
+                                        field.onChange(radio);
                                       }}
+                                      name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.observation"
+                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.observation}
+                                     
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3299,13 +4123,16 @@ export default function Scanpage() {
                               <div className="pt-2">
                                 <FormField
                                   // control={form.control}
-                                  name={`App_urin_mictionnelles_autres`}
+                                  name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.autre"
+
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
                                         <Input
                                           placeholder="observation sur le scan"
-                                          {...field}
+                                          name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.autre"
+                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.autre}
+                                         onChange={handleChange}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -3315,10 +4142,10 @@ export default function Scanpage() {
                               </div>
                             )}
                           </div>
-                          <DrawerScan
-                            name={`App_urin_mictionnelles_Scan`}
+                          {/* <DrawerScan
+ handleFilesChange={handleChange}                            name={`App_urin_mictionnelles_Scan`}
                             placeholder={"Appareil urinaires (Mictionnelles)"}
-                          />
+                          /> */}
                         </div>
                       </div>
                     )}
@@ -3332,17 +4159,23 @@ export default function Scanpage() {
                   <div id={`App_urin_Reins_obser`}>
                     <FormField
                       // control={form.control}
-                      name={`App_urin_Reins_obser`}
+                      name="PremierExam.Appareil_urinaire.Reins.observation"
+
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
                             <RadioGroup
                               onValueChange={(radio) => {
                                 if (radio == "Autres") setReinsautres(true);
-                                else setReinsautres(false);
 
+                                else setReinsautres(false);
+                                handleRadioChange(field.name, radio);
+                              
                                 field.onChange(radio);
                               }}
+                              name="PremierExam.Appareil_urinaire.Reins.observation"
+                              value={formData.PremierExam.Appareil_urinaire.Reins.observation}
+                            
                               defaultValue={field.value}
                               className="flex flex-col space-y-1"
                             >
@@ -3372,13 +4205,15 @@ export default function Scanpage() {
                       <div className="pt-2">
                         <FormField
                           // control={form.control}
-                          name={`App_urin_Reins_autres`}
+                          name="PremierExam.Appareil_urinaire.Reins.autre"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
                                 <Input
                                   placeholder="observation sur le scan"
-                                  {...field}
+                                  name="PremierExam.Appareil_urinaire.Reins.autre"
+                                  value={formData.PremierExam.Appareil_urinaire.Reins.autre}
+                                  onChange={handleChange}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -3388,14 +4223,24 @@ export default function Scanpage() {
                       </div>
                     )}
                   </div>
-                  <DrawerScan
-                    name={`App_urin_Reins_Scan`}
+                  {/* <DrawerScan
+ handleFilesChange={handleChange}                    name={`App_urin_Reins_Scan`}
                     placeholder={"Appareil urinaires (Reins)"}
-                  />
+                  /> */}
                 </div>
               </div>
             )}
           </div>
+
+          <div className="p-2"> 
+        <DrawerScan 
+          handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_urinaire.Scan')}
+          name={"PremierExam.Appareil_urinaire.Scan"}
+          placeholder="Appareil urinaire "
+          selectedFiles={formData.PremierExam.Appareil_urinaire.Scan}
+          onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_urinaire.Scan')}
+        />
+        </div> 
         </div>
       </div>
 
@@ -3403,12 +4248,17 @@ export default function Scanpage() {
       <div className="grid grid-rows-2 gap-3   p-4 ">
         <FormField
           //   control={form.control}
-          name="alb"
+          name="PremierExam.Alb"
+
           render={({ field }) => (
             <FormItem>
               <FormLabel>Alb :</FormLabel>
               <FormControl>
-                <Input placeholder="Entrer l'alb   " {...field} />
+                <Input placeholder="Entrer l'alb " 
+                name="PremierExam.Alb"
+                value={formData.PremierExam.Alb}
+                onChange={handleChange}
+                 />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -3416,12 +4266,15 @@ export default function Scanpage() {
         />
         <FormField
           //   control={form.control}
-          name="sucre"
+          name="PremierExam.Sucre"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Sucre :</FormLabel>
               <FormControl>
-                <Input placeholder="Entrer le sucre   " {...field} />
+                <Input placeholder="Entrer le sucre   " 
+                 name="PremierExam.Sucre"
+                 value={formData.PremierExam.Sucre}
+                 onChange={handleChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -3433,15 +4286,17 @@ export default function Scanpage() {
       <div className="p-4">
         <FormField
           //   control={form.control}
-          name="autres_constatations"
+          name="PremierExam.Autres_constatations"
+
           render={({ field }) => (
             <FormItem>
               <FormLabel>Autres constatations :</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Entrer  Autres constatations  "
-                  {...field}
-                />
+                  name="PremierExam.Autres_constatations"
+                  value={formData.PremierExam.Autres_constatations}
+                  onChange={handleChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -3452,15 +4307,17 @@ export default function Scanpage() {
       <div className="p-4">
         <FormField
           //   control={form.control}
-          name="examens_complémentaires"
+          name="PremierExam.Examens_complémentaires"
+
           render={({ field }) => (
             <FormItem>
               <FormLabel> Examens complémentaires :</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Entrer l'Examens complémentaires   "
-                  {...field}
-                />
+                  name="PremierExam.Examens_complémentaires"
+                  value={formData.PremierExam.Examens_complémentaires}
+                  onChange={handleChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -3471,15 +4328,16 @@ export default function Scanpage() {
       <div className="p-4">
         <FormField
           //   control={form.control}
-          name="conclu_medical"
+          name="PremierExam.Conclusions_Médicales"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Conclusions Médicales :</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Entrer conclusions Médicales  "
-                  {...field}
-                />
+                  name="PremierExam.Conclusions_Médicales"
+                  value={formData.PremierExam.Conclusions_Médicales}
+                  onChange={handleChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -3490,15 +4348,16 @@ export default function Scanpage() {
       <div className="p-4">
         <FormField
           //   control={form.control}
-          name="conclu_professional"
+          name="PremierExam.Conclusions_Professionnels"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Conclusions Professionnels :</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Entrer conclusions  Professionnels  "
-                  {...field}
-                />
+                  name="PremierExam.Conclusions_Professionnels"
+                  value={formData.PremierExam.Conclusions_Professionnels}
+                  onChange={handleChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>

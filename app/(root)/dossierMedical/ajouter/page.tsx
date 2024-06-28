@@ -89,6 +89,7 @@ const formSchema = z.object({
 const LOCAL_STORAGE_KEY = "formData";
 const LOCAL_STORAGE_KEY1 = "formData1";
 const LOCAL_STORAGE_KEY2 = "formData2";
+const LOCAL_STORAGE_KEY5 = "scanPageData";
 
 export default function RootPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -137,7 +138,7 @@ export default function RootPage() {
 
 
   const handleFormSubmit = (data :any) => {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     setFormData((prevData:any) => {
       const newFormData = { ...prevData, ...data };
       if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
@@ -161,6 +162,8 @@ export default function RootPage() {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
       localStorage.removeItem(LOCAL_STORAGE_KEY1);
       localStorage.removeItem(LOCAL_STORAGE_KEY2);
+      localStorage.removeItem(LOCAL_STORAGE_KEY5);
+
       router.push("/dossierMedical");
       console.log(data);
     } catch (error) {
@@ -183,7 +186,7 @@ export default function RootPage() {
             )}
             {/* --------------------Anticedent Medicaux ----------------------------------- */}
             {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit} />}
-            {current_page === 3 && <Scanpage  />}
+            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit} />}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">

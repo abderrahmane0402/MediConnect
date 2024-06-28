@@ -18,8 +18,8 @@ import {
 import { Textarea } from "../ui/textarea";
 
 const vaccTable = [
-  { id: "B_C_G" },
-  { id: "Hépatite B" },
+{ id: "B_C_G" },
+{ id: "Hépatite B" },
   { id: "Hépatite A" },
   { id: "Diphtérie" },
   { id: "Tétanos" },

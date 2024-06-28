@@ -1,9 +1,10 @@
 "use client"
 import {
   Dossier,
-  dossierColumns,
+  columns,
 } from "@/components/tables/dossierMedical/columns";
-import { DossierDataTable } from "@/components/tables/dossierMedical/table-data";
+import { DataTable } from "@/components/tables/dossierMedical/table-data";
+// import { DossierDataTable } from "@/components/tables/dossierMedical/table-data";
 import {
   Card,
   CardContent,
@@ -62,17 +63,17 @@ export default function DossierMedical() {
         console.error("There was an error fetching the dossiers!", error);
       });
   }, []);
+  console.log(dossiers)
   return (
     <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>
         <CardTitle>Liste des dossiers médicaux</CardTitle>
         <CardDescription>
-          consulter , modifier et supprimer Les dossiers médicaux a partir de
-          cette tableau
+          Consulter, modifier et supprimer les dossiers médicaux.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-auto">
-        <DossierDataTable columns={dossierColumns} data={dossiers} />
+        <DataTable columns={columns} data={dossiers} />
       </CardContent>
     </Card>
   );

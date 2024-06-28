@@ -17,38 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { FormData } from "@/lib/FormData";
 interface FormProps {
   onFormSubmit: (formData: FormData) => void;
 }
 const LOCAL_STORAGE_KEY = "formData";
-interface AntecedentMédicaux {
-  Antecedents_Familiaux: string[];
-  Antecedents_Familiaux_autre: string;
 
-  Antecedents_Personnelle: string[];
-  Antecedents_Personnelle_autre: string;
-}
-
-interface AntecedentProfessionnels {
-  Formation_Scolaire_Profess: string;
-  Activités_Profess_Antérieur: string;
-  Accidents_Contract_Service: string;
-  Maladie_contracté_Service: string;
-  Sous_mald_con_service: string;
-}
-
-interface Vaccination {
-  Type: string;
-  date_V: string;
-  Rappels: string;
-  observation: string;
-}
-
-interface FormData {
-  Antecedent_médicaux: AntecedentMédicaux;
-  Antecedent_Professionnels: AntecedentProfessionnels;
-  Vaccination: Vaccination[];
-}
 
 const antece = [
   { label: "Hyperthyroïdie", value: "Hyperthyroïdie" },
@@ -132,7 +106,7 @@ export default function Antecedents({ onFormSubmit }: FormProps) {
           }],
         };
   });
-  console.log(formData.Vaccination);
+  // console.log(formData.Vaccination);
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
