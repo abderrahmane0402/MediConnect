@@ -1,4 +1,7 @@
 import mongoose from "mongoose"
+import { config } from "dotenv"
+
+config()
 
 const connection = {}
 
@@ -6,7 +9,7 @@ async function dbConnect() {
   if (connection.isConnected) {
     return
   }
-  const db = await mongoose.connect("mongodb://127.0.0.1:27017", {
+  const db = await mongoose.connect(process.env.DATABASE_URL, {
     dbName: "mediconnect",
   })
 
