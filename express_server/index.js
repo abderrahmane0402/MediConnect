@@ -15,3 +15,7 @@ dbConnect()
 app.get("/", async (req, res) => {
   res.send("hi")
 })
+
+app.listen(port, () => {
+  console.log(`HTTP server running on port ${port}`)
+})
