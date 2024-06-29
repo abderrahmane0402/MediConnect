@@ -179,8 +179,7 @@ export default function RootPage() {
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault(); // Prevent default form submission
               handleFormSubmitglobale(); 
-            }}
-          >
+            }}>
             {current_page === 1 && (
               <InfoGeneral onFormSubmit={handleFormSubmit} />
             )}

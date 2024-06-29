@@ -39,7 +39,6 @@ interface FormData {
 }
 const LOCAL_STORAGE_KEY = "formData1";
 
-
 export default function InfoGeneral({ onFormSubmit }: FormProps) {
   const [formData, setFormData] = useState<FormData>(() => {
     const savedFormData = localStorage.getItem(LOCAL_STORAGE_KEY);

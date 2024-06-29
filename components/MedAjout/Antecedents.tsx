@@ -106,8 +106,6 @@ export default function Antecedents({ onFormSubmit }: FormProps) {
           }],
         };
   });
-  // console.log(formData.Vaccination);
-
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
     onFormSubmit(formData);
