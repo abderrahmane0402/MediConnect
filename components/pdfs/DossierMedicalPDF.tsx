@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
 
 export default function DossierMedicalPDF(data: any) {
   console.log(data);
-  console.log(data?.delegation_Medicale);
-  console.log(data?.data?.PremierExam.Appareil_auditif.Scan[0]);
+  console.log( data?.data?.Vaccination);
+  // console.log(data?.data?.PremierExam.Appareil_auditif.Scan[0]);
   // data?.data?.PremierExam.Appareil_auditif.Scan?.map((scan : any,  index : any) => (
   //   console.log(scan)
   // ));
@@ -326,8 +326,9 @@ export default function DossierMedicalPDF(data: any) {
                     Observations
                   </Text>
                 </View>
-                {Array.isArray(data?.data?.Vaccination) ? (
-                    data.data.Vaccination.map((vaccination: any, index: any) => (
+                {
+                // Array.isArray(data?.data?.Vaccination) ? (
+                   data?.data?.Vaccination.map((vaccination: any, index: any) => (
                     <View
                       key={index}
                       style={{
@@ -379,9 +380,9 @@ export default function DossierMedicalPDF(data: any) {
                       </Text>
                     </View>
                 ))
-              ) : (
-                <Text>No vaccination data available</Text>
-              )}
+              // ) : (
+                // <Text>No vaccination data available</Text>)
+              }
               </View>
             </View>
             <View style={{ flex: 1, position: "relative" }}>
