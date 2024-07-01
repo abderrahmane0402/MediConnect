@@ -32,7 +32,7 @@ export default function RootPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium truncate">
-              Total Patient
+            Patients
             </CardTitle>
             <Stethoscope className="h-4 w-4" />
           </CardHeader>
@@ -48,7 +48,7 @@ export default function RootPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium truncate">
-              Dossier Médical ce mois
+              Dossiers Médicaux du mois
             </CardTitle>
             <FolderArchive className="h-4 w-4" />
           </CardHeader>
@@ -64,7 +64,7 @@ export default function RootPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium truncate">
-              Dossier Médical ce mois
+              Vistes  du mois
             </CardTitle>
             <FolderArchive className="h-4 w-4" />
           </CardHeader>
@@ -82,7 +82,7 @@ export default function RootPage() {
         <Card className="lg:col-span-4 flex flex-col">
           <CardHeader>
             <CardTitle className="text-lg font-medium">
-              Nombre de dossiers traités par mois.
+              Nombre de dossier traités durant années.
             </CardTitle>
           </CardHeader>
           <CardContent className="pl-2 flex-1">
@@ -92,7 +92,7 @@ export default function RootPage() {
         <Card className="lg:col-span-3 overflow-auto">
           <CardHeader>
             <CardTitle className="text-lg font-medium">
-              Les activités récentes
+             Activités récentes
             </CardTitle>
             <CardDescription>
               225 dossiers ont été traités ce mois-ci.

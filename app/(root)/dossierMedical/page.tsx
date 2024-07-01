@@ -4,6 +4,7 @@ import {
   columns,
 } from "@/components/tables/dossierMedical/columns";
 import { DataTable } from "@/components/tables/dossierMedical/table-data";
+import { Button } from "@/components/ui/button";
 // import { DossierDataTable } from "@/components/tables/dossierMedical/table-data";
 import {
   Card,
@@ -12,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 export interface Dossier1 {
   InfoPersonnel: {
@@ -73,6 +75,9 @@ export default function DossierMedical() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-auto">
+          <div className="flex justify-end">
+            <Button><Link href={"/dossierMedical/ajouter"}>Ajouter un nouveau Dossier Médicale </Link></Button>
+          </div>
         <DataTable columns={columns} data={dossiers} />
       </CardContent>
     </Card>

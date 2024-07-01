@@ -1,33 +1,35 @@
 "use client"
-
 // import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Row } from "@tanstack/react-table"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown"
-  import { pdf, PDFDownloadLink } from "@react-pdf/renderer"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown"
+import { pdf } from "@react-pdf/renderer"
 
-import { MouseEventHandler, useEffect, useState } from "react"
+import { useState } from "react"
 import {
-    ArrowUpDown,
-    FileText,
-    FolderPlus,
-    MoreHorizontal,
-    SquarePen,
-    Trash2,
-  } from "lucide-react"
+  FileText,
+  FolderPlus,
+  MoreHorizontal,
+  SquarePen,
+  Trash2
+} from "lucide-react"
 import { useRouter } from "next/navigation"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import DossierMedicalPDF from "@/components/pdfs/DossierMedicalPDF"
 import { DossierMedical } from "@/lib/FormData"
 import { taskSchema } from "./data/schema"
 import { getPDFDossiers } from "@/DataFetch/getDossier"
+import { DeleteDossiers } from "@/DataFetch/deleteDossier"
+import { toast } from "react-toastify"
+
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
 }
@@ -36,22 +38,6 @@ export  function DataTableRowActions <TData> ({
   row 
 }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-//   const handleDelete = async () => {
-//     setLoading(true);
-//     const result = await DeletePatient(task._id);
-//     setLoading(false);
-
-//     if (result.status == 200) {
-//       toast.success("Patient deleted successfully!");
-//         router.refresh();
-//       // Optionally trigger a state update or refresh the data
-//     } else {
-//       toast.error("Failed to delete patient.");
-//     }
-//   };
-const [dossiers, setDossiers] = useState<DossierMedical[]>([]);
 
 const payment = taskSchema.parse(row.original);
  const id = payment.id;
@@ -68,6 +54,13 @@ const payment = taskSchema.parse(row.original);
   } catch (error) {
     console.error("There was an error fetching the dossiers or generating the PDF!", error);
   }
+};
+const handleDelete = async () => {
+
+ console.log('dddddddddd'+id);
+  const result = await DeleteDossiers(id);
+  router.refresh();
+  console.log(result);
 };
 
   return (
@@ -105,16 +98,19 @@ const payment = taskSchema.parse(row.original);
              <DropdownMenuItem>
               {/* <Ima src={data5?.PremierExam.Appareil_auditif.Scan[0]} alt=""  className=" h-4 w-4"/> */}
                <Trash2 className="mr-2 h-4 w-4" />
+               <Link href={"/dossierMedical"} onClick={handleDelete} >
                Supprimer le dossier
+
+           </Link>
              </DropdownMenuItem>
              <DropdownMenuItem asChild>
                {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
                  <FileText className="mr-2 h-4 w-4" />
                  Plus de détails
                </PDFDownloadLink> */}
-               <Link href={""} onClick={handleOpenPDF} >
+               <Link href={""} onClick={handleOpenPDF}>
              <FileText className="mr-2 h-4 w-4" />
-             Génerer le pdf
+             Générer le pdf
            </Link>
              </DropdownMenuItem>
            </DropdownMenuContent>

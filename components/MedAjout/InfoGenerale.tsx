@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import create from 'zustand';
 interface FormProps {
   onFormSubmit: (formData: FormData) => void;
 }
@@ -37,56 +38,90 @@ interface FormData {
     Groupe_sanguin: string;
   };
 }
-const LOCAL_STORAGE_KEY = "formData1";
 
-export default function InfoGeneral({ onFormSubmit }: FormProps) {
-  const [formData, setFormData] = useState<FormData>(() => {
-    const savedFormData = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return savedFormData ? JSON.parse(savedFormData) : {
-      nbr_Dossier: "",
-      delegation_Medicale: "",
-      Formation_Santaire: "",
+
+interface FormState {
+  formData: FormData;
+  setFormData: (newData: Partial<FormData>) => void;
+  setNestedFormData: (nestedFieldName: keyof FormData['InfoPersonnel'], value: string) => void;
+  resetFormData: () => void;
+}
+
+const initialFormData: FormData = {
+  nbr_Dossier: "",
+  delegation_Medicale: "",
+  Formation_Santaire: "",
+  InfoPersonnel: {
+    nom: "",
+    prenom: "",
+    ville: "",
+    Date_naiss: "",
+    Situation_Familiale: "",
+    Adresse: "",
+    Grade: "",
+    Nature_emploi: "",
+    depuis: "",
+    DPPR: "",
+    Groupe_sanguin: "",
+  },
+};
+
+export const useFormStore = create<FormState>((set) => ({
+  formData: initialFormData,
+  setFormData: (newData) => set((state) => ({ formData: { ...state.formData, ...newData } })),
+  setNestedFormData: (nestedFieldName, value) => set((state) => ({
+    formData: {
+      ...state.formData,
       InfoPersonnel: {
-        nom: "",
-        prenom: "",
-        ville: "",
-        Date_naiss: "",
-        Situation_Familiale: "",
-        Adresse: "",
-        Grade: "",
-        Nature_emploi: "",
-        depuis: "",
-        DPPR: "",
-        Groupe_sanguin: "",
+        ...state.formData.InfoPersonnel,
+        [nestedFieldName]: value,
       },
-    };
-  });
+    },
+  })),
+  resetFormData: () => set({ formData: initialFormData }),
+}));
+export default function InfoGeneral({ onFormSubmit }: FormProps) {
+
+  const { formData , setFormData, setNestedFormData } = useFormStore();
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
     onFormSubmit(formData);
   }, [formData, onFormSubmit]);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name.startsWith("InfoPersonnel.")) {
-      const nestedFieldName = name.split(".")[1];
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        InfoPersonnel: {
-          ...prevFormData.InfoPersonnel,
-          [nestedFieldName]: value,
-        },
-      }));
+      const nestedFieldName = name.split(".")[1] as keyof FormData['InfoPersonnel'];
+      setNestedFormData(nestedFieldName, value);
     } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
+      setFormData({ [name]: value } as Partial<FormData>);
     }
   };
+  // useEffect(() => {
+  //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+  //   onFormSubmit(formData);
+  // }, [formData, onFormSubmit]);
+
+  // const handleChange = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   if (name.startsWith("InfoPersonnel.")) {
+  //     const nestedFieldName = name.split(".")[1];
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       InfoPersonnel: {
+  //         ...prevFormData.InfoPersonnel,
+  //         [nestedFieldName]: value,
+  //       },
+  //     }));
+  //   } else {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
  
   return (
     <div className=" flex flex-col gap-3 w-full   {isVisible ? '' : 'hidden'}  ">

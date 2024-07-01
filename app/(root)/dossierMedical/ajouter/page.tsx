@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-import InfoGeneral from "@/components/MedAjout/InfoGenerale";
+import InfoGeneral, { useFormStore } from "@/components/MedAjout/InfoGenerale";
 import Antecedents from "@/components/MedAjout/Antecedents";
 import Scanpage from "@/components/MedAjout/Scanpage";
 import { useRouter } from "next/navigation";
@@ -147,6 +147,7 @@ export default function RootPage() {
       return prevData;
     });
   };
+  const {resetFormData } = useFormStore();
   const handleFormSubmitglobale = async () => {
     try {
       console.log(JSON.stringify(formData));
@@ -159,10 +160,7 @@ export default function RootPage() {
       });
       const data = await response.json();
       // clearFormData();
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-      localStorage.removeItem(LOCAL_STORAGE_KEY1);
-      localStorage.removeItem(LOCAL_STORAGE_KEY2);
-      localStorage.removeItem(LOCAL_STORAGE_KEY5);
+      resetFormData();
 
       router.push("/dossierMedical");
       console.log(data);

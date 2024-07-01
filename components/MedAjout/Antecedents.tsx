@@ -17,9 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { FormData } from "@/lib/FormData";
+import { FormData, FormData4 } from "@/lib/FormData";
 interface FormProps {
-  onFormSubmit: (formData: FormData) => void;
+  onFormSubmit: (formData: FormData4) => void;
 }
 const LOCAL_STORAGE_KEY = "formData";
 
@@ -73,41 +73,37 @@ export default function Antecedents({ onFormSubmit }: FormProps) {
   const [isAutre, setAutres] = useState(false);
   const [isAcc_Tra_ant, setAcc_Tra_ants] = useState(false);
   const [sousmala, setSousmala] = useState("");
-  const [formData, setFormData] = useState<FormData>(() => {
-    const savedFormData = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return savedFormData
-      ? JSON.parse(savedFormData)
-      : {
-          Antecedent_médicaux: {
-            Antecedents_Familiaux: [],
-            Antecedents_Familiaux_autre: "",
-            Antecedents_Personnelle: [],
-            Antecedents_Personnelle_autre: "",
-          },
-          Antecedent_Professionnels: {
-            Formation_Scolaire_Profess: "",
-            Activités_Profess_Antérieur: "",
-            Accidents_Contract_Service: "",
-            Maladie_contracté_Service: "",
-            Sous_mald_con_service: "",
-          },
-          Vaccination: vaccTable.map((vaccine) => ({
-            Type: vaccine.id,
-            date_V: "",
-            Rappels: "",
-            observation: "",
-          })),
-          
-          Vaccinationautre: [{
-            Type: "",
-            date_V: "",
-            Rappels: "",
-            observation: "",
-          }],
-        };
-  });
+  const [formData, setFormData] = useState<FormData4>({
+      Antecedent_médicaux: {
+        Antecedents_Familiaux: [],
+        Antecedents_Familiaux_autre: "",
+        Antecedents_Personnelle: [],
+        Antecedents_Personnelle_autre: "",
+      },
+      Antecedent_Professionnels: {
+        Formation_Scolaire_Profess: "",
+        Activités_Profess_Antérieur: "",
+        Accidents_Contract_Service: "",
+        Maladie_contracté_Service: "",
+        Sous_mald_con_service: "",
+      },
+      Vaccination: vaccTable.map((vaccine) => ({
+        Type: vaccine.id,
+        date_V: "",
+        Rappels: "",
+        observation: "",
+      })),
+      Vaccinationautre: [
+        {
+          Type: "",
+          date_V: "",
+          Rappels: "",
+          observation: "",
+        }
+      ],
+    });
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+    // localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
     onFormSubmit(formData);
   }, [formData, onFormSubmit]);
 

@@ -48,8 +48,16 @@ interface InfoPersonnel{
     Antecedent_médicaux: AntecedentMédicaux;
     Antecedent_Professionnels: AntecedentProfessionnels;
     Vaccination: Vaccination[];
+    Vaccinationautre: Vaccination[];
     PremierExam :PremierExam;
     Scan : Scan;
+  }  export interface FormData4 {
+  
+    Antecedent_médicaux: AntecedentMédicaux;
+    Antecedent_Professionnels: AntecedentProfessionnels;
+    Vaccination: Vaccination[];
+    Vaccinationautre: Vaccination[];
+   
   }
   export interface DossierMedical {
     nbr_Dossier: string;
