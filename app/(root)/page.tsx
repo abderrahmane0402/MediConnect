@@ -1,5 +1,5 @@
-import { RecentActivities } from "@/components/RecentActivities";
-import { StatisticDossier } from "@/components/charts/StatisticDossier";
+import { RecentActivities } from "@/components/RecentActivities"
+import { StatisticDossier } from "@/components/charts/StatisticDossier"
 import {
   Card,
   CardContent,
@@ -7,8 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { FolderArchive, FolderOpen, Stethoscope, TestTube } from "lucide-react";
+} from "@/components/ui/card"
+import { FolderArchive, FolderOpen, Stethoscope, TestTube } from "lucide-react"
 export default function RootPage() {
   return (
     <>
@@ -104,5 +104,5 @@ export default function RootPage() {
         </Card>
       </div>
     </>
-  );
+  )
 }
