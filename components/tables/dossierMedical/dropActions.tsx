@@ -26,8 +26,8 @@ import { Button } from "@/components/ui/button"
 import DossierMedicalPDF from "@/components/pdfs/DossierMedicalPDF"
 import { DossierMedical } from "@/lib/FormData"
 import { taskSchema } from "./data/schema"
-import { getPDFDossiers } from "@/DataFetch/getDossier"
-import { DeleteDossiers } from "@/DataFetch/deleteDossier"
+import { getPDFDossiers } from "@/api/getDossier"
+import { DeleteDossiers } from "@/api/deleteDossier"
 import { toast } from "react-toastify"
 
 interface DataTableRowActionsProps<TData> {

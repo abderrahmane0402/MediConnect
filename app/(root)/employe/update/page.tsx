@@ -39,11 +39,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { addUser } from "@/api/user"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
+import { addUser, getUser } from "@/api/user"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useRouter, useSearchParams } from "next/navigation"
 
-export default function Empl() {
+export default function UpdateEmpl() {
+  const searchParams = useSearchParams()
+  const id = searchParams.get("id")
   const router = useRouter()
   const queryClient = useQueryClient()
   const formSchema = z.object({
@@ -58,23 +60,34 @@ export default function Empl() {
     confirmPassword: z.string().min(8),
     telephone: z.string(),
   })
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: async () => await getUser(id!),
+    queryKey: ["getUser"],
   })
 
-  const mutation = useMutation({
-    mutationFn: addUser,
-    onSuccess: () => {
-      console.log("good")
-      queryClient.invalidateQueries({ queryKey: ["getUsers"] })
-      router.replace("/employe")
-    },
-    onError: (error) => {
-      console.error(error)
+  console.log(data)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      nom: "abderrahmane",
     },
   })
+
+  //   const mutation = useMutation({
+  //     mutationFn: addUser,
+  //     onSuccess: () => {
+  //       console.log("good")
+  //       queryClient.invalidateQueries({ queryKey: ["getUsers"] })
+  //       router.replace("/employe")
+  //     },
+  //     onError: (error) => {
+  //       console.error(error)
+  //     },
+  //   })
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    mutation.mutate(values)
+    // mutation.mutate(values)
   }
 
   return (

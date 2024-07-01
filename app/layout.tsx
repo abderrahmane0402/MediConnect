@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Roboto } from "next/font/google"
 import "./globals.css"
 import Server from "@/components/serverStart"
+import ReactQueryProvider from "@/components/ReactQueryProvider"
 
 const inter = Roboto({
   subsets: ["latin"],
@@ -20,10 +21,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" className="overflow-hidden">
-      <Server />
       <body className={inter.className}>
-        {children}
-        </body>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </body>
     </html>
   )
 }

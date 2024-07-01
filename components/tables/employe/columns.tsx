@@ -1,5 +1,5 @@
-"use client";
-import { Button } from "@/components/ui/button";
+"use client"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,23 +7,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ColumnDef } from "@tanstack/react-table";
+} from "@/components/ui/dropdown-menu"
+import { ColumnDef } from "@tanstack/react-table"
 import {
   ArrowUpDown,
   FileText,
   MoreHorizontal,
   SquarePen,
   Trash2,
-} from "lucide-react";
+} from "lucide-react"
 
 export type employe = {
-  id: number;
-  nom: string;
-  prenom: string;
-  cin: string;
-  postTravail: string;
-};
+  _id: string
+  id: number
+  nom: string
+  prenom: string
+  cin: string
+  posteTravail: string
+}
 
 export const employeColumns: ColumnDef<employe>[] = [
   {
@@ -39,14 +40,14 @@ export const employeColumns: ColumnDef<employe>[] = [
     header: "CIN",
   },
   {
-    accessorKey: "postTravail",
+    accessorKey: "posteTravail",
     header: "Poste de travail",
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const payment = row.original
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -67,7 +68,7 @@ export const employeColumns: ColumnDef<employe>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
-];
+]

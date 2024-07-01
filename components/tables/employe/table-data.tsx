@@ -100,7 +100,7 @@ export function EmployerDataTable<TData, TValue>({
             <SelectItem value="nom">Nom</SelectItem>
             <SelectItem value="prenom">Prénom</SelectItem>
             <SelectItem value="cin">CIN</SelectItem>
-            <SelectItem value="postTravail">Poste de travail</SelectItem>
+            <SelectItem value="posteTravail">Poste de travail</SelectItem>
           </SelectContent>
         </Select>
       </div>
