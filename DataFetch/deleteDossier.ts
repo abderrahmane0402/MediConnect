@@ -1,12 +1,12 @@
 export async function DeleteDossiers(id: string) {
     try {
-      const response = await fetch(`http://localhost:5661/DeleteDossiers/${id}`);
+      const response = await fetch(`http://localhost:5661/DeleteDossiers/${id}`,{ cache: 'no-store' }) ;
       if (!response.ok) {
         throw new Error(`Error fetching dossiers: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("API Response Data: ", data[0]);
-      return data[0]; // Return the fetched data
+      console.log("aaaaa"+data);
+      return data; 
     } catch (error) {
       console.error("There was an error fetching the dossiers!", error);
       throw error; // Rethrow the error for further handling if needed
