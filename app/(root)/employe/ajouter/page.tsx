@@ -3,42 +3,16 @@
 import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
+  FormControl, FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { tree } from "next/dist/build/templates/app-page";
 import { Card, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
 
 export default function Empl() {
   const formSchema = z.object({});
@@ -56,7 +30,7 @@ export default function Empl() {
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
             <CardTitle className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
-              Information Personnelle d'employe
+              Information Personnelle d'employé
               <br />
             </CardTitle>
             <div className="flex flex-row w-full gap-2 ">

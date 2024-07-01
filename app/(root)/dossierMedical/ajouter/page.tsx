@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -86,10 +85,7 @@ const formSchema = z.object({
     message: "Formation sanitaire  must be at least 2 characters.",
   }),
 });
-const LOCAL_STORAGE_KEY = "formData";
-const LOCAL_STORAGE_KEY1 = "formData1";
-const LOCAL_STORAGE_KEY2 = "formData2";
-const LOCAL_STORAGE_KEY5 = "scanPageData";
+
 
 export default function RootPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -151,7 +147,7 @@ export default function RootPage() {
   const handleFormSubmitglobale = async () => {
     try {
       console.log(JSON.stringify(formData));
-      const response = await fetch("http://localhost:5661/add_Dossier", {
+      const response = await fetch("http://localhost:3001/dossier/add_Dossier", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

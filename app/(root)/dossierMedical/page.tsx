@@ -1,7 +1,5 @@
-"use client"
 import {
-  Dossier,
-  columns,
+  columns
 } from "@/components/tables/dossierMedical/columns";
 import { DataTable } from "@/components/tables/dossierMedical/table-data";
 import { Button } from "@/components/ui/button";
@@ -13,8 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getDossiers } from "@/DataFetch/getDossiers";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+
 export interface Dossier1 {
   InfoPersonnel: {
     nom: string;
@@ -49,23 +48,11 @@ export interface Dossier1 {
     observation: string;
   }[];
 }
-export default function DossierMedical() {
-  const [dossiers, setDossiers] = useState<Dossier[]>([]);
+export default  async function  DossierMedical() {
+  // const [dossiers, setDossiers] = useState<Dossier[]>([]);
+  const dossiers = await getDossiers();
+    // session.user!.token!
 
-  
- 
-  useEffect(() => {
-    fetch('http://localhost:5661/get_all_Dossiers')
-      .then(response => response.json())
-      .then(data => {
-        console.log("API Response Data: ", data);
-        setDossiers(data); 
-      })
-      .catch(error => {
-        console.error("There was an error fetching the dossiers!", error);
-      });
-  }, []);
-  console.log(dossiers)
   return (
     <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>

@@ -12,28 +12,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { listMateriel } from "@/DataFetch/ListEquip";
 import Image from "next/image";
 
-const equipements: Equipement[] = [
-  { id: 1, nomEquipement: "Scanner médical", etat: true, operationel: true },
-  { id: 2, nomEquipement: "Moniteur cardiaque", etat: true, operationel: true },
-  {
-    id: 3,
-    nomEquipement: "Ventilateur respiratoire",
-    etat: false,
-    operationel: true,
-  },
-  { id: 4, nomEquipement: "Rayon X", etat: true, operationel: true },
-  { id: 5, nomEquipement: "Échographe", etat: false, operationel: false },
-];
-export default function Employes() {
+
+export default async  function Employes() {
+  const data = await listMateriel();
+  // console.log(data);
   return (
     <Card className="h-full overflow-auto flex flex-col">
       <CardHeader>
         <CardTitle>Liste des Équipements Médicaux Techniques</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 overflow-auto">
-        <EquipementDataTable columns={equipementColumns} data={equipements} />
+        <EquipementDataTable columns={equipementColumns} data={data} />
       </CardContent>
     </Card>
   );
