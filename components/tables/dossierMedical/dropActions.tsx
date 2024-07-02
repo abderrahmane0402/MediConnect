@@ -16,7 +16,7 @@ import {
   FolderPlus,
   MoreHorizontal,
   SquarePen,
-  Trash2
+  Trash2,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -27,30 +27,36 @@ import { getPDFDossiers } from "@/api/getDossier"
 import { DeleteDossiers } from "@/api/deleteDossier"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
+import { session } from "@/stores/session"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
 }
 
-export  function DataTableRowActions <TData> ({
-  row 
+export function DataTableRowActions<TData>({
+  row,
 }: DataTableRowActionsProps<TData>) {
-  const router = useRouter();
+  const router = useRouter()
+  const { user } = session((state) => state)
 
-const payment = taskSchema.parse(row.original);
- const id = payment.id;
- console.log(id);
- const [data5, setdata5] = useState<any>();
- const handleOpenPDF = async () => {
-  try {
-    const data1 = await getPDFDossiers(id);
-    setdata5(data1);
-    const blob = await pdf(<DossierMedicalPDF data={data1} />).toBlob();
-    const url = URL.createObjectURL(blob);
-    
-    window.open(url, '_blank');
-  } catch (error) {
-    console.error("There was an error fetching the dossiers or generating the PDF!", error);
+  const payment = taskSchema.parse(row.original)
+  const id = payment.id
+  console.log(id)
+  const [data5, setdata5] = useState<any>()
+  const handleOpenPDF = async () => {
+    try {
+      const data1 = await getPDFDossiers(id)
+      setdata5(data1)
+      const blob = await pdf(<DossierMedicalPDF data={data1} />).toBlob()
+      const url = URL.createObjectURL(blob)
+
+      window.open(url, "_blank")
+    } catch (error) {
+      console.error(
+        "There was an error fetching the dossiers or generating the PDF!",
+        error
+      )
+    }
   }
 };
 const handleDelete = async () => {
@@ -64,16 +70,16 @@ const handleDelete = async () => {
 
   return (
     <DropdownMenu>
-           <DropdownMenuTrigger asChild>
-             <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
-               <MoreHorizontal className="h-4 w-4" />
-             </Button>
-           </DropdownMenuTrigger>
-           <DropdownMenuContent align="end">
-             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-             <DropdownMenuSeparator />
-             <DropdownMenuItem asChild>
-               {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
                  <FileText className="mr-2 h-4 w-4" />
                  Plus de détails
                </PDFDownloadLink> */}
@@ -92,28 +98,27 @@ const handleDelete = async () => {
              
              <SquarePen className="mr-2 h-4 w-4" /><Link href={"/main/dossierMedical/update"}><span>Modifer le dossier</span>
               </Link>
-              
-             </DropdownMenuItem>
-             <DropdownMenuItem onClick={handleDelete}>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete}>
               {/* <Ima src={data5?.PremierExam.Appareil_auditif.Scan[0]} alt=""  className=" h-4 w-4"/> */}
-               <Trash2 className="mr-2 h-4 w-4" />
-               {/* <Link href={"/dossierMedical"} onClick={handleDelete} > */}
-               Supprimer le dossier
-
-           {/* </Link> */}
-             </DropdownMenuItem>
-             <DropdownMenuItem asChild>
-               {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
+              <Trash2 className="mr-2 h-4 w-4" />
+              {/* <Link href={"/dossierMedical"} onClick={handleDelete} > */}
+              Supprimer le dossier
+              {/* </Link> */}
+            </DropdownMenuItem>
+          </>
+        )}
+        <DropdownMenuItem asChild>
+          {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
                  <FileText className="mr-2 h-4 w-4" />
                  Plus de détails
                </PDFDownloadLink> */}
-               <Link href={""} onClick={handleOpenPDF}>
-             <FileText className="mr-2 h-4 w-4" />
-             Générer le pdf
-           </Link>
-             </DropdownMenuItem>
-           </DropdownMenuContent>
-           
-         </DropdownMenu>
+          <Link href={""} onClick={handleOpenPDF}>
+            <FileText className="mr-2 h-4 w-4" />
+            Générer le pdf
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

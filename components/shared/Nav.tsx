@@ -18,7 +18,6 @@ import { session } from "@/stores/session"
 
 export default function Nav() {
   const { user } = session((state) => state)
-  console.log(user)
   let path = usePathname()
   if (path == "/main/dossierMedical/ajouter") path = "/main/dossierMedical"
   if (path == "/main/materiel/ajouter") path = "/main/materiel"
@@ -61,77 +60,78 @@ export default function Nav() {
                 >
                   Cette page contient la list des dossiers medicaux
                 </ListItem>
-                <ListItem
-                  href="/main/dossierMedical/ajouter"
-                  title="Ajouter un nouveau dossier medical"
-                >
-                  Cette page enregistre un nouveau dossier medical.
-                </ListItem>
+                {user?.user_type == "medecin" && (
+                  <ListItem
+                    href="/main/dossierMedical/ajouter"
+                    title="Ajouter un nouveau dossier medical"
+                  >
+                    Cette page enregistre un nouveau dossier medical.
+                  </ListItem>
+                )}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
         )}
 
-        <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={
-              path == "/main/materiel"
-                ? "border-b-2 text-green-600 border-green-600"
-                : ""
-            }
-          >
-            Equipements médicaux
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="z-50">
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {/* <ListItem href="/employe" title="Employés">
-                Cette page contient la list des employés du cabinet
-              </ListItem>
-              <ListItem href="/employe/ajouterheader" title="Ajouter un employé">
-                Cette page enregistre un nouveau employé
-              </ListItem> */}
-              <ListItem
-                href="/main/materiel"
-                title="Liste des équipements médicaux"
-              >
-                Cette page affiche les informations sur les équipements médicaux
-              </ListItem>
-              <ListItem
-                href="/main/materiel/ajouter"
-                title="Ajouter un Equipement médical"
-              >
-                Cette page enregistre un nouveau équipement médical
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={
-              path == "/main/employer"
-                ? "border-b-2 text-green-600 border-green-600"
-                : ""
-            }
-          >
-            Employés
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="z-50">
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/main/employe" title="Liste des employés">
-                Cette page contient la list des employés du cabinet
-              </ListItem>
-              <ListItem href="/main/employe/ajouter" title="Ajouter un employé">
-                Cette page enregistre un nouveau employé
-              </ListItem>
-              {/* <ListItem href="/materiel" title="Equipement médical">
-                Cette page affiche les informations sur les équipements médicaux
-              </ListItem>
-              <ListItem href="/materiel/ajouter" title="Ajouter un Equipement médical">
-                Cette page enregistre un nouveau équipement médical
-              </ListItem> */}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        {(user?.user_type == "medecin" || user?.user_type == "secretaire") && (
+          <NavigationMenuItem>
+            <NavigationMenuTrigger
+              className={
+                path == "/main/materiel"
+                  ? "border-b-2 text-green-600 border-green-600"
+                  : ""
+              }
+            >
+              Equipements médicaux
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="z-50">
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                <ListItem
+                  href="/main/materiel"
+                  title="Liste des équipements médicaux"
+                >
+                  Cette page affiche les informations sur les équipements
+                  médicaux
+                </ListItem>
+                {user?.user_type == "medecin" && (
+                  <ListItem
+                    href="/main/materiel/ajouter"
+                    title="Ajouter un Equipement médical"
+                  >
+                    Cette page enregistre un nouveau équipement médical
+                  </ListItem>
+                )}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        )}
+
+        {user?.user_type == "admin" && (
+          <NavigationMenuItem>
+            <NavigationMenuTrigger
+              className={
+                path == "/main/employer"
+                  ? "border-b-2 text-green-600 border-green-600"
+                  : ""
+              }
+            >
+              Employés
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="z-50">
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                <ListItem href="/main/employe" title="Liste des employés">
+                  Cette page contient la list des employés du cabinet
+                </ListItem>
+                <ListItem
+                  href="/main/employe/ajouter"
+                  title="Ajouter un employé"
+                >
+                  Cette page enregistre un nouveau employé
+                </ListItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        )}
         {/* <NavigationMenuItem>
           <Link href="/rapport" legacyBehavior passHref>
             <NavigationMenuLink
@@ -142,19 +142,6 @@ export default function Nav() {
               )}
             >
               Rapport
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem> */}
-        {/* <NavigationMenuItem>
-          <Link href="/pdf" legacyBehavior passHref>
-            <NavigationMenuLink
-              className={cn(
-                navigationMenuTriggerStyle(),
-                path == "/pdf" &&
-                  "border-b-2 text-green-600 border-green-600"
-              )}
-            >
-              Pdf
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem> */}
