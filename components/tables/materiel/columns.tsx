@@ -49,7 +49,7 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
     header: "Opérationnel",
     cell: ({ row }) => {
       const op = row.getValue("operationel");
-      return op || op=="true"  ? "est Opérationnel" : "non Opérationnel";
+      return op || op=="true"  ? "Oui" : "Non";
     },
   },
   {

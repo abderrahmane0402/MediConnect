@@ -39,11 +39,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { addUser } from "@/api/user"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
+import { addUser, getUser } from "@/api/user"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useRouter, useSearchParams } from "next/navigation"
 
-export default function Empl() {
+export default function UpdateEmpl() {
+  const searchParams = useSearchParams()
+  const id = searchParams.get("id")
   const router = useRouter()
   const queryClient = useQueryClient()
   const formSchema = z.object({
@@ -58,23 +60,34 @@ export default function Empl() {
     confirmPassword: z.string().min(8),
     telephone: z.string(),
   })
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: async () => await getUser(id!),
+    queryKey: ["getUser"],
   })
 
-  const mutation = useMutation({
-    mutationFn: addUser,
-    onSuccess: () => {
-      console.log("good")
-      queryClient.invalidateQueries({ queryKey: ["getUsers"] })
-      router.replace("/employe")
-    },
-    onError: (error) => {
-      console.error(error)
+  console.log(data)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      nom: "abderrahmane",
     },
   })
+
+  //   const mutation = useMutation({
+  //     mutationFn: addUser,
+  //     onSuccess: () => {
+  //       console.log("good")
+  //       queryClient.invalidateQueries({ queryKey: ["getUsers"] })
+  //       router.replace("/employe")
+  //     },
+  //     onError: (error) => {
+  //       console.error(error)
+  //     },
+  //   })
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    mutation.mutate(values)
+    // mutation.mutate(values)
   }
 
   return (
@@ -84,7 +97,7 @@ export default function Empl() {
           <Card className="">
             <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
               <CardTitle className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
-                Informations Personnelles de l'employé
+                Information Personnelle d'employe
                 <br />
               </CardTitle>
               <div className="flex flex-row w-full gap-2 ">
@@ -150,7 +163,7 @@ export default function Empl() {
                     name="telephone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel></FormLabel>Télephone
+                        <FormLabel></FormLabel>telephone
                         <FormControl>
                           <Input
                             type="text"
@@ -173,7 +186,7 @@ export default function Empl() {
                     name="cin"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>CIN  </FormLabel>
+                        <FormLabel>CIN : </FormLabel>
                         <FormControl>
                           <Input placeholder="Entrer la CIN " {...field} />
                         </FormControl>
@@ -257,7 +270,7 @@ export default function Empl() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Mot de passe</FormLabel>
+                        <FormLabel>mot de passe</FormLabel>
                         <FormControl>
                           <Input
                             type="password"
@@ -278,7 +291,7 @@ export default function Empl() {
                     name="confirmPassword"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Confirmer le mot de passe</FormLabel>
+                        <FormLabel>confirmer le mot de passe</FormLabel>
                         <FormControl>
                           <Input
                             type="password"
@@ -297,7 +310,7 @@ export default function Empl() {
               </div>
             </div>
             <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">
-              <Button type="submit">Ajouter</Button>
+              <Button type="submit">Submit</Button>
             </div>
           </Card>
         </form>

@@ -141,7 +141,7 @@ const formSchema = z.object({
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2 w-full pb-2 pt-7">
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Ajouter</Button>
               </div>
             </form>
           </Card>

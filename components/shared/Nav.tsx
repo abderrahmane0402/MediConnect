@@ -48,7 +48,7 @@ export default function Nav() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/dossierMedical" title="List des dossiers medicaux">
+              <ListItem href="/dossierMedical" title="Liste des dossiers medicaux">
                 Cette page contient la list des dossiers medicaux
               </ListItem>
               <ListItem
@@ -78,7 +78,7 @@ export default function Nav() {
               <ListItem href="/employe/ajouterheader" title="Ajouter un employé">
                 Cette page enregistre un nouveau employé
               </ListItem> */}
-              <ListItem href="/materiel" title="Equipement médical">
+              <ListItem href="/materiel" title="Liste des équipements médicaux">
                 Cette page affiche les informations sur les équipements médicaux
               </ListItem>
               <ListItem href="/materiel/ajouter" title="Ajouter un Equipement médical">
@@ -95,11 +95,11 @@ export default function Nav() {
                 : ""
             }
           >
-            Employés
+          Employés
           </NavigationMenuTrigger>
           <NavigationMenuContent className="z-50">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/employe" title="Employés">
+              <ListItem href="/employe" title="Liste des employés">
                 Cette page contient la list des employés du cabinet
               </ListItem>
               <ListItem href="/employe/ajouter" title="Ajouter un employé">
@@ -114,7 +114,7 @@ export default function Nav() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link href="/rapport" legacyBehavior passHref>
             <NavigationMenuLink
               className={cn(
@@ -126,7 +126,7 @@ export default function Nav() {
               Rapport
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         {/* <NavigationMenuItem>
           <Link href="/pdf" legacyBehavior passHref>
             <NavigationMenuLink

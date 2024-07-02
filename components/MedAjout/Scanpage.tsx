@@ -170,243 +170,462 @@ interface FormData1 {
     Conclusions_Professionnels: string;
   };
 }
-export default function Scanpage({ onFormSubmit }: FormProps) {
-  const [formData, setFormData] = useState<FormData1>({
-    PremierExam: {
-      Date_exam: "", // Initialize with today's date in YYYY-MM-DD format
-      Docteur: "Dr Najdioui",
-      Post_de_Travail: "",
-      Poids: "",
-      Taille: "",
-      Appareil_auditif: { OG: "", OD: "", Scan: [] },
-      Appareil_Oculaire: {
-        Appareil_Oculaire_AC: {
-          OD_Pres: "",
-          OG_Pres: "",
-          OD_Loin: "",
-          OG_Loin: "",
-        },
-        Appareil_Oculaire_SC: {
-          OD_Pres: "",
-          OG_Pres: "",
-          OD_Loin: "",
-          OG_Loin: "",
-        },
-        Scan: [],
-      },
-      Téguments: { observation: "", autre: "" },
-      Examen_radiologique: { observation: "", Scan: [], autre: "" },
-      Appareil_respiratoire_rhinopharynx: { observation: "", Scan: [] },
-      Appareil_cadiovasculaire: { observation: "", Scan: [] },
-      Varices: { observation: "", autre: "" },
-      T_A: "",
-      Pouls: "",
-      Appareil_digestif: { observation: '', Scan: [] },
-    Appareil_hématologique_réticulaire: { observation: '', Scan: [] },
-      Gangloins: "",
-      Rate: "",
+const initialPremierExam1 = {
+  Date_exam: "", // Initialize with today's date in YYYY-MM-DD format
+  Docteur: "Dr Najdioui",
+  Post_de_Travail: "",
+  Poids: "",
+  Taille: "",
+};
 
-      Glandes_endocriniennes: {
-        Thyroïde: {
-          Check: false,
-          sousNom: "",
-          observation: "",
-          autreobservation: "",
-        },
-        Glandes_surrénales: {
-          Check: false,
-          observation: "",
-          autreobservation: "",
-        },
-        Hypophyse: {
-          Check: false,
-          observation: "",
-          autreobservation: "",
-        },
-        Autres: "",
-        Scan: [],
-      },
-      Système_nerveux: {
-        Lesion_cérébrale: {
-          Check: false,
-          observation: "",
-          autreobservation: "",
-        },
-        NCB: {
-          Check: false,
-          observation: "",
-          autreobservation: "",
-        },
-        Hernie_discale: {
-          Check: false,
-          observation: "",
-          autreobservation: "",
-        },
-        Maladie_neurologique: {
-          Check: false,
-          observation: "",
-          autreobservation: "",
-        },
-        Scan : [],
-      },
-      Tremblement: { observation: "", autre: "" },
-      Trouble_equilibre: { observation: "", autre: "" },
-      Réflexes: { observation: "", autre: "" },
-      Psychisme: {
-        Nevrose : 
-        {
-          Anxiété : false,
-          Depression : false,
-          Stress : false,
-          TOC : false,
-          autre : ''
-        }, 
-        Psychose: 
-        {
-          Bipolarité : false,
-          Schizophrénie : false,
-          Paranoïaque : false,
-          autre : ''
-        },
-        Scan : [],
-      
-      },
-      Appareil_locomoteur: {
-        Membres_Supérieurs: {
-          observation : "" , 
-          autre :""
-        },
-        Articulations: {
-          observation :"" , 
-          autre :""
-        },
-        Membres_Inférieur: {
-          observation :"" , 
-          autre :""
-        },
-        Scan : [],
-      },
-      Appareil_génital:  {
-        type: '',
-        Prostate : { Check : false , observation :''},
-        Troubles_érectiles : {Check : false , observation :'' },
-        MST : {Check : false , observation :'' , autre :''},
-        Leucorrhée : {Check : false , observation :'' , autre :''},
-        Trouble_menstruels : {Check : false , observation :'' , autre :''},
-        Seins : {Check : false , observation :'' , autre :''},
-        Episiotomie : {Check : false , observation :'' , autre :''},
-        autre : {Check : false , nom : '' , observation : ''},
-        Scan : [],
-      },
-      Appareil_urinaire: {
-        Reins : {observation :"" , autre :""},
-        Trouble_urinaires : {
-          Mictionnelles  : {Check : false ,observation :"" , autre :""},
-          Brûlures : {Check : false ,observation :"" , autre :""},
-          Pollokinire : {Check : false ,observation :"" , autre :""},
-          Dysurie : {Check : false ,observation :"" , autre :""},
-        },
-        Scan : [],
-      },
-      Alb: "",
-      Sucre: "",
-      Autres_constatations: "",
-      Examens_complémentaires: "",
-      Conclusions_Médicales: "",
-      Conclusions_Professionnels: "",
+const initialPremierExam2 = {
+  Appareil_auditif: { OG: "", OD: "", Scan: [] },
+  Appareil_Oculaire: {
+    Appareil_Oculaire_AC: { OD_Pres: "", OG_Pres: "", OD_Loin: "", OG_Loin: "" },
+    Appareil_Oculaire_SC: { OD_Pres: "", OG_Pres: "", OD_Loin: "", OG_Loin: "" },
+    Scan: [],
+  },
+  Téguments: { observation: "", autre: "" },
+  Examen_radiologique: { observation: "", Scan: [], autre: "" },
+};
+
+const initialPremierExam3 = {
+  Appareil_respiratoire_rhinopharynx: { observation: "", Scan: [] },
+  Appareil_cadiovasculaire: { observation: "", Scan: [] },
+  Varices: { observation: "", autre: "" },
+  T_A: "",
+  Pouls: "",
+};
+
+const initialPremierExam4 = {
+  Appareil_digestif: { observation: '', Scan: [] },
+  Appareil_hématologique_réticulaire: { observation: '', Scan: [] },
+  Gangloins: "",
+  Rate: "",
+  Glandes_endocriniennes: {
+    Thyroïde: { Check: false, sousNom: "", observation: "", autreobservation: "" },
+    Glandes_surrénales: { Check: false, observation: "", autreobservation: "" },
+    Hypophyse: { Check: false, observation: "", autreobservation: "" },
+    Autres: "",
+    Scan: [],
+  },
+};
+
+const initialPremierExam5 = {
+  Système_nerveux: {
+    Lesion_cérébrale: { Check: false, observation: "", autreobservation: "" },
+    NCB: { Check: false, observation: "", autreobservation: "" },
+    Hernie_discale: { Check: false, observation: "", autreobservation: "" },
+    Maladie_neurologique: { Check: false, observation: "", autreobservation: "" },
+    Scan: [],
+  },
+  Tremblement: { observation: "", autre: "" },
+  Trouble_equilibre: { observation: "", autre: "" },
+  Réflexes: { observation: "", autre: "" },
+  Psychisme: {
+    Nevrose: { Anxiété: false, Depression: false, Stress: false, TOC: false, autre: '' },
+    Psychose: { Bipolarité: false, Schizophrénie: false, Paranoïaque: false, autre: '' },
+    Scan: [],
+  },
+};
+
+const initialPremierExam6 = {
+  Appareil_locomoteur: {
+    Membres_Supérieurs: { observation: "" , autre: "" },
+    Articulations: { observation: "", autre: "" },
+    Membres_Inférieur: { observation: "", autre: "" },
+    Scan: [],
+  },
+  Appareil_génital: {
+    type: '',
+    Prostate: { Check: false, observation: '' },
+    Troubles_érectiles: { Check: false, observation: '' },
+    MST: { Check: false, observation: '', autre: '' },
+    Leucorrhée: { Check: false, observation: '', autre: '' },
+    Trouble_menstruels: { Check: false, observation: '', autre: '' },
+    Seins: { Check: false, observation: '', autre: '' },
+    Episiotomie: { Check: false, observation: '', autre: '' },
+    autre: { Check: false, nom: '', observation: '' },
+    Scan: [],
+  },
+  Appareil_urinaire: {
+    Reins: { observation: "", autre: "" },
+    Trouble_urinaires: {
+      Mictionnelles: { Check: false, observation: "", autre: "" },
+      Brûlures: { Check: false, observation: "", autre: "" },
+      Pollokinire: { Check: false, observation: "", autre: "" },
+      Dysurie: { Check: false, observation: "", autre: "" },
     },
-  });
+    Scan: [],
+  },
+  Alb: "",
+  Sucre: "",
+  Autres_constatations: "",
+  Examens_complémentaires: "",
+  Conclusions_Médicales: "",
+  Conclusions_Professionnels: "",
+};
+export default function Scanpage({ onFormSubmit }: FormProps) {
+  // const [formData, setFormData] = useState<FormData1>({
+  //   PremierExam: {
+  //     Date_exam: "", // Initialize with today's date in YYYY-MM-DD format
+  //     Docteur: "Dr Najdioui",
+  //     Post_de_Travail: "",
+  //     Poids: "",
+  //     Taille: "",
+  //     Appareil_auditif: { OG: "", OD: "", Scan: [] },
+  //     Appareil_Oculaire: {
+  //       Appareil_Oculaire_AC: {
+  //         OD_Pres: "",
+  //         OG_Pres: "",
+  //         OD_Loin: "",
+  //         OG_Loin: "",
+  //       },
+  //       Appareil_Oculaire_SC: {
+  //         OD_Pres: "",
+  //         OG_Pres: "",
+  //         OD_Loin: "",
+  //         OG_Loin: "",
+  //       },
+  //       Scan: [],
+  //     },
+  //     Téguments: { observation: "", autre: "" },
+  //     Examen_radiologique: { observation: "", Scan: [], autre: "" },
+  //     Appareil_respiratoire_rhinopharynx: { observation: "", Scan: [] },
+  //     Appareil_cadiovasculaire: { observation: "", Scan: [] },
+  //     Varices: { observation: "", autre: "" },
+  //     T_A: "",
+  //     Pouls: "",
+  //     Appareil_digestif: { observation: '', Scan: [] },
+  //   Appareil_hématologique_réticulaire: { observation: '', Scan: [] },
+  //     Gangloins: "",
+  //     Rate: "",
+
+  //     Glandes_endocriniennes: {
+  //       Thyroïde: {
+  //         Check: false,
+  //         sousNom: "",
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       Glandes_surrénales: {
+  //         Check: false,
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       Hypophyse: {
+  //         Check: false,
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       Autres: "",
+  //       Scan: [],
+  //     },
+  //     Système_nerveux: {
+  //       Lesion_cérébrale: {
+  //         Check: false,
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       NCB: {
+  //         Check: false,
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       Hernie_discale: {
+  //         Check: false,
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       Maladie_neurologique: {
+  //         Check: false,
+  //         observation: "",
+  //         autreobservation: "",
+  //       },
+  //       Scan : [],
+  //     },
+  //     Tremblement: { observation: "", autre: "" },
+  //     Trouble_equilibre: { observation: "", autre: "" },
+  //     Réflexes: { observation: "", autre: "" },
+  //     Psychisme: {
+  //       Nevrose : 
+  //       {
+  //         Anxiété : false,
+  //         Depression : false,
+  //         Stress : false,
+  //         TOC : false,
+  //         autre : ''
+  //       }, 
+  //       Psychose: 
+  //       {
+  //         Bipolarité : false,
+  //         Schizophrénie : false,
+  //         Paranoïaque : false,
+  //         autre : ''
+  //       },
+  //       Scan : [],
+      
+  //     },
+  //     Appareil_locomoteur: {
+  //       Membres_Supérieurs: {
+  //         observation : "" , 
+  //         autre :""
+  //       },
+  //       Articulations: {
+  //         observation :"" , 
+  //         autre :""
+  //       },
+  //       Membres_Inférieur: {
+  //         observation :"" , 
+  //         autre :""
+  //       },
+  //       Scan : [],
+  //     },
+  //     Appareil_génital:  {
+  //       type: '',
+  //       Prostate : { Check : false , observation :''},
+  //       Troubles_érectiles : {Check : false , observation :'' },
+  //       MST : {Check : false , observation :'' , autre :''},
+  //       Leucorrhée : {Check : false , observation :'' , autre :''},
+  //       Trouble_menstruels : {Check : false , observation :'' , autre :''},
+  //       Seins : {Check : false , observation :'' , autre :''},
+  //       Episiotomie : {Check : false , observation :'' , autre :''},
+  //       autre : {Check : false , nom : '' , observation : ''},
+  //       Scan : [],
+  //     },
+  //     Appareil_urinaire: {
+  //       Reins : {observation :"" , autre :""},
+  //       Trouble_urinaires : {
+  //         Mictionnelles  : {Check : false ,observation :"" , autre :""},
+  //         Brûlures : {Check : false ,observation :"" , autre :""},
+  //         Pollokinire : {Check : false ,observation :"" , autre :""},
+  //         Dysurie : {Check : false ,observation :"" , autre :""},
+  //       },
+  //       Scan : [],
+  //     },
+  //     Alb: "",
+  //     Sucre: "",
+  //     Autres_constatations: "",
+  //     Examens_complémentaires: "",
+  //     Conclusions_Médicales: "",
+  //     Conclusions_Professionnels: "",
+  //   },
+  // });
+  const [premierExam1, setPremierExam1] = useState(initialPremierExam1);
+  const [premierExam2, setPremierExam2] = useState(initialPremierExam2);
+  const [premierExam3, setPremierExam3] = useState(initialPremierExam3);
+  const [premierExam4, setPremierExam4] = useState(initialPremierExam4);
+  const [premierExam5, setPremierExam5] = useState(initialPremierExam5);
+  const [premierExam6, setPremierExam6] = useState(initialPremierExam6);
+
   useEffect(() => {
+    const formData = {
+      PremierExam: {
+        ...premierExam1,
+        ...premierExam2,
+        ...premierExam3,
+        ...premierExam4,
+        ...premierExam5,
+        ...premierExam6,
+      },
+    };
     onFormSubmit(formData);
-  }, [formData, onFormSubmit]);
+  }, [premierExam1, premierExam2, premierExam3, premierExam4, premierExam5, premierExam6, onFormSubmit]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    const keys = name.split(".");
-    let updatedData = { ...formData };
-
-    let obj: any = updatedData;
-    keys.forEach((key, index) => {
-      if (index === keys.length - 1) {
-        obj[key] = value;
-      } else {
-        obj = obj[key];
-      }
-    });
-    setFormData(updatedData);
+    updateFormData(name, value);
   };
-  const handleRadioChange = (name: string, value: string) => {
-    const keys = name.split(".");
-    let updatedData = { ...formData };
 
-    let obj: any = updatedData;
-    keys.forEach((key, index) => {
-      if (index === keys.length - 1) {
-        obj[key] = value;
-      } else {
-        obj = obj[key];
-      }
-    });
-    setFormData(updatedData);
+  const handleRadioChange = (name: string, value: string) => {
+    updateFormData(name, value);
   };
 
   const handleChangeSelect = (value: string, name: string) => {
-    const keys = name.split(".");
-    let updatedData = { ...formData };
-
-    let obj: any = updatedData;
-    keys.forEach((key, index) => {
-      if (index === keys.length - 1) {
-        obj[key] = value;
-      } else {
-        obj = obj[key];
-      }
-    });
-
-    setFormData(updatedData);
+    updateFormData(name, value);
   };
+
   const handleChangecheck = (value: string | boolean, name: string) => {
-    const keys = name.split(".");
-    let updatedData = { ...formData };
-
-    let obj: any = updatedData;
-    keys.forEach((key, index) => {
-      if (index === keys.length - 1) {
-        obj[key] = value;
-      } else {
-        obj = obj[key];
-      }
-    });
-
-    setFormData(updatedData);
+    updateFormData(name, value);
   };
-  const handleFilesChange = (files: string[] , name : string ) => {
+
+  const handleFilesChange = (files: string[], name: string) => {
     updateFormData(name, files);
   };
 
-  const handleDeleteFile = (index: number , name : string) => {
-    const updatedFiles = [...formData.PremierExam.Appareil_auditif.Scan];
-    updatedFiles.splice(index, 1);
-    updateFormData(name, updatedFiles);
+  const handleDeleteFile = (index: number, name: string) => {
+    const keys = name.split(".");
+    let sectionStateUpdater: any;
+    let sectionState: any;
+  
+    if (keys[0] === "PremierExam" && keys[1] in premierExam1) {
+      sectionStateUpdater = setPremierExam1;
+      sectionState = premierExam1;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam2) {
+      sectionStateUpdater = setPremierExam2;
+      sectionState = premierExam2;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam3) {
+      sectionStateUpdater = setPremierExam3;
+      sectionState = premierExam3;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam4) {
+      sectionStateUpdater = setPremierExam4;
+      sectionState = premierExam4;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam5) {
+      sectionStateUpdater = setPremierExam5;
+      sectionState = premierExam5;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam6) {
+      sectionStateUpdater = setPremierExam6;
+      sectionState = premierExam6;
+    }
+  
+    if (sectionStateUpdater) {
+      let updatedData = { ...sectionState };
+      let obj: any = updatedData;
+      keys.slice(1, -1).forEach((key) => {
+        obj = obj[key];
+      });
+  
+      const scanArray = obj[keys[keys.length - 1]];
+      const updatedFiles = [...scanArray];
+      updatedFiles.splice(index, 1);
+      obj[keys[keys.length - 1]] = updatedFiles;
+  
+      sectionStateUpdater(updatedData);
+    }
   };
 
   const updateFormData = (name: string, value: any) => {
     const keys = name.split(".");
-    let updatedData = { ...formData };
+    let sectionStateUpdater: any;
+    let sectionState: any;
 
-    let obj: any = updatedData;
-    keys.forEach((key, index) => {
-      if (index === keys.length - 1) {
-        obj[key] = value;
-      } else {
-        obj = obj[key];
-      }
-    });
+    if (keys[0] === "PremierExam" && keys[1] in premierExam1) {
+      sectionStateUpdater = setPremierExam1;
+      sectionState = premierExam1;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam2) {
+      sectionStateUpdater = setPremierExam2;
+      sectionState = premierExam2;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam3) {
+      sectionStateUpdater = setPremierExam3;
+      sectionState = premierExam3;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam4) {
+      sectionStateUpdater = setPremierExam4;
+      sectionState = premierExam4;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam5) {
+      sectionStateUpdater = setPremierExam5;
+      sectionState = premierExam5;
+    } else if (keys[0] === "PremierExam" && keys[1] in premierExam6) {
+      sectionStateUpdater = setPremierExam6;
+      sectionState = premierExam6;
+    }
 
-    setFormData(updatedData);
+    if (sectionStateUpdater) {
+      let updatedData = { ...sectionState };
+      let obj: any = updatedData;
+      keys.slice(1).forEach((key, index) => {
+        if (index === keys.length - 2) {
+          obj[key] = value;
+        } else {
+          obj = obj[key];
+        }
+      });
+      sectionStateUpdater(updatedData);
+    }
   };
+  
+  // useEffect(() => {
+  //   onFormSubmit(formData);
+  // }, [formData, onFormSubmit]);
+
+  // const handleChange = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   const keys = name.split(".");
+  //   let updatedData = { ...formData };
+
+  //   let obj: any = updatedData;
+  //   keys.forEach((key, index) => {
+  //     if (index === keys.length - 1) {
+  //       obj[key] = value;
+  //     } else {
+  //       obj = obj[key];
+  //     }
+  //   });
+  //   setFormData(updatedData);
+  // };
+  // const handleRadioChange = (name: string, value: string) => {
+  //   const keys = name.split(".");
+  //   let updatedData = { ...formData };
+
+  //   let obj: any = updatedData;
+  //   keys.forEach((key, index) => {
+  //     if (index === keys.length - 1) {
+  //       obj[key] = value;
+  //     } else {
+  //       obj = obj[key];
+  //     }
+  //   });
+  //   setFormData(updatedData);
+  // };
+
+  // const handleChangeSelect = (value: string, name: string) => {
+  //   const keys = name.split(".");
+  //   let updatedData = { ...formData };
+
+  //   let obj: any = updatedData;
+  //   keys.forEach((key, index) => {
+  //     if (index === keys.length - 1) {
+  //       obj[key] = value;
+  //     } else {
+  //       obj = obj[key];
+  //     }
+  //   });
+
+  //   setFormData(updatedData);
+  // };
+  // const handleChangecheck = (value: string | boolean, name: string) => {
+  //   const keys = name.split(".");
+  //   let updatedData = { ...formData };
+
+  //   let obj: any = updatedData;
+  //   keys.forEach((key, index) => {
+  //     if (index === keys.length - 1) {
+  //       obj[key] = value;
+  //     } else {
+  //       obj = obj[key];
+  //     }
+  //   });
+
+  //   setFormData(updatedData);
+  // };
+  // const handleFilesChange = (files: string[] , name : string ) => {
+  //   updateFormData(name, files);
+  // };
+
+  // const handleDeleteFile = (index: number , name : string) => {
+  //   const updatedFiles = [...premierExam2.Appareil_auditif.Scan];
+  //   updatedFiles.splice(index, 1);
+  //   updateFormData(name, updatedFiles);
+  // };
+
+  // const updateFormData = (name: string, value: any) => {
+  //   const keys = name.split(".");
+  //   let updatedData = { ...formData };
+
+  //   let obj: any = updatedData;
+  //   keys.forEach((key, index) => {
+  //     if (index === keys.length - 1) {
+  //       obj[key] = value;
+  //     } else {
+  //       obj = obj[key];
+  //     }
+  //   });
+
+  //   setFormData(updatedData);
+  // };
   ////////////////////////////////////////////////////////////////////////////////
   const [autresObs_ExaRad, setAutresObs_ExaRad] = useState(false);
   const [GlandesSelectTer, setGlandesSelectTer] = useState(false);
@@ -501,7 +720,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                     placeholder="Entrer la Date d'Examen"
                     type="date"
                     name="PremierExam.Date_exam"
-                    value={formData.PremierExam.Date_exam}
+                    value={premierExam1.Date_exam}
                     onChange={handleChange}
                   />
                 </FormControl>
@@ -520,7 +739,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                   <Input
                     name="PremierExam.Docteur"
                     placeholder="Entrer Docteur"
-                    value={formData.PremierExam?.Docteur}
+                    value={premierExam1.Docteur}
                     onChange={handleChange}
                     defaultValue="Dr Najdiwi"
                   />
@@ -546,7 +765,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
               <FormControl>
                 <Textarea
                   name="PremierExam.Post_de_Travail"
-                  value={formData.PremierExam?.Post_de_Travail}
+                  value={premierExam1.Post_de_Travail}
                   onChange={handleChange}
                   placeholder="Entrer le Poste de travail  du patient"
                 />
@@ -572,7 +791,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       name="PremierExam.Poids"
                       type="number"
                       placeholder="Entrer le poids du patient (Kg)"
-                      value={formData.PremierExam?.Poids}
+                      value={premierExam1.Poids}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -593,7 +812,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       type="number"
                       placeholder="Entrer taille du patient (cm)"
                       name="PremierExam.Taille"
-                      value={formData.PremierExam.Taille}
+                      value={premierExam1.Taille}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -618,7 +837,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                     type="number"
                     placeholder="Remplire OG"
                     name="PremierExam.Appareil_auditif.OG"
-                    value={formData.PremierExam.Appareil_auditif.OG}
+                    value={premierExam2.Appareil_auditif.OG}
                     onChange={handleChange}
                   />
                 </FormControl>
@@ -637,7 +856,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                     placeholder="Remplire OD"
                     type="number"
                     name="PremierExam.Appareil_auditif.OD"
-                    value={formData.PremierExam.Appareil_auditif.OD}
+                    value={premierExam2.Appareil_auditif.OD}
                     onChange={handleChange}
                   />
                 </FormControl>
@@ -652,7 +871,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_auditif.Scan')}
           name={"PremierExam.Appareil_auditif.Scan"}
           placeholder={"Appareil auditif"}
-          selectedFiles={formData.PremierExam.Appareil_auditif.Scan}
+          selectedFiles={premierExam2.Appareil_auditif.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_auditif.Scan')}
         />
           </div>
@@ -684,7 +903,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             type="number"
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OG_Pres"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_SC.OG_Pres
                             }
                             onChange={handleChange}
@@ -706,7 +925,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OD "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OD_Pres"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_SC.OD_Pres
                             }
                             onChange={handleChange}
@@ -730,7 +949,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OG "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OG_Loin"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_SC.OG_Loin
                             }
                             onChange={handleChange}
@@ -752,7 +971,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OD "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_SC.OD_Loin"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_SC.OD_Loin
                             }
                             onChange={handleChange}
@@ -779,7 +998,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OG "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OG_Pres"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_AC.OG_Pres
                             }
                             onChange={handleChange}
@@ -801,7 +1020,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OD "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OD_Pres"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_AC.OD_Pres
                             }
                             onChange={handleChange}
@@ -825,7 +1044,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OG "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OG_Loin"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_AC.OG_Loin
                             }
                             onChange={handleChange}
@@ -847,7 +1066,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                             placeholder="Remplire OD "
                             name="PremierExam.Appareil_Oculaire.Appareil_Oculaire_AC.OD_Loin"
                             value={
-                              formData.PremierExam.Appareil_Oculaire
+                              premierExam2.Appareil_Oculaire
                                 .Appareil_Oculaire_AC.OD_Loin
                             }
                             onChange={handleChange}
@@ -867,7 +1086,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_Oculaire.Scan')}
           name={"PremierExam.Appareil_Oculaire.Scan"}
           placeholder={"Appareil Oculaire"}
-          selectedFiles={formData.PremierExam.Appareil_Oculaire.Scan}
+          selectedFiles={premierExam2.Appareil_Oculaire.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_Oculaire.Scan')}
         />
             </div>
@@ -889,10 +1108,10 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                   onValueChange={(value) =>
                     handleRadioChange(field.name, value)
                   }
-                  value={formData.PremierExam.Téguments.observation}
+                  value={premierExam2.Téguments.observation}
                   name="PremierExam.Téguments.observation"
                 >
-                  {/* value={formData.PremierExam.Téguments.observation}
+                  {/* value={premierExam2.Téguments.observation}
                   name="PremierExam.Téguments.observation"
                 > */}
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -922,7 +1141,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                   <Input
                     placeholder="autre observation sur le teguments"
                     name="PremierExam.Téguments.autre"
-                    value={formData.PremierExam.Téguments.autre}
+                    value={premierExam2.Téguments.autre}
                     onChange={handleChange}
                   />
                 </FormControl>
@@ -961,7 +1180,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       field.onChange(radio);
                       handleRadioChange(field.name, radio);
                     }}
-                    value={formData.PremierExam.Examen_radiologique.observation}
+                    value={premierExam2.Examen_radiologique.observation}
                     name="PremierExam.Examen_radiologique.observation"
                     defaultValue={field.value}
                     className="flex flex-col space-y-1"
@@ -994,7 +1213,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                     <Input
                       placeholder="observation sur le scan"
                       name="PremierExam.Examen_radiologique.autre"
-                      value={formData.PremierExam.Examen_radiologique.autre}
+                      value={premierExam2.Examen_radiologique.autre}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -1012,7 +1231,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Examen_radiologique.Scan')}
           name={"PremierExam.Examen_radiologique.Scan"}
           placeholder={"Examen radiologique"}
-          selectedFiles={formData.PremierExam.Examen_radiologique.Scan}
+          selectedFiles={premierExam2.Examen_radiologique.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Examen_radiologique.Scan')}
         />
           </div>
@@ -1031,8 +1250,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         placeholder="observation sur le scan d'Appareil respiratoire - rhinopharynx"
                         name="PremierExam.Appareil_respiratoire_rhinopharynx.observation"
                         value={
-                          formData.PremierExam
-                            .Appareil_respiratoire_rhinopharynx.observation
+                          premierExam3.Appareil_respiratoire_rhinopharynx.observation
                         }
                         onChange={handleChange}
                       />
@@ -1052,7 +1270,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_respiratoire_rhinopharynx.Scan')}
           name={"PremierExam.Appareil_respiratoire_rhinopharynx.Scan"}
           placeholder={"Appareil respiratoire - rhinopharynx"}
-          selectedFiles={formData.PremierExam.Appareil_respiratoire_rhinopharynx.Scan}
+          selectedFiles={premierExam3.Appareil_respiratoire_rhinopharynx.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_respiratoire_rhinopharynx.Scan')}
         />
               </div>
@@ -1071,8 +1289,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         placeholder="observation sur le scan d'Appareil cadiovasculaire "
                         name="PremierExam.Appareil_cadiovasculaire.observation"
                         value={
-                          formData.PremierExam.Appareil_cadiovasculaire
-                            .observation
+                          premierExam3.Appareil_cadiovasculaire.observation
                         }
                         onChange={handleChange}
                       />
@@ -1089,7 +1306,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_cadiovasculaire.Scan')}
           name={"PremierExam.Appareil_cadiovasculaire.Scan"}
           placeholder={"Appareil cadiovasculaire"}
-          selectedFiles={formData.PremierExam.Appareil_cadiovasculaire.Scan}
+          selectedFiles={premierExam3.Appareil_cadiovasculaire.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_cadiovasculaire.Scan')}
         />
               </div>
@@ -1107,7 +1324,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       type="text"
                       placeholder="entrer le nombre de pulsation "
                       name="PremierExam.Pouls"
-                      value={formData.PremierExam.Pouls}
+                      value={premierExam3.Pouls}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -1125,7 +1342,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       type=""
                       placeholder="saisir le T.A  "
                       name="PremierExam.T_A"
-                      value={formData.PremierExam.T_A}
+                      value={premierExam3.T_A}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -1182,7 +1399,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                           <Input
                             placeholder="observation sur le Varice "
                             name="PremierExam.Varices.autre"
-                            value={formData.PremierExam.Varices.autre}
+                            value={premierExam3.Varices.autre}
                             onChange={handleChange}
                           />
                         </FormControl>
@@ -1209,7 +1426,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                   <Textarea
                     placeholder="Entrer votre observation "
                     name="PremierExam.Appareil_digestif.observation"
-                    value={formData.PremierExam.Appareil_digestif.observation}
+                    value={premierExam4.Appareil_digestif.observation}
                     onChange={handleChange}
                   />
                 </FormControl>
@@ -1232,7 +1449,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           name={"PremierExam.Appareil_digestif.Scan"}
           placeholder={" Appareil digestif :"}
 
-          selectedFiles={formData.PremierExam.Appareil_digestif.Scan}
+          selectedFiles={premierExam4.Appareil_digestif.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_digestif.Scan')}
         />
           </div>
@@ -1253,7 +1470,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       placeholder="Entrer observation :"
                       name="PremierExam.Appareil_hématologique_réticulaire.observation"
                       value={
-                        formData.PremierExam.Appareil_hématologique_réticulaire.observation
+                        premierExam4.Appareil_hématologique_réticulaire.observation
                       }
                       onChange={handleChange}
                     />
@@ -1274,7 +1491,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_hématologique_réticulaire.Scan')}
           name={"PremierExam.Appareil_hématologique_réticulaire.Scan"}
           placeholder={"Appareil hématologique et réticulaire :"}
-          selectedFiles={formData.PremierExam.Appareil_hématologique_réticulaire.Scan}
+          selectedFiles={premierExam4.Appareil_hématologique_réticulaire.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_hématologique_réticulaire.Scan')}
         />
             </div>
@@ -1293,7 +1510,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       type="text"
                       placeholder="Entrer la Gangloins "
                       name="PremierExam.Gangloins"
-                      value={formData.PremierExam.Gangloins}
+                      value={premierExam4.Gangloins}
                       onChange={handleChange}
                     />
                   </FormControl>
@@ -1315,7 +1532,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                     }}
                     defaultValue={field.value}
                     name="PremierExam.Rate"
-                    value={formData.PremierExam.Rate}
+                    value={premierExam4.Rate}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -1366,7 +1583,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
             </FormItem>
           )}
         />
-        {formData.PremierExam.Glandes_endocriniennes.Thyroïde.Check && (
+        {premierExam4.Glandes_endocriniennes.Thyroïde.Check && (
           <div className="pl-2 pt-3 grid grid-flow-row gap-3">
             <div>
               <FormField
@@ -1472,7 +1689,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
             </FormItem>
           )}
         />
-        {formData.PremierExam.Glandes_endocriniennes.Hypophyse.Check && (
+        {premierExam4.Glandes_endocriniennes.Hypophyse.Check && (
           <div className="pl-2 pt-3 grid grid-flow-row gap-3">
             <div id="PremierExam.Glandes_endocriniennes.Hypophyse.observation">
               <FormField
@@ -1546,7 +1763,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
             </FormItem>
           )}
         />
-        {formData.PremierExam.Glandes_endocriniennes.Glandes_surrénales.Check && (
+        {premierExam4.Glandes_endocriniennes.Glandes_surrénales.Check && (
           <div className="pl-2 pt-3 grid grid-flow-row gap-3">
             <div id="PremierExam.Glandes_endocriniennes.Glandes_surrénales.observation">
               <FormField
@@ -1612,7 +1829,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                           <Textarea
                             placeholder="observation sur le scan"
                             name="PremierExam.Glandes_endocriniennes.Autres"
-                            value={formData.PremierExam.Glandes_endocriniennes.Autres}
+                            value={premierExam4.Glandes_endocriniennes.Autres}
                             onChange={handleChange} />
                          
                         </FormControl>
@@ -1633,7 +1850,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Glandes_endocriniennes.Scan')}
           name={"PremierExam.Glandes_endocriniennes.Scan"}
           placeholder={"Glandes endocriniennes"}
-          selectedFiles={formData.PremierExam.Glandes_endocriniennes.Scan}
+          selectedFiles={premierExam4.Glandes_endocriniennes.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Glandes_endocriniennes.Scan')}
         />
           
@@ -1664,7 +1881,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                               handleChangecheck(false, field.name);
                             }
                           }}
-                          //  value={formData.PremierExam.Système_nerveux.Maladie_neurologique.}
+                          //  value={premierExam5.Système_nerveux.Maladie_neurologique.Check}
                         />
                       </FormControl>
                       <FormLabel className="font-normal">
@@ -1696,7 +1913,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     field.onChange(radio);
                                   }}
                                   value={
-                                    formData.PremierExam.Système_nerveux
+                                    premierExam5.Système_nerveux
                                       .Maladie_neurologique.observation
                                   }
                                   name="PremierExam.Système_nerveux.Maladie_neurologique.observation"
@@ -1738,7 +1955,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                       placeholder="observation sur le scan"
                                       name="PremierExam.Système_nerveux.Maladie_neurologique.autreobservation"
                                       value={
-                                        formData.PremierExam.Système_nerveux
+                                        premierExam5.Système_nerveux
                                           .Maladie_neurologique.autreobservation
                                       }
                                       onChange={handleChange}
@@ -1811,7 +2028,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     field.onChange(radio);
                                   }}
                                   value={
-                                    formData.PremierExam.Système_nerveux
+                                    premierExam5.Système_nerveux
                                       .Hernie_discale.observation
                                   }
                                   name="PremierExam.Système_nerveux.Hernie_discale.observation"
@@ -1852,7 +2069,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="observation sur le scan"
                                       value={
-                                        formData.PremierExam.Système_nerveux
+                                        premierExam5.Système_nerveux
                                           .Hernie_discale.autreobservation
                                       }
                                       name="PremierExam.Système_nerveux.Hernie_discale.autreobservation"
@@ -1922,7 +2139,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     field.onChange(radio);
                                   }}
                                   value={
-                                    formData.PremierExam.Système_nerveux.NCB
+                                    premierExam5.Système_nerveux.NCB
                                       .observation
                                   }
                                   name="PremierExam.Système_nerveux.NCB.observation"
@@ -1961,7 +2178,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="observation sur le scan"
                                       value={
-                                        formData.PremierExam.Système_nerveux.NCB
+                                        premierExam5.Système_nerveux.NCB
                                           .autreobservation
                                       }
                                       name="PremierExam.Système_nerveux.NCB.autreobservation"
@@ -2033,7 +2250,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     field.onChange(radio);
                                   }}
                                   value={
-                                    formData.PremierExam.Système_nerveux
+                                    premierExam5.Système_nerveux
                                       .Lesion_cérébrale.observation
                                   }
                                   name="PremierExam.Système_nerveux.Lesion_cérébrale.observation"
@@ -2072,7 +2289,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="observation sur le scan"
                                       value={
-                                        formData.PremierExam.Système_nerveux
+                                        premierExam5.Système_nerveux
                                           .Lesion_cérébrale.autreobservation
                                       }
                                       name="PremierExam.Système_nerveux.Lesion_cérébrale.autreobservation"
@@ -2099,7 +2316,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Système_nerveux.Scan')}
           name={"PremierExam.Système_nerveux.Scan"}
           placeholder={"Système nerveux"}
-          selectedFiles={formData.PremierExam.Système_nerveux.Scan}
+          selectedFiles={premierExam5.Système_nerveux.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Système_nerveux.Scan')}
         />
           </div>
@@ -2122,7 +2339,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         field.onChange(radio);
                       }}
                       value={
-                        formData.PremierExam.Tremblement.observation
+                        premierExam5.Tremblement.observation
                       }
                       name="PremierExam.Tremblement.observation"
                       defaultValue={field.value}
@@ -2157,7 +2374,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         <Input
                           placeholder="observation sur le tremblement "
                           value={
-                            formData.PremierExam.Tremblement.autre
+                            premierExam5.Tremblement.autre
                           }
                           name="PremierExam.Tremblement.autre"
                           onChange={handleChange}
@@ -2189,7 +2406,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         field.onChange(radio);
                       }}
                       value={
-                        formData.PremierExam.Trouble_equilibre.observation
+                        premierExam5.Trouble_equilibre.observation
                       }
                       name="PremierExam.Trouble_equilibre.observation"
                       defaultValue={field.value}
@@ -2224,7 +2441,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         <Input
                           placeholder="observation sur le Equilibre "
                           value={
-                            formData.PremierExam.Trouble_equilibre.autre
+                            premierExam5.Trouble_equilibre.autre
                           }
                           name="PremierExam.Trouble_equilibre.autre"
                           onChange={handleChange}
@@ -2257,7 +2474,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         field.onChange(radio);
                       }}
                       value={
-                        formData.PremierExam.Réflexes.observation
+                        premierExam5.Réflexes.observation
                       }
                       name="PremierExam.Réflexes.observation"
                       defaultValue={field.value}
@@ -2292,7 +2509,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         <Input
                           placeholder="observation sur le Réflexes "
                           value={
-                            formData.PremierExam.Réflexes.autre
+                            premierExam5.Réflexes.autre
                           }
                           name="PremierExam.Réflexes.autre"
                           onChange={handleChange}
@@ -2384,7 +2601,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
               <Input
                 placeholder="Entrer autre maladie Nevrose"
                 name="PremierExam.Psychisme.Nevrose.autre"
-                value={formData.PremierExam.Psychisme.Nevrose.autre}
+                value={premierExam5.Psychisme.Nevrose.autre}
                 onChange={handleChange}
                />
             </FormControl>
@@ -2455,7 +2672,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
               <Input
                 placeholder="Entrer autre maladie Psychose"
               name="PremierExam.Psychisme.Psychose.autre"
-               value={formData.PremierExam.Psychisme.Psychose.autre}
+              //  value={premierExam5.Psychisme.Psychose.autre}
                onChange={handleChange}
               />
             </FormControl>
@@ -2473,7 +2690,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Psychisme.Scan')}
           name={"PremierExam.Psychisme.Scan"}
           placeholder="Psychisme"
-          selectedFiles={formData.PremierExam.Psychisme.Scan}
+          selectedFiles={premierExam5.Psychisme.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Psychisme.Scan')}
         />
 </div>
@@ -2503,7 +2720,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         field.onChange(radio);
                       }}
                        name="PremierExam.Appareil_locomoteur.Membres_Supérieurs.observation"
-                      value={formData.PremierExam.Appareil_locomoteur.Membres_Supérieurs.observation}
+                      value={premierExam6.Appareil_locomoteur.Membres_Supérieurs.observation}
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -2536,7 +2753,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         <Input
                           placeholder="Entrer votre observation "
                          name="PremierExam.Appareil_locomoteur.Membres_Supérieurs.autre"
-                           value={formData.PremierExam.Appareil_locomoteur.Membres_Supérieurs.autre}
+                          //  value={premierExam6.Appareil_locomoteur.Membres_Supérieurs.autre}
                           onChange={handleChange}
                         />
                       </FormControl>
@@ -2567,7 +2784,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         field.onChange(radio);
                       }} 
                       name="PremierExam.Appareil_locomoteur.Membres_Inférieur.observation"
-                      value={formData.PremierExam.Appareil_locomoteur.Membres_Inférieur.observation}
+                      value={premierExam6.Appareil_locomoteur.Membres_Inférieur.observation}
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
                     >
@@ -2601,7 +2818,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         <Input
                           placeholder="Entrer votre observation"
                        name="PremierExam.Appareil_locomoteur.Membres_Inférieur.autre"
-                           value={formData.PremierExam.Appareil_locomoteur.Membres_Inférieur.autre}
+                          //  value={premierExam6.Appareil_locomoteur.Membres_Inférieur.autre}
                           onChange={handleChange}
                         />
                       </FormControl>
@@ -2631,7 +2848,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         field.onChange(radio);
                       }}
                        name="PremierExam.Appareil_locomoteur.Articulations.observation"
-                           value={formData.PremierExam.Appareil_locomoteur.Articulations.observation}
+                          //  value={premierExam6.Appareil_locomoteur.Articulations.observation}
                        
                       defaultValue={field.value}
                       className="flex flex-col space-y-1 pt-2 pl-6"
@@ -2666,7 +2883,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                         <Input
                           placeholder="Entrer votre observation "
                         name="PremierExam.Appareil_locomoteur.Articulations.autre"
-                           value={formData.PremierExam.Appareil_locomoteur.Articulations.autre}
+                          //  value={premierExam6.Appareil_locomoteur.Articulations.autre}
                           onChange={handleChange}
                         />
                       </FormControl>
@@ -2686,7 +2903,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_locomoteur.Scan')}
           name={"PremierExam.Appareil_locomoteur.Scan"}
           placeholder={"Appareil locomoteur Scan "}
-          selectedFiles={formData.PremierExam.Appareil_locomoteur.Scan}
+          selectedFiles={premierExam6.Appareil_locomoteur.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_locomoteur.Scan')}
         />
           </div>
@@ -2712,7 +2929,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                       handleRadioChange(field.name,radio);
                       field.onChange(radio);
                     }}
-                    value={formData.PremierExam.Appareil_génital.type}
+                    value={premierExam6.Appareil_génital.type}
                     name="PremierExam.Appareil_génital.type"
                     defaultValue={field.value}
                     className="flex flex-rows space-y-1 pt-2 pl-6"
@@ -2756,7 +2973,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_génital.Prostate.Check"
-                              // value={formData.PremierExam.Appareil_génital.Prostate.Check}
+                              // value={premierExam6.Appareil_génital.Prostate.Check}
                               />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -2781,7 +2998,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_génital.Prostate.observation"
-                                      value={formData.PremierExam.Appareil_génital.Prostate.observation}
+                                      value={premierExam6.Appareil_génital.Prostate.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -2844,7 +3061,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_génital.MST.Check"
-                              // value={formData.PremierExam.Appareil_génital.MST.Check}
+                              // value={premierExam6.Appareil_génital.MST.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">MST</FormLabel>
@@ -2907,7 +3124,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_génital.MST.autre"
 
-                                          value={formData.PremierExam.Appareil_génital.MST.autre}
+                                          value={premierExam6.Appareil_génital.MST.autre}
                                             onChange={handleChange}
 
                                         />
@@ -2949,7 +3166,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                   handleChangecheck(checked,field.name)
                                 }}
                                 name="PremierExam.Appareil_génital.Troubles_érectiles.Check"
-                                // value={formData.PremierExam.Appareil_génital.Troubles_érectiles.Check}
+                                // value={premierExam6.Appareil_génital.Troubles_érectiles.Check}
                                 />
 
             
@@ -2975,7 +3192,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="Entrer votre observation   "
                                       name="PremierExam.Appareil_génital.Troubles_érectiles.observation"
-                                value={formData.PremierExam.Appareil_génital.Troubles_érectiles.observation}
+                                value={premierExam6.Appareil_génital.Troubles_érectiles.observation}
                                 onChange={handleChange}
                                     />
                                   </FormControl>
@@ -3012,7 +3229,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_génital.autre.Check"
-                              // value={formData.PremierExam.Appareil_génital.autre.Check}
+                              // value={premierExam6.Appareil_génital.autre.Check}
                               />
                           </FormControl>
                           <FormLabel className="font-normal">Autres</FormLabel>
@@ -3033,7 +3250,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="Entrer le nom de la maladies"
                                       name="PremierExam.Appareil_génital.autre.nom"
-                                      value={formData.PremierExam.Appareil_génital.autre.nom}
+                                      value={premierExam6.Appareil_génital.autre.nom}
                                       onChange={handleChange}
                                     />
                                   </FormControl>
@@ -3053,7 +3270,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="Entrer votre observation"
                                       name="PremierExam.Appareil_génital.autre.observation"
-                                      value={formData.PremierExam.Appareil_génital.autre.observation}
+                                      value={premierExam6.Appareil_génital.autre.observation}
                                       onChange={handleChange}
                                     />
                                   </FormControl>
@@ -3090,7 +3307,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_génital.MST.Check"
-                              // value={formData.PremierExam.Appareil_génital.Prostate.Check}
+                              // value={premierExam6.Appareil_génital.Prostate.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">MST</FormLabel>
@@ -3153,7 +3370,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_génital.MST.autre"
-                                          value={formData.PremierExam.Appareil_génital.MST.autre}
+                                          value={premierExam6.Appareil_génital.MST.autre}
                                           onChange={handleChange}
                                         />
                                       </FormControl>
@@ -3191,7 +3408,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_génital.Leucorrhée.Check"
-                              // value={formData.PremierExam.Appareil_génital.Leucorrhée.Check}
+                              // value={premierExam6.Appareil_génital.Leucorrhée.Check}
                                />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3219,7 +3436,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_génital.Leucorrhée.observation"
-                                      value={formData.PremierExam.Appareil_génital.Leucorrhée.observation}
+                                      value={premierExam6.Appareil_génital.Leucorrhée.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3257,7 +3474,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_génital.Leucorrhée.autre"
-                                          value={formData.PremierExam.Appareil_génital.Leucorrhée.autre}
+                                          value={premierExam6.Appareil_génital.Leucorrhée.autre}
                                           onChange={handleChange}
                                         />
                                       </FormControl>
@@ -3293,7 +3510,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_génital.Trouble_menstruels.Check"
-                              // value={formData.PremierExam.Appareil_génital.Trouble_menstruels.Check}
+                              // value={premierExam6.Appareil_génital.Trouble_menstruels.Check}
                                />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3321,7 +3538,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_génital.Trouble_menstruels.observation"
-                                      value={formData.PremierExam.Appareil_génital.Trouble_menstruels.observation}
+                                      value={premierExam6.Appareil_génital.Trouble_menstruels.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3359,7 +3576,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_génital.Trouble_menstruels.autre"
-                                      value={formData.PremierExam.Appareil_génital.Trouble_menstruels.autre}
+                                      value={premierExam6.Appareil_génital.Trouble_menstruels.autre}
                                      onChange={handleChange}
                                         />
                                       </FormControl>
@@ -3399,7 +3616,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                                 name="PremierExam.Appareil_génital.Seins.Check"
-                                // value={formData.PremierExam.Appareil_génital.Trouble_menstruels.Check}
+                                // value={premierExam6.Appareil_génital.Trouble_menstruels.Check}
                                  />
                           </FormControl>
                           <FormLabel className="font-normal">Seins</FormLabel>
@@ -3429,7 +3646,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                       name="PremierExam.Appareil_génital.Seins.observation"
-                                      // value={formData.PremierExam.Appareil_génital.Trouble_menstruels.Check}
+                                      // value={premierExam6.Appareil_génital.Trouble_menstruels.Check}
                                 
                                     >
                                       <FormItem className="flex items-center space-x-3 space-y-0">
@@ -3465,7 +3682,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_génital.Seins.autre"
-                                          value={formData.PremierExam.Appareil_génital.Seins.autre}
+                                          value={premierExam6.Appareil_génital.Seins.autre}
                                 onChange={handleChange}    
                                         />
                                       </FormControl>
@@ -3502,7 +3719,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                                 name="PremierExam.Appareil_génital.Episiotomie.Check"
-                                // value={formData.PremierExam.Appareil_génital.Episiotomie.Check}
+                                // value={premierExam6.Appareil_génital.Episiotomie.Check}
                                  />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3568,7 +3785,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_génital.Episiotomie.autre"
-                                value={formData.PremierExam.Appareil_génital.Episiotomie.autre}
+                                value={premierExam6.Appareil_génital.Episiotomie.autre}
                                       onChange={handleChange}
                                         />
                                       </FormControl>
@@ -3606,7 +3823,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                                 name="PremierExam.Appareil_génital.autre.Check"
-                                // value={formData.PremierExam.Appareil_génital..Check}
+                                // value={premierExam6.Appareil_génital..Check}
                                  />
                           </FormControl>
                           <FormLabel className="font-normal">Autres</FormLabel>
@@ -3627,7 +3844,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="Entrer le nom de la maladies"
                                       name="PremierExam.Appareil_génital.autre.nom"
-                                      value={formData.PremierExam.Appareil_génital.autre.nom}
+                                      value={premierExam6.Appareil_génital.autre.nom}
                                       onChange={handleChange}
                                     />
                                   </FormControl>
@@ -3647,7 +3864,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                     <Input
                                       placeholder="Entrer votre observation"
                                       name="PremierExam.Appareil_génital.autre.observation"
-                                      value={formData.PremierExam.Appareil_génital.autre.observation}
+                                      value={premierExam6.Appareil_génital.autre.observation}
                                       onChange={handleChange}
                                     />
                                   </FormControl>
@@ -3673,7 +3890,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_génital.Scan')}
           name={"PremierExam.Appareil_génital.Scan"}
           placeholder="Appareil génital "
-          selectedFiles={formData.PremierExam.Appareil_génital.Scan}
+          selectedFiles={premierExam6.Appareil_génital.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_génital.Scan')}
         />
         </div>  
@@ -3748,7 +3965,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name);
                               }}
                               name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check"
-                              // value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check}
+                              // value={premierExam6.Appareil_urinaire.Trouble_urinaires.Dysurie.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3776,7 +3993,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation"
-                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation}
+                                      value={premierExam6.Appareil_urinaire.Trouble_urinaires.Dysurie.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3812,7 +4029,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.autre"
-                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.autre}
+                                          value={premierExam6.Appareil_urinaire.Trouble_urinaires.Dysurie.autre}
                                         onChange={handleChange}
                                         />
                                       </FormControl>
@@ -3850,7 +4067,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 handleChangecheck(checked,field.name)
                               }}
                               name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.Check"
-                              // value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.Check}
+                              // value={premierExam6.Appareil_urinaire.Trouble_urinaires.Dysurie.Check}
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
@@ -3880,7 +4097,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_urinaire.Trouble_urinaires.Dysurie.observation"
-                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.observation}
+                                      value={premierExam6.Appareil_urinaire.Trouble_urinaires.Pollokinire.observation}
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
                                     >
@@ -3918,7 +4135,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.autre"
-                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Pollokinire.autre}
+                                          value={premierExam6.Appareil_urinaire.Trouble_urinaires.Pollokinire.autre}
                                          onChange={handleChange}
                                         />
                                       </FormControl>
@@ -3985,7 +4202,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.observation"
-                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.observation}
+                                      value={premierExam6.Appareil_urinaire.Trouble_urinaires.Brûlures.observation}
                                      
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
@@ -4024,7 +4241,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.autre"
-                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Brûlures.autre}
+                                          value={premierExam6.Appareil_urinaire.Trouble_urinaires.Brûlures.autre}
                                          onChange={handleChange}
                                         />
                                       </FormControl>
@@ -4092,7 +4309,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         field.onChange(radio);
                                       }}
                                       name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.observation"
-                                      value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.observation}
+                                      value={premierExam6.Appareil_urinaire.Trouble_urinaires.Mictionnelles.observation}
                                      
                                       defaultValue={field.value}
                                       className="flex flex-col space-y-1"
@@ -4131,7 +4348,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                         <Input
                                           placeholder="observation sur le scan"
                                           name="PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.autre"
-                                          value={formData.PremierExam.Appareil_urinaire.Trouble_urinaires.Mictionnelles.autre}
+                                          value={premierExam6.Appareil_urinaire.Trouble_urinaires.Mictionnelles.autre}
                                          onChange={handleChange}
                                         />
                                       </FormControl>
@@ -4174,7 +4391,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 field.onChange(radio);
                               }}
                               name="PremierExam.Appareil_urinaire.Reins.observation"
-                              value={formData.PremierExam.Appareil_urinaire.Reins.observation}
+                              value={premierExam6.Appareil_urinaire.Reins.observation}
                             
                               defaultValue={field.value}
                               className="flex flex-col space-y-1"
@@ -4212,7 +4429,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                                 <Input
                                   placeholder="observation sur le scan"
                                   name="PremierExam.Appareil_urinaire.Reins.autre"
-                                  value={formData.PremierExam.Appareil_urinaire.Reins.autre}
+                                  value={premierExam6.Appareil_urinaire.Reins.autre}
                                   onChange={handleChange}
                                 />
                               </FormControl>
@@ -4237,7 +4454,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
           handleFilesChange={(files) => handleFilesChange(files, 'PremierExam.Appareil_urinaire.Scan')}
           name={"PremierExam.Appareil_urinaire.Scan"}
           placeholder="Appareil urinaire "
-          selectedFiles={formData.PremierExam.Appareil_urinaire.Scan}
+          selectedFiles={premierExam6.Appareil_urinaire.Scan}
           onDeleteFile={(index) => handleDeleteFile(index, 'PremierExam.Appareil_urinaire.Scan')}
         />
         </div> 
@@ -4256,7 +4473,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
               <FormControl>
                 <Input placeholder="Entrer l'alb " 
                 name="PremierExam.Alb"
-                value={formData.PremierExam.Alb}
+                value={premierExam6.Alb}
                 onChange={handleChange}
                  />
               </FormControl>
@@ -4273,7 +4490,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
               <FormControl>
                 <Input placeholder="Entrer le sucre   " 
                  name="PremierExam.Sucre"
-                 value={formData.PremierExam.Sucre}
+                 value={premierExam6.Sucre}
                  onChange={handleChange}/>
               </FormControl>
               <FormMessage />
@@ -4295,7 +4512,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                 <Textarea
                   placeholder="Entrer  Autres constatations  "
                   name="PremierExam.Autres_constatations"
-                  value={formData.PremierExam.Autres_constatations}
+                  value={premierExam6.Autres_constatations}
                   onChange={handleChange}/>
               </FormControl>
               <FormMessage />
@@ -4316,7 +4533,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                 <Textarea
                   placeholder="Entrer l'Examens complémentaires   "
                   name="PremierExam.Examens_complémentaires"
-                  value={formData.PremierExam.Examens_complémentaires}
+                  value={premierExam6.Examens_complémentaires}
                   onChange={handleChange}/>
               </FormControl>
               <FormMessage />
@@ -4336,7 +4553,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                 <Input
                   placeholder="Entrer conclusions Médicales  "
                   name="PremierExam.Conclusions_Médicales"
-                  value={formData.PremierExam.Conclusions_Médicales}
+                  value={premierExam6.Conclusions_Médicales}
                   onChange={handleChange}/>
               </FormControl>
               <FormMessage />
@@ -4356,7 +4573,7 @@ export default function Scanpage({ onFormSubmit }: FormProps) {
                 <Input
                   placeholder="Entrer conclusions  Professionnels  "
                   name="PremierExam.Conclusions_Professionnels"
-                  value={formData.PremierExam.Conclusions_Professionnels}
+                  value={premierExam6.Conclusions_Professionnels}
                   onChange={handleChange}/>
               </FormControl>
               <FormMessage />

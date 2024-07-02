@@ -126,6 +126,10 @@ export default function RootPage() {
     // Initial form data
     // Define the initial form data structure here
   });
+  const [formDataScan, setFormDataScan] = useState<any>({
+    // Initial form data
+    // Define the initial form data structure here
+  });
 
     const router = useRouter();
   const handlePrevPage = () => {
@@ -134,8 +138,18 @@ export default function RootPage() {
 
 
   const handleFormSubmit = (data :any) => {
-    // console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data));
     setFormData((prevData:any) => {
+      const newFormData = { ...prevData, ...data };
+      if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
+        return newFormData;
+      }
+      return prevData;
+    });
+  };
+  const handleFormSubmit2 = (data :any) => {
+    // console.log(JSON.stringify(data));
+    setFormDataScan((prevData:any) => {
       const newFormData = { ...prevData, ...data };
       if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
         return newFormData;
@@ -179,7 +193,9 @@ export default function RootPage() {
             )}
             {/* --------------------Anticedent Medicaux ----------------------------------- */}
             {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit} />}
-            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit} />}
+            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit}
+            //  onFormSubmitScan={handleFormSubmit2} 
+             />}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">

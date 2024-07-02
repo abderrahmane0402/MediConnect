@@ -158,7 +158,7 @@ export default function VisiteForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Maladies , accidents , arrets de travail depuis le dernier
+                  Maladies , accidents , arrts de travail depuis le dernier
                   examen :
                 </FormLabel>
                 <FormControl>

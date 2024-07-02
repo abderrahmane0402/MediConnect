@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { listMateriel } from "@/DataFetch/ListEquip";
+import { listMateriel } from "@/api/ListEquip";
 import Image from "next/image";
 
 
