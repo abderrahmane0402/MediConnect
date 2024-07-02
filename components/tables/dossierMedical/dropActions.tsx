@@ -1,5 +1,4 @@
 "use client"
-// import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Row } from "@tanstack/react-table"
 import {
   DropdownMenu,
@@ -43,6 +42,7 @@ export function DataTableRowActions<TData>({
   const id = payment.id
   console.log(id)
   const [data5, setdata5] = useState<any>()
+  
   const handleOpenPDF = async () => {
     try {
       const data1 = await getPDFDossiers(id)
@@ -58,15 +58,18 @@ export function DataTableRowActions<TData>({
       )
     }
   }
-};
-const handleDelete = async () => {
-  const result = await DeleteDossiers(id);
-  // window.open("", );
-  console.log(result);
-  // toast.success("Patient deleted successfully!");
-  router.refresh();
-  
-};
+
+  const handleDelete = async () => {
+    try {
+      const result = await DeleteDossiers(id)
+      console.log(result)
+      toast.success("Patient deleted successfully!")
+      router.refresh()
+    } catch (error) {
+      console.error("There was an error deleting the dossier!", error)
+      toast.error("Failed to delete the patient!")
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -79,43 +82,31 @@ const handleDelete = async () => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
-                 <FileText className="mr-2 h-4 w-4" />
-                 Plus de détails
-               </PDFDownloadLink> */}
-               <Link href={""} onClick={handleOpenPDF} >
-             <FileText className="mr-2 h-4 w-4" />
-             Afficher plus de détails
-           </Link>
-             </DropdownMenuItem>
-             <DropdownMenuItem asChild>
-               <Link href={"/main/visite"}>
-                 <FolderPlus className="mr-2 h-4 w-4" />
-                 Ajouter une visite
-               </Link>
-             </DropdownMenuItem>
-             <DropdownMenuItem>
-             
-             <SquarePen className="mr-2 h-4 w-4" /><Link href={"/main/dossierMedical/update"}><span>Modifer le dossier</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDelete}>
-              {/* <Ima src={data5?.PremierExam.Appareil_auditif.Scan[0]} alt=""  className=" h-4 w-4"/> */}
-              <Trash2 className="mr-2 h-4 w-4" />
-              {/* <Link href={"/dossierMedical"} onClick={handleDelete} > */}
-              Supprimer le dossier
-              {/* </Link> */}
-            </DropdownMenuItem>
-          </>
-        )}
-        <DropdownMenuItem asChild>
-          {/* <PDFDownloadLink document={<DossierMedicalPDF />}>
-                 <FileText className="mr-2 h-4 w-4" />
-                 Plus de détails
-               </PDFDownloadLink> */}
           <Link href={""} onClick={handleOpenPDF}>
             <FileText className="mr-2 h-4 w-4" />
-            Générer le pdf
+            Afficher plus de détails
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={"/main/visite"}>
+            <FolderPlus className="mr-2 h-4 w-4" />
+            Ajouter une visite
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={"/main/dossierMedical/update"}>
+            <SquarePen className="mr-2 h-4 w-4" />
+            Modifier le dossier
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleDelete}>
+          <Trash2 className="mr-2 h-4 w-4" />
+          Supprimer le dossier
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={""} onClick={handleOpenPDF}>
+            <FileText className="mr-2 h-4 w-4" />
+            Générer le PDF
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
