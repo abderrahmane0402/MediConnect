@@ -63,7 +63,7 @@ export function DataTableRowActions<TData>({
     // window.open("", );
     console.log(result)
     // toast.success("Patient deleted successfully!");
-    router.push("/dossierMedical")
+    router.push("/main/dossierMedical")
   }
 
   return (
@@ -89,14 +89,14 @@ export function DataTableRowActions<TData>({
         {user?.user_type == "medecin" && (
           <>
             <DropdownMenuItem asChild>
-              <Link href={"/visite"}>
+              <Link href={"/main/visite"}>
                 <FolderPlus className="mr-2 h-4 w-4" />
                 Ajouter une visite
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
-              <Link href={"/dossierMedical/update"}>
+              <Link href={"/main/dossierMedical/update"}>
                 <span>Modifer le dossier</span>
               </Link>
             </DropdownMenuItem>

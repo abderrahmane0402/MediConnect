@@ -15,7 +15,7 @@ import { session } from "@/stores/session"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form"
 import * as z from "zod"
 
 const formSchema = z.object({
@@ -35,7 +35,6 @@ export default function SignInForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
     try {
       const response = await fetch(`http://localhost:3001/api/auth`, {
         cache: "no-cache",
@@ -45,12 +44,20 @@ export default function SignInForm() {
         },
         body: JSON.stringify({ login: values.cin, password: values.password }),
       })
-      
+
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
         setToken(data.token)
-        router.replace("/main")
+        if (data.user.user_type == "admin") {
+          router.replace("/main")
+        }
+        if (
+          data.user.user_type == "medecin" ||
+          data.user.user_type == "secretaire"
+        ) {
+          router.replace("/main/dossierMedical")
+        }
       } else {
         console.log(await response.json())
         setError(true)
@@ -63,46 +70,44 @@ export default function SignInForm() {
 
   return (
     <FormProvider {...form}>
-
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {error && (
-          <p className="text-red-500">login ou mot de pass et incorrect</p>
-        )}
-        <FormField
-          control={form.control}
-          name="cin"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="entrer votre CIN" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          {error && (
+            <p className="text-red-500">login ou mot de pass et incorrect</p>
           )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="w-full text-center">
-          <Button type="submit" className="w-4/5">
-            Submit
-          </Button>
-        </div>
-      </form>
-    </Form>
+          <FormField
+            control={form.control}
+            name="cin"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="entrer votre CIN" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="w-full text-center">
+            <Button type="submit" className="w-4/5">
+              Submit
+            </Button>
+          </div>
+        </form>
+      </Form>
     </FormProvider>
-
   )
 }
