@@ -183,7 +183,7 @@ export default function Empl() {
                     name="cin"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>CIN  </FormLabel>
+                        <FormLabel>CIN </FormLabel>
                         <FormControl>
                           <Input placeholder="Entrer la CIN " {...field} />
                         </FormControl>
@@ -326,6 +326,9 @@ export default function Empl() {
                               administrateur
                             </SelectItem>
                             <SelectItem value="medecin">medecin</SelectItem>
+                            <SelectItem value="secretaire">
+                              secretaire
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                         {/* <FormDescription>
