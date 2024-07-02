@@ -15,7 +15,7 @@ import { session } from "@/stores/session"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, FormProvider } from "react-hook-form";
 import * as z from "zod"
 
 const formSchema = z.object({
@@ -35,7 +35,7 @@ export default function SignInForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
+    console.log("onSubmit");
     try {
       const response = await fetch(`http://localhost:3001/api/auth`, {
         cache: "no-cache",
@@ -45,12 +45,13 @@ export default function SignInForm() {
         },
         body: JSON.stringify({ login: values.cin, password: values.password }),
       })
+    console.log(response);
       
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
         setToken(data.token)
-        router.replace("/")
+        router.replace("/main")
       } else {
         console.log(await response.json())
         setError(true)
@@ -62,6 +63,8 @@ export default function SignInForm() {
   }
 
   return (
+    <FormProvider {...form}>
+
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         {error && (
@@ -100,5 +103,7 @@ export default function SignInForm() {
         </div>
       </form>
     </Form>
+    </FormProvider>
+
   )
 }

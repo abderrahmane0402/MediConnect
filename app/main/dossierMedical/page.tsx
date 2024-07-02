@@ -1,3 +1,4 @@
+import { getDossiers } from "@/api/getDossiers";
 import {
   columns
 } from "@/components/tables/dossierMedical/columns";
@@ -11,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getDossiers } from "@/DataFetch/getDossiers";
 import Link from "next/link";
 
 export interface Dossier1 {
