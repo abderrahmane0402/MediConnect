@@ -82,7 +82,7 @@ export default function RootPage() {
         <Card className="lg:col-span-4 flex flex-col">
           <CardHeader>
             <CardTitle className="text-lg font-medium">
-              Nombre de dossier traités durant années.
+              Nombre de dossiers traités durant années.
             </CardTitle>
           </CardHeader>
           <CardContent className="pl-2 flex-1">

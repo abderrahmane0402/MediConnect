@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown"
 import { pdf } from "@react-pdf/renderer"
-
 import { useState } from "react"
 import {
   FileText,
@@ -19,8 +18,6 @@ import {
   SquarePen,
   Trash2
 } from "lucide-react"
-import { useRouter } from "next/navigation"
-
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import DossierMedicalPDF from "@/components/pdfs/DossierMedicalPDF"
@@ -29,6 +26,7 @@ import { taskSchema } from "./data/schema"
 import { getPDFDossiers } from "@/api/getDossier"
 import { DeleteDossiers } from "@/api/deleteDossier"
 import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -56,11 +54,12 @@ const payment = taskSchema.parse(row.original);
   }
 };
 const handleDelete = async () => {
-
- console.log('dddddddddd'+id);
   const result = await DeleteDossiers(id);
-  router.refresh();
+  // window.open("", );
   console.log(result);
+  // toast.success("Patient deleted successfully!");
+  router.push("/dossierMedical");
+  
 };
 
   return (
@@ -95,13 +94,13 @@ const handleDelete = async () => {
               </Link>
               
              </DropdownMenuItem>
-             <DropdownMenuItem>
+             <DropdownMenuItem onClick={handleDelete}>
               {/* <Ima src={data5?.PremierExam.Appareil_auditif.Scan[0]} alt=""  className=" h-4 w-4"/> */}
                <Trash2 className="mr-2 h-4 w-4" />
-               <Link href={"/dossierMedical"} onClick={handleDelete} >
+               {/* <Link href={"/dossierMedical"} onClick={handleDelete} > */}
                Supprimer le dossier
 
-           </Link>
+           {/* </Link> */}
              </DropdownMenuItem>
              <DropdownMenuItem asChild>
                {/* <PDFDownloadLink document={<DossierMedicalPDF />}>

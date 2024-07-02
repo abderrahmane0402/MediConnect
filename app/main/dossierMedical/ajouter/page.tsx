@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -86,10 +85,7 @@ const formSchema = z.object({
     message: "Formation sanitaire  must be at least 2 characters.",
   }),
 });
-const LOCAL_STORAGE_KEY = "formData";
-const LOCAL_STORAGE_KEY1 = "formData1";
-const LOCAL_STORAGE_KEY2 = "formData2";
-const LOCAL_STORAGE_KEY5 = "scanPageData";
+
 
 export default function RootPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -130,6 +126,10 @@ export default function RootPage() {
     // Initial form data
     // Define the initial form data structure here
   });
+  const [formDataScan, setFormDataScan] = useState<any>({
+    // Initial form data
+    // Define the initial form data structure here
+  });
 
     const router = useRouter();
   const handlePrevPage = () => {
@@ -138,8 +138,18 @@ export default function RootPage() {
 
 
   const handleFormSubmit = (data :any) => {
-    // console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data));
     setFormData((prevData:any) => {
+      const newFormData = { ...prevData, ...data };
+      if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
+        return newFormData;
+      }
+      return prevData;
+    });
+  };
+  const handleFormSubmit2 = (data :any) => {
+    // console.log(JSON.stringify(data));
+    setFormDataScan((prevData:any) => {
       const newFormData = { ...prevData, ...data };
       if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
         return newFormData;
@@ -151,7 +161,7 @@ export default function RootPage() {
   const handleFormSubmitglobale = async () => {
     try {
       console.log(JSON.stringify(formData));
-      const response = await fetch("http://localhost:5661/add_Dossier", {
+      const response = await fetch("http://localhost:3001/dossier/add_Dossier", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -183,7 +193,9 @@ export default function RootPage() {
             )}
             {/* --------------------Anticedent Medicaux ----------------------------------- */}
             {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit} />}
-            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit} />}
+            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit}
+            //  onFormSubmitScan={handleFormSubmit2} 
+             />}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">

@@ -1,4 +1,4 @@
-
+"use client"
 import * as React from "react";
 import {
   ColumnDef,
@@ -14,6 +14,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
+export const dynamic = 'force-dynamic'
 
 
 

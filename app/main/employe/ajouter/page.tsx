@@ -94,7 +94,7 @@ export default function Empl() {
           <Card className="">
             <div className=" flex flex-col gap-3  {isVisible ? '' : 'hidden'} ">
               <CardTitle className=" h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
-                Information Personnelle d'employe
+                Informations Personnelles de l'employé
                 <br />
               </CardTitle>
               <div className="flex flex-row w-full gap-2 ">
@@ -160,7 +160,7 @@ export default function Empl() {
                     name="telephone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel></FormLabel>telephone
+                        <FormLabel></FormLabel>Télephone
                         <FormControl>
                           <Input
                             type="text"
@@ -183,7 +183,7 @@ export default function Empl() {
                     name="cin"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>CIN : </FormLabel>
+                        <FormLabel>CIN  </FormLabel>
                         <FormControl>
                           <Input placeholder="Entrer la CIN " {...field} />
                         </FormControl>
@@ -267,7 +267,7 @@ export default function Empl() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>mot de passe</FormLabel>
+                        <FormLabel>Mot de passe</FormLabel>
                         <FormControl>
                           <Input
                             type="password"
@@ -288,7 +288,7 @@ export default function Empl() {
                     name="confirmPassword"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>confirmer le mot de passe</FormLabel>
+                        <FormLabel>Confirmer le mot de passe</FormLabel>
                         <FormControl>
                           <Input
                             type="password"
@@ -339,7 +339,7 @@ export default function Empl() {
               </div>
             </div>
             <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Ajouter</Button>
             </div>
           </Card>
         </form>

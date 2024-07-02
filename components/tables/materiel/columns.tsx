@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import myAxios from "@/lib/axios";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
@@ -16,19 +17,21 @@ import {
   SquarePen,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export type Equipement = {
-  id: number;
+  _id : any
   nomEquipement: string;
   etat: boolean;
   operationel: boolean;
 };
 
 export const equipementColumns: ColumnDef<Equipement>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "ID",
+  // },
   {
     accessorKey: "nomEquipement",
     header: "Nom de l'équipement",
@@ -38,7 +41,7 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
     header: "État",
     cell: ({ row }) => {
       const op = row.getValue("etat");
-      return op ? "disponible" : "indisponible";
+      return op || op=="true"  ? "Disponible" : "Indisponible";
     },
   },
   {
@@ -46,14 +49,18 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
     header: "Opérationnel",
     cell: ({ row }) => {
       const op = row.getValue("operationel");
-      return op ? "est Opérationnel" : "non Opérationnel";
+      return op || op=="true"  ? "Oui" : "Non";
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const router = useRouter();
       const equipement = row.original;
+      // console.log(equipement.id);
+      // console.log(equipement._id);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -66,11 +73,21 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
-              Modifier Equipement
+              <Link
+        href={{
+          pathname: '/materiel/update',
+          query: {
+            data: JSON.stringify(equipement)
+          }
+        }}
+      >Modifier Equipement</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Trash2 className="mr-2 h-4 w-4" />
-              Supprimer Equipement
+            <DropdownMenuItem onClick={async()  => {
+              await myAxios.delete(`materiel/delete/${equipement._id}`)
+              router.refresh();
+            }}>
+              <Trash2 className="mr-2 h-4 w-4"  />
+            Supprimer Equipement
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

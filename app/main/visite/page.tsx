@@ -7,7 +7,7 @@ const Visite = () => {
   return (
     <Card className="flex flex-col">
       <CardHeader>
-        <CardTitle className="text-center">Visite Periodique</CardTitle>
+        <CardTitle className="text-center">Visite Périodique</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
         <VisiteForm />

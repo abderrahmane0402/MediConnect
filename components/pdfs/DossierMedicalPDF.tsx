@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
 });
 
 export default function DossierMedicalPDF(data: any) {
+  console.log(data);
   console.log(data?.data?.Vaccinationautre);
   // console.log(data?.data?.PremierExam.Appareil_auditif.Scan[0]);
   // data?.data?.PremierExam.Appareil_auditif.Scan?.map((scan : any,  index : any) => (
@@ -381,7 +382,7 @@ export default function DossierMedicalPDF(data: any) {
                   // ) : (
                   // <Text>No vaccination data available</Text>)
                 }
-                {
+                {/* {
                   data?.data?.Vaccinationautre.slice(1).map(
                     (vaccination: any, index: any) => (
                       <View
@@ -438,7 +439,7 @@ export default function DossierMedicalPDF(data: any) {
                   )
                   // ) : (
                   // <Text>No vaccination data available</Text>)
-                }
+                } */}
               </View>
             </View>
             <View style={{ flex: 1, position: "relative" }}>

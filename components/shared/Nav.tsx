@@ -50,7 +50,7 @@ export default function Nav() {
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               <ListItem
                 href="/main/dossierMedical"
-                title="List des dossiers medicaux"
+                title="Liste des dossiers medicaux"
               >
                 Cette page contient la list des dossiers medicaux
               </ListItem>
@@ -81,7 +81,7 @@ export default function Nav() {
               <ListItem href="/employe/ajouterheader" title="Ajouter un employé">
                 Cette page enregistre un nouveau employé
               </ListItem> */}
-              <ListItem href="/main/materiel" title="Equipement médical">
+              <ListItem href="/main/materiel" title="Liste des équipements médicaux">
                 Cette page affiche les informations sur les équipements médicaux
               </ListItem>
               <ListItem
@@ -101,11 +101,11 @@ export default function Nav() {
                 : ""
             }
           >
-            Employés
+          Employés
           </NavigationMenuTrigger>
           <NavigationMenuContent className="z-50">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/main/employe" title="Employés">
+              <ListItem href="/main/employe" title="Liste des employés">
                 Cette page contient la list des employés du cabinet
               </ListItem>
               <ListItem href="/main/employe/ajouter" title="Ajouter un employé">
@@ -120,7 +120,7 @@ export default function Nav() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link href="/rapport" legacyBehavior passHref>
             <NavigationMenuLink
               className={cn(
@@ -132,7 +132,7 @@ export default function Nav() {
               Rapport
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         {/* <NavigationMenuItem>
           <Link href="/pdf" legacyBehavior passHref>
             <NavigationMenuLink

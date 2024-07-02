@@ -21,8 +21,6 @@ import { FormData, FormData4 } from "@/lib/FormData";
 interface FormProps {
   onFormSubmit: (formData: FormData4) => void;
 }
-const LOCAL_STORAGE_KEY = "formData";
-
 
 const antece = [
   { label: "Hyperthyroïdie", value: "Hyperthyroïdie" },

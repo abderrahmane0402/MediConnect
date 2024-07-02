@@ -60,11 +60,11 @@ export const employeColumns: ColumnDef<employe>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
-              Modifer dossier
+              Modifer employé
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Trash2 className="mr-2 h-4 w-4" />
-              Supprimer dossier
+              Supprimer employé
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
