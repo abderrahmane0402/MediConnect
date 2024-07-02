@@ -1,4 +1,5 @@
 "use client"
+import { getPDFDossiers } from "@/api/getDossier";
 import { columns } from "@/components/tables/dossierMedical/columns"
 import { DataTable } from "@/components/tables/dossierMedical/table-data"
 import { Button } from "@/components/ui/button"
