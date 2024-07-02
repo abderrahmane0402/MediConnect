@@ -340,7 +340,7 @@ export default function DossierMedicalPDF(data: any) {
                             width: "20%",
                             textAlign: "center",
                             borderRight: 1,
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.Type}
@@ -350,7 +350,7 @@ export default function DossierMedicalPDF(data: any) {
                             width: "20%",
                             textAlign: "center",
                             borderRight: 1,
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.date_V
@@ -362,7 +362,7 @@ export default function DossierMedicalPDF(data: any) {
                             width: "20%",
                             textAlign: "center",
                             borderRight: 1,
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.Rappels}
@@ -371,7 +371,7 @@ export default function DossierMedicalPDF(data: any) {
                           style={{
                             flex: 1,
                             textAlign: "center",
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.observation}
@@ -382,8 +382,8 @@ export default function DossierMedicalPDF(data: any) {
                   // ) : (
                   // <Text>No vaccination data available</Text>)
                 }
-                {/* {
-                  data?.data?.Vaccinationautre.slice(1).map(
+                {data?.data?.Vaccinationautre?.length > 1 ? (
+                  data.data.Vaccinationautre.slice(1).map(
                     (vaccination: any, index: any) => (
                       <View
                         key={index}
@@ -398,7 +398,7 @@ export default function DossierMedicalPDF(data: any) {
                             width: "20%",
                             textAlign: "center",
                             borderRight: 1,
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.Type}
@@ -408,7 +408,7 @@ export default function DossierMedicalPDF(data: any) {
                             width: "20%",
                             textAlign: "center",
                             borderRight: 1,
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.date_V
@@ -420,7 +420,7 @@ export default function DossierMedicalPDF(data: any) {
                             width: "20%",
                             textAlign: "center",
                             borderRight: 1,
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.Rappels}
@@ -429,7 +429,7 @@ export default function DossierMedicalPDF(data: any) {
                           style={{
                             flex: 1,
                             textAlign: "center",
-                            paddingVertical: 5,
+                            paddingVertical: 2,
                           }}
                         >
                           {vaccination.observation}
@@ -437,9 +437,9 @@ export default function DossierMedicalPDF(data: any) {
                       </View>
                     )
                   )
-                  // ) : (
-                  // <Text>No vaccination data available</Text>)
-                } */}
+                ) : (
+                  <Text></Text>
+                )}
               </View>
             </View>
             <View style={{ flex: 1, position: "relative" }}>
@@ -1908,281 +1908,423 @@ export default function DossierMedicalPDF(data: any) {
         </View>
       </Page>
       <Page size="A4" style={styles.page}>
-        
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil auditif:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_auditif?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil auditif:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_auditif?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil oculaire:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_Oculaire?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil oculaire:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_Oculaire?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'examen radiologique:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Examen_radiologique?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'examen radiologique:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Examen_radiologique?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil réspiratoire rhinopharynx:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_respiratoire_rhinopharynx?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil réspiratoire rhinopharynx:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_respiratoire_rhinopharynx?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil cadiovasculaire:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_cadiovasculaire?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil cadiovasculaire:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_cadiovasculaire?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil digestif:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_digestif?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil digestif:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_digestif?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil hématologique réticulaire:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_hématologique_réticulaire?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil hématologique réticulaire:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_hématologique_réticulaire?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan Glandes endocriniennes:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Glandes_endocriniennes?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan Glandes endocriniennes:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Glandes_endocriniennes?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan Système nerveux:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Système_nerveux?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan Système nerveux:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Système_nerveux?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan de Psychisme:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Psychisme?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan de Psychisme:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Psychisme?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil locomoteur:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_locomoteur?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil locomoteur:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_locomoteur?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil génital:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_génital?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
-        
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil génital:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_génital?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
+
         {data?.data?.PremierExam?.Appareil_génital?.Scan?.length > 0 ? (
           <View style={{ textAlign: "center", marginBottom: 15 }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-            Scan d'appareil génital:
-          </Text>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-           <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{data?.data?.PremierExam?.Appareil_génital?.Scan?.map(
-            (scan: string, index: any) => (
-              <Image
-                key={index}
-                src={scan}
-                style={{  width: "30%", height: "auto", marginVertical: 5 }}
-              />
-            )
-          )}</View>
-          <View
-            style={{ borderBottom: "1px solid black", marginVertical: 5 }}
-          ></View>
-        </View> ):("") }
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              Scan d'appareil génital:
+            </Text>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {data?.data?.PremierExam?.Appareil_génital?.Scan?.map(
+                (scan: string, index: any) => (
+                  <Image
+                    key={index}
+                    src={scan}
+                    style={{ width: "30%", height: "auto", marginVertical: 5 }}
+                  />
+                )
+              )}
+            </View>
+            <View
+              style={{ borderBottom: "1px solid black", marginVertical: 5 }}
+            ></View>
+          </View>
+        ) : (
+          ""
+        )}
       </Page>
     </Document>
   );

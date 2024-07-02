@@ -15,7 +15,7 @@ import { Textarea } from "../ui/textarea"
 
 const formSchema = z.object({
   date: z.date(),
-  docteur: z.string(),
+  docteur: z.string().default("aa"),
   postTravail: z.string(),
   poid: z.number(),
   taille: z.number(),
@@ -49,6 +49,7 @@ export default function VisiteForm() {
                   <Input
                     placeholder="Entrer la nom du docteur"
                     type="text"
+                    defaultValue={""}
                     {...field}
                   />
                 </FormControl>

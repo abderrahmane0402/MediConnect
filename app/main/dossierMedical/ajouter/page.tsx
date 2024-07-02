@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { useForm ,FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
@@ -83,6 +83,11 @@ const formSchema = z.object({
     }),
   Form_Sani_Hpt: z.string().min(2, {
     message: "Formation sanitaire  must be at least 2 characters.",
+  }),
+  PremierExam :z.object({
+    Docteur: z.string().nonempty("Le nom de l'équipement est oblégatoire"),
+    // etat: z.boolean(),
+    // operationel: z.boolean(),
   }),
 });
 
@@ -172,22 +177,27 @@ export default function RootPage() {
       // clearFormData();
       resetFormData();
 
-      router.push("/dossierMedical");
+      router.push("/main/dossierMedical");
       console.log(data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
-
+  const handleSubmit4 = (data :any) => {
+    console.log(data);
+  }
   return (
     <>
-      <Form {...form}>
-        <Card className="">
+<FormProvider {...form}>
+<Form {...form}>   
+       <Card className="">
           <form
-            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-              e.preventDefault(); // Prevent default form submission
-              handleFormSubmitglobale(); 
-            }}>
+            // onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            //   e.preventDefault(); // Prevent default form submission
+            //   handleFormSubmitglobale(); 
+            // }}
+            onSubmit={form.handleSubmit(handleSubmit4)} className="space-y-8"
+            >
             {current_page === 1 && (
               <InfoGeneral onFormSubmit={handleFormSubmit} />
             )}
@@ -218,13 +228,16 @@ export default function RootPage() {
               </Button>
             )}
             {current_page === 3 && (
-              <Button type="button" onClick={handleFormSubmitglobale}>
+              <Button type="button" 
+              // onClick={handleFormSubmitglobale}
+              >
                 Submit
               </Button>
             )}
           </div>
         </Card>
       </Form>
+      </FormProvider>
     </>
   );
 }

@@ -56,7 +56,8 @@ const formSchema = z.object({
       <FormProvider {...form}>
         <Form {...form}>
           <Card className="">
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+            <form
+             onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
               <div className="flex flex-col gap-3">
                 <CardTitle className="h-8 pt-2 text-center text-black text-2xl font-semibold font-['Inter']">
                   Information sur l'équipement médical

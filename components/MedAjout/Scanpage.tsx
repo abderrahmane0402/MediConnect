@@ -24,7 +24,9 @@ import { Checkbox } from "../ui/checkbox";
 // import { tree } from "next/dist/build/templates/app-page";
 import { FormData, PremierExam } from "@/lib/FormData";
 import { Scan } from "lucide-react";
-import { boolean } from "zod";
+import { boolean, z } from "zod";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 interface FormProps {
@@ -171,6 +173,11 @@ interface FormData1 {
     Conclusions_Professionnels: string;
   };
 }
+const formSchema = z.object({
+  Docteur: z.string().nonempty("Le nom de l'équipement est oblégatoire"),
+  // etat: z.boolean(),
+  // operationel: z.boolean(),
+});
 const initialPremierExam1 = {
   Date_exam: "", // Initialize with today's date in YYYY-MM-DD format
   Docteur: "Dr Najdioui",
@@ -418,7 +425,12 @@ export default function Scanpage({ onFormSubmit}: FormProps) {
   const [premierExam4, setPremierExam4] = useState(initialPremierExam4);
   const [premierExam5, setPremierExam5] = useState(initialPremierExam5);
   const [premierExam6, setPremierExam6] = useState(initialPremierExam6);
-
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      Docteur: "Dr Najdioui",
+    },
+  });
   useEffect(() => {
     const formData = {
       PremierExam: {

@@ -1,7 +1,9 @@
+"use client"
 import { getPDFDossiers } from "@/api/getDossier";
 import { getDossiers } from "@/api/getDossiers";
 import {
-  columns
+  columns,
+  Dossier
 } from "@/components/tables/dossierMedical/columns";
 import { DataTable } from "@/components/tables/dossierMedical/table-data";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,7 @@ import {
 } from "@/components/ui/card";
 
 import Link from "next/link";
+import { useState } from "react";
 
 export interface Dossier1 {
   InfoPersonnel: {
@@ -51,7 +54,7 @@ export interface Dossier1 {
   }[];
 }
 export default  async function  DossierMedical() {
-  // const [dossiers, setDossiers] = useState<Dossier[]>([]);
+  // const [dossiers1, setDossiers] = useState<Dossier[]>([]);
   const dossiers = await getDossiers();
     // session.user!.token!
 

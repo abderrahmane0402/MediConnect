@@ -58,7 +58,7 @@ const handleDelete = async () => {
   // window.open("", );
   console.log(result);
   // toast.success("Patient deleted successfully!");
-  router.push("/dossierMedical");
+  router.refresh();
   
 };
 
@@ -83,14 +83,14 @@ const handleDelete = async () => {
            </Link>
              </DropdownMenuItem>
              <DropdownMenuItem asChild>
-               <Link href={"/visite"}>
+               <Link href={"/main/visite"}>
                  <FolderPlus className="mr-2 h-4 w-4" />
                  Ajouter une visite
                </Link>
              </DropdownMenuItem>
              <DropdownMenuItem>
              
-             <SquarePen className="mr-2 h-4 w-4" /><Link href={"/dossierMedical/update"}><span>Modifer le dossier</span>
+             <SquarePen className="mr-2 h-4 w-4" /><Link href={"/main/dossierMedical/update"}><span>Modifer le dossier</span>
               </Link>
               
              </DropdownMenuItem>
