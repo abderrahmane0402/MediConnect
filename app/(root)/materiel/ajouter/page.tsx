@@ -1,6 +1,6 @@
 "use client";
-import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Card, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -10,9 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Card, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -21,7 +18,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import myAxios from "@/lib/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
     nomEquipement: z.string().nonempty("Le nom de l'équipement est oblégatoire"),

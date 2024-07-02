@@ -29,6 +29,7 @@ import { boolean } from "zod";
 
 interface FormProps {
   onFormSubmit: (formData: FormData1) => void;
+
 }
 interface FormData1 {
   PremierExam: {
@@ -265,7 +266,7 @@ const initialPremierExam6 = {
   Conclusions_Médicales: "",
   Conclusions_Professionnels: "",
 };
-export default function Scanpage({ onFormSubmit }: FormProps) {
+export default function Scanpage({ onFormSubmit}: FormProps) {
   // const [formData, setFormData] = useState<FormData1>({
   //   PremierExam: {
   //     Date_exam: "", // Initialize with today's date in YYYY-MM-DD format
