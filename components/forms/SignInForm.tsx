@@ -35,7 +35,6 @@ export default function SignInForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
     try {
       const response = await fetch(`http://localhost:3001/api/auth`, {
         cache: "no-cache",
@@ -45,12 +44,22 @@ export default function SignInForm() {
         },
         body: JSON.stringify({ login: values.cin, password: values.password }),
       })
-      
+
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
         setToken(data.token)
-        router.replace("/")
+        if (data.user.user_type === "medecin") {
+          router.replace("/main/dossierMedical")
+        }
+
+        if (data.user.user_type === "secretaire") {
+          router.replace("/main/dossierMedical")
+        }
+
+        if (data.user.user_type === "admin") {
+          router.replace("/main")
+        }
       } else {
         console.log(await response.json())
         setError(true)

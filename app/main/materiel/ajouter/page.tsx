@@ -47,7 +47,7 @@ const formSchema = z.object({
         const res = await myAxios.post("/materiel/add", data);
         console.log("Response: ", res.data);
         if (res?.status === 201) {
-        router.push("/materiel");
+        router.push("/main/materiel")
         console.log("push");
         }
       } catch (err : any) {

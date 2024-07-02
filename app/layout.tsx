@@ -3,7 +3,6 @@ import { Roboto } from "next/font/google"
 import "./globals.css"
 import Server from "@/components/serverStart"
 import ReactQueryProvider from "@/components/ReactQueryProvider"
-import RedirectLogin from "@/components/redirect"
 
 const inter = Roboto({
   subsets: ["latin"],

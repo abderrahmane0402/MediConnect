@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getDossiers } from "@/DataFetch/getDossiers";
+import { getDossiers } from "@/api/getDossiers";
 import Link from "next/link";
 
 export interface Dossier1 {
