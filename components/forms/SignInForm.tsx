@@ -35,7 +35,7 @@ export default function SignInForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("onSubmit");
+    
     try {
       const response = await fetch(`http://localhost:3001/api/auth`, {
         cache: "no-cache",
@@ -45,7 +45,6 @@ export default function SignInForm() {
         },
         body: JSON.stringify({ login: values.cin, password: values.password }),
       })
-    console.log(response);
       
       if (response.ok) {
         const data = await response.json()

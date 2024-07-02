@@ -1,3 +1,4 @@
+import { getPDFDossiers } from "@/api/getDossier";
 import { getDossiers } from "@/api/getDossiers";
 import {
   columns
@@ -12,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import Link from "next/link";
 
 export interface Dossier1 {

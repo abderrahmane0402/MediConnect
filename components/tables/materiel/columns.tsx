@@ -74,24 +74,28 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
               <Link
-        href={{
-          pathname: '/materiel/update',
-          query: {
-            data: JSON.stringify(equipement)
-          }
-        }}
-      >Modifier Equipement</Link>
+                href={{
+                  pathname: "/main/materiel/update",
+                  query: {
+                    data: JSON.stringify(equipement),
+                  },
+                }}
+              >
+                Modifier Equipement
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={async()  => {
-              await myAxios.delete(`materiel/delete/${equipement._id}`)
-              router.refresh();
-            }}>
-              <Trash2 className="mr-2 h-4 w-4"  />
-            Supprimer Equipement
+            <DropdownMenuItem
+              onClick={async () => {
+                await myAxios.delete(`materiel/delete/${equipement._id}`)
+                router.refresh()
+              }}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Supprimer Equipement
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
 ];

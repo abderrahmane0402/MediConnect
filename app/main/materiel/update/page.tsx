@@ -44,7 +44,7 @@ console.log(equipmentData._id);
     try {
       const res = await myAxios.put(`/materiel/put/${equipmentData?._id}`, data);
       if (res?.status === 200) {
-        router.push("/materiel");
+        router.push("/main/materiel")
       }
     } catch (err) {
       console.error("Failed to update equipment:", err);
