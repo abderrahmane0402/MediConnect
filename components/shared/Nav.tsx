@@ -29,7 +29,7 @@ export default function Nav() {
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),
-                path == "/" && "border-b-2 text-green-600 border-green-600"
+                path == "/main" && "border-b-2 text-green-600 border-green-600"
               )}
             >
               Acceuil
@@ -39,7 +39,7 @@ export default function Nav() {
         <NavigationMenuItem>
           <NavigationMenuTrigger
             className={
-              path == "/dossierMedical"
+              path == "/main/dossierMedical"
                 ? "border-b-2 text-green-600 border-green-600"
                 : ""
             }
@@ -48,14 +48,17 @@ export default function Nav() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/dossierMedical" title="List des dossiers medicaux">
+              <ListItem
+                href="/main/dossierMedical"
+                title="List des dossiers medicaux"
+              >
                 Cette page contient la list des dossiers medicaux
               </ListItem>
               <ListItem
-                href="/dossierMedical/ajouter"
+                href="/main/dossierMedical/ajouter"
                 title="Ajouter un nouveau dossier medical"
               >
-                Cette page enregistre un nouveau dossier medical. 
+                Cette page enregistre un nouveau dossier medical.
               </ListItem>
             </ul>
           </NavigationMenuContent>
@@ -63,7 +66,7 @@ export default function Nav() {
         <NavigationMenuItem>
           <NavigationMenuTrigger
             className={
-              path == "/materiel" 
+              path == "/main/materiel"
                 ? "border-b-2 text-green-600 border-green-600"
                 : ""
             }
@@ -78,10 +81,13 @@ export default function Nav() {
               <ListItem href="/employe/ajouterheader" title="Ajouter un employé">
                 Cette page enregistre un nouveau employé
               </ListItem> */}
-              <ListItem href="/materiel" title="Equipement médical">
+              <ListItem href="/main/materiel" title="Equipement médical">
                 Cette page affiche les informations sur les équipements médicaux
               </ListItem>
-              <ListItem href="/materiel/ajouter" title="Ajouter un Equipement médical">
+              <ListItem
+                href="/main/materiel/ajouter"
+                title="Ajouter un Equipement médical"
+              >
                 Cette page enregistre un nouveau équipement médical
               </ListItem>
             </ul>
@@ -90,7 +96,7 @@ export default function Nav() {
         <NavigationMenuItem>
           <NavigationMenuTrigger
             className={
-               path == "employer"
+              path == "/main/employer"
                 ? "border-b-2 text-green-600 border-green-600"
                 : ""
             }
@@ -99,10 +105,10 @@ export default function Nav() {
           </NavigationMenuTrigger>
           <NavigationMenuContent className="z-50">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/employe" title="Employés">
+              <ListItem href="/main/employe" title="Employés">
                 Cette page contient la list des employés du cabinet
               </ListItem>
-              <ListItem href="/employe/ajouter" title="Ajouter un employé">
+              <ListItem href="/main/employe/ajouter" title="Ajouter un employé">
                 Cette page enregistre un nouveau employé
               </ListItem>
               {/* <ListItem href="/materiel" title="Equipement médical">

@@ -60,15 +60,34 @@ export async function deleteUser(id: string) {
 }
 
 export async function getUser(id: string) {
-  const options = {
+  const response = await fetch(`http://localhost:3001/user/getUser/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-store",
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to get user")
+  }
+
+  const data = await response.json()
+
+  return data
+}
+
+export async function updateUser(user:any) {
+  const options = {
+    method: "put",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user.data),
   }
 
   const response = await fetch(
-    `http://localhost:3001/user/getUser/${id}`,
+    `http://localhost:3001/user/updateUser/${user.id}`,
     options
   )
 

@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 export default function SignInForm() {
   const router = useRouter()
-  const { setToken, setUser, user } = session((state) => state)
+  const { setToken, setUser } = session((state) => state)
   const [error, setError] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,6 +35,7 @@ export default function SignInForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    
     try {
       const response = await fetch(`http://localhost:3001/api/auth`, {
         cache: "no-cache",
@@ -44,6 +45,7 @@ export default function SignInForm() {
         },
         body: JSON.stringify({ login: values.cin, password: values.password }),
       })
+      
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
