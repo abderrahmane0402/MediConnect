@@ -60,6 +60,11 @@ export function DataTableRowActions<TData>({
   }
 
   const handleDelete = async () => {
+    const result = await DeleteDossiers(id)
+    // window.open("", );
+    console.log(result)
+    // toast.success("Patient deleted successfully!");
+    router.push("/main/dossierMedical")
     try {
       const result = await DeleteDossiers(id)
       console.log(result)
@@ -87,6 +92,29 @@ export function DataTableRowActions<TData>({
             Afficher plus de détails
           </Link>
         </DropdownMenuItem>
+        {user?.user_type == "medecin" && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link href={"/main/visite"}>
+                <FolderPlus className="mr-2 h-4 w-4" />
+                Ajouter une visite
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <SquarePen className="mr-2 h-4 w-4" />
+              <Link href={"/main/dossierMedical/update"}>
+                <span>Modifer le dossier</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete}>
+              {/* <Ima src={data5?.PremierExam.Appareil_auditif.Scan[0]} alt=""  className=" h-4 w-4"/> */}
+              <Trash2 className="mr-2 h-4 w-4" />
+              {/* <Link href={"/dossierMedical"} onClick={handleDelete} > */}
+              Supprimer le dossier
+              {/* </Link> */}
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuItem asChild>
           <Link href={"/main/visite"}>
             <FolderPlus className="mr-2 h-4 w-4" />
