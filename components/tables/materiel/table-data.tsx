@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+export const dynamic = 'force-dynamic'
 
 export function EquipementDataTable<TData, TValue>({
   columns,

@@ -1,15 +1,15 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import {
-  Form
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { Form } from "@/components/ui/form";
+import { useForm ,FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-import InfoGeneral2 from "@/components/MedAjout/InfoGenerale2";
+import InfoGeneral, { useFormStore } from "@/components/MedAjout/InfoGenerale";
+import Antecedents from "@/components/MedAjout/Antecedents";
+import Scanpage from "@/components/MedAjout/Scanpage";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   nom: z.string().min(2, {
@@ -84,7 +84,13 @@ const formSchema = z.object({
   Form_Sani_Hpt: z.string().min(2, {
     message: "Formation sanitaire  must be at least 2 characters.",
   }),
+  PremierExam :z.object({
+    Docteur: z.string().nonempty("Le nom de l'équipement est oblégatoire"),
+    // etat: z.boolean(),
+    // operationel: z.boolean(),
+  }),
 });
+
 
 export default function RootPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -112,42 +118,94 @@ export default function RootPage() {
       form_scol_profss: "",
     },
   });
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  const handleSubmit = () => {};
 
   const last_page: number = 3;
   const [current_page, setCurrentPage] = useState(1);
- 
-
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, last_page));
   };
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  //@ts-ignore
+  const [formData, setFormData] = useState<any>({
+    // Initial form data
+    // Define the initial form data structure here
+  });
+  const [formDataScan, setFormDataScan] = useState<any>({
+    // Initial form data
+    // Define the initial form data structure here
+  });
+
+    const router = useRouter();
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  return (
 
+  const handleFormSubmit = (data :any) => {
+    console.log(JSON.stringify(data));
+    setFormData((prevData:any) => {
+      const newFormData = { ...prevData, ...data };
+      if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
+        return newFormData;
+      }
+      return prevData;
+    });
+  };
+  const handleFormSubmit2 = (data :any) => {
+    // console.log(JSON.stringify(data));
+    setFormDataScan((prevData:any) => {
+      const newFormData = { ...prevData, ...data };
+      if (JSON.stringify(prevData) !== JSON.stringify(newFormData)) {
+        return newFormData;
+      }
+      return prevData;
+    });
+  };
+  const {resetFormData } = useFormStore();
+  const handleFormSubmitglobale = async () => {
+    try {
+      console.log(JSON.stringify(formData));
+      const response = await fetch("http://localhost:3001/dossier/add_Dossier", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      // clearFormData();
+      resetFormData();
+
+      router.push("/main/dossierMedical");
+      console.log(data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+  const handleSubmit4 = (data :any) => {
+    console.log(data);
+  }
+  return (
     <>
-     { isClient ?
-      <Form {...form}>
-        <Card className="">
+<FormProvider {...form}>
+<Form {...form}>   
+       <Card className="">
           <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-8"
-          >
-            {current_page === 1 && ( <InfoGeneral2 />
+            // onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            //   e.preventDefault(); // Prevent default form submission
+            //   handleFormSubmitglobale(); 
+            // }}
+            onSubmit={form.handleSubmit(handleSubmit4)} className="space-y-8"
+            >
+            {current_page === 1 && (
+              <InfoGeneral onFormSubmit={handleFormSubmit} disabed={false} />
             )}
+            {/* --------------------Anticedent Medicaux ----------------------------------- */}
+            {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit}  disabed={false}   />}
+            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit}  disabed={false}  
+            //  onFormSubmitScan={handleFormSubmit2} 
+             />}
           </form>
 
           <div className="flex items-center justify-center gap-2  w-full pb-2 pt-7">
@@ -159,16 +217,27 @@ export default function RootPage() {
               {current_page}/{last_page}{" "}
             </div>
             {current_page != 3 && (
-              <Button className=" " onClick={handleNextPage}>
+              <Button
+                className=""
+                onClick={() => {
+                  handleNextPage(); 
+
+                }}
+              >
                 Next
               </Button>
             )}
-            {current_page === 3 && <Button type="submit">Submit</Button>}
+            {current_page === 3 && (
+              <Button type="button" 
+              // onClick={handleFormSubmitglobale}
+              >
+                Submit
+              </Button>
+            )}
           </div>
         </Card>
       </Form>
-
-  : null}
+      </FormProvider>
     </>
   );
 }

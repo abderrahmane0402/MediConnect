@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+export const dynamic = 'force-dynamic'
 
 export type Equipement = {
   _id : any
@@ -56,13 +58,68 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const router = useRouter();
       const equipement = row.original;
       // console.log(equipement.id);
       // console.log(equipement._id);
+      const router = useRouter();
+
+      router.refresh()
 
       return (
-        <DropdownMenu>
+        <>
+        {/* <Dialog open={logoutOpen} onOpenChange={setLogOutOpen} >
+        <DialogContent className="bg-white">
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action expire your session and you have to login back to
+              access your dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end space-x-4">
+            <Button
+              variant="destructive"
+              onClick={() => {
+                logoutUser();
+              }}
+              className="bg-red-500"
+            >
+              Yes Logout!
+            </Button>
+            <DialogClose>
+              <Button>Cancel</Button>
+            </DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Profile Image update  */}
+      {/* <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
+        <DialogContent onInteractOutside={(e) => e.preventDefault()}>
+          <DialogHeader>
+            <DialogTitle>Change profile</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={updateProfile}>
+            <div className="mb-2">
+              <Label htmlFor="profile">Profile Image</Label>
+              <Input
+                type="file"
+                onChange={handleImageChange}
+                className="file:text-white"
+                accept="image/png,image/svg,image/jpeg,image/webp"
+              />
+              <span className="text-red-400">{errors.profile_image?.[0]}</span>
+            </div>
+            <div className="mb-2">
+              <Button className="w-full" disabled={loading}>
+                {" "}
+                {loading ? "Processing.." : "Update Profile"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog> */} 
+      <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
               <MoreHorizontal className="h-4 w-4" />
@@ -95,6 +152,8 @@ export const equipementColumns: ColumnDef<Equipement>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </>
+        
       )
     },
   },

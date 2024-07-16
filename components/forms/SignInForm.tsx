@@ -80,9 +80,9 @@ export default function SignInForm() {
             name="cin"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>CIN</FormLabel>
                 <FormControl>
-                  <Input placeholder="entrer votre CIN" {...field} />
+                  <Input placeholder="entrer votre cin" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

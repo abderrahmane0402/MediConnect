@@ -22,7 +22,7 @@ export default function RootPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-center sm:text-start">
-              2500
+              3
             </div>
             <p className="text-xs text-muted-foreground text-center sm:text-start">
               +20.1% du mois dernier.
@@ -38,10 +38,10 @@ export default function RootPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-center sm:text-start">
-              2320
+              5
             </div>
             <p className="text-xs text-muted-foreground text-center sm:text-start">
-              +5.55% du mois dernier.
+              +1.55% du mois dernier.
             </p>
           </CardContent>
         </Card>
@@ -54,7 +54,7 @@ export default function RootPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-center sm:text-start">
-              120
+              2
             </div>
             <p className="text-xs text-muted-foreground text-center sm:text-start">
               Dossier ajouter ce mois
@@ -70,7 +70,7 @@ export default function RootPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-center sm:text-start">
-              120
+              3
             </div>
             <p className="text-xs text-muted-foreground text-center sm:text-start">
               Dossier ajouter ce mois

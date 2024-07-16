@@ -18,7 +18,9 @@ import {
 import create from 'zustand';
 import { z } from "zod";
 interface FormProps {
-  onFormSubmit: (formData: FormData) => void;
+  onFormSubmit : (formData: FormData) => void ;
+  disabed? : boolean;
+  data? : any;
 }
 
 interface FormData {
@@ -66,7 +68,6 @@ const initialFormData: FormData = {
     Groupe_sanguin: "",
   },
 };
-
 export const useFormStore = create<FormState>((set) => ({
   formData: initialFormData,
   setFormData: (newData) => set((state) => ({ formData: { ...state.formData, ...newData } })),
@@ -81,7 +82,7 @@ export const useFormStore = create<FormState>((set) => ({
   })),
   resetFormData: () => set({ formData: initialFormData }),
 }));
-export default function InfoGeneral({ onFormSubmit }: FormProps) {
+export default function InfoGeneral({ onFormSubmit , data, disabed }: FormProps) {
 
   const { formData , setFormData, setNestedFormData } = useFormStore();
 
@@ -140,6 +141,7 @@ export default function InfoGeneral({ onFormSubmit }: FormProps) {
                 <FormLabel>Dossier n°: </FormLabel>
                 <FormControl>
                   <Input
+                  disabled={true}
                     placeholder="Entrer le numero de dossier"
                     name="nbr_Dossier" 
                     value={formData.nbr_Dossier} 

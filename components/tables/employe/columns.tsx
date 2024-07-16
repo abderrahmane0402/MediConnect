@@ -16,6 +16,7 @@ import {
   SquarePen,
   Trash2,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export type employe = {
   _id: string
@@ -25,6 +26,7 @@ export type employe = {
   cin: string
   posteTravail: string
 }
+export const dynamic = 'force-dynamic'
 
 export const employeColumns: ColumnDef<employe>[] = [
   {
@@ -48,6 +50,9 @@ export const employeColumns: ColumnDef<employe>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original
+      const router = useRouter();
+
+      router.refresh()
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

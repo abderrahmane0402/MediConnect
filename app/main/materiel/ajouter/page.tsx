@@ -148,5 +148,4 @@ const formSchema = z.object({
       </FormProvider>
     );
   };
-  
   export default EquipmentForm;

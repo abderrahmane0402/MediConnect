@@ -39,6 +39,7 @@ import { DeleteDossiers } from "@/api/deleteDossier"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { session } from "@/stores/session"
+export const dynamic = 'force-dynamic'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -47,9 +48,10 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+
   const router = useRouter()
   const { user } = session((state) => state)
-
+    
   const payment = taskSchema.parse(row.original)
   const id = payment.id
   console.log(id)
@@ -70,22 +72,23 @@ export function DataTableRowActions<TData>({
       )
     }
   }
-
   const handleDelete = async () => {
-    const result = await DeleteDossiers(id)
+    const result = await DeleteDossiers(id);
+    router.refresh()
+
     // window.open("", );
     console.log(result)
     // toast.success("Patient deleted successfully!");
-    router.push("/main/dossierMedical")
-    try {
-      const result = await DeleteDossiers(id)
-      console.log(result)
-      toast.success("Patient deleted successfully!")
-      router.refresh()
-    } catch (error) {
-      console.error("There was an error deleting the dossier!", error)
-      toast.error("Failed to delete the patient!")
-    }
+    // router.push("/main/dossierMedical")
+    // try {
+    //   const result = await DeleteDossiers(id)
+    //   console.log(result)
+    //   toast.success("Patient deleted successfully!")
+    //   router.refresh()
+    // } catch (error) {
+    //   console.error("There was an error deleting the dossier!", error)
+    //   toast.error("Failed to delete the patient!")
+    // }
   }
 
   return (
@@ -99,7 +102,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={""} onClick={handleOpenPDF}>
+        <Link href={"/main/dossierMedical/afficher?id=" + id}>
             <FileText className="mr-2 h-4 w-4" />
             Afficher plus de détails
           </Link>
@@ -127,7 +130,7 @@ export function DataTableRowActions<TData>({
             </DropdownMenuItem>
           </>
         )}
-        <DropdownMenuItem asChild>
+        {/* <DropdownMenuItem asChild>
           <Link href={"/main/visite"}>
             <FolderPlus className="mr-2 h-4 w-4" />
             Ajouter une visite
@@ -142,7 +145,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuItem onClick={handleDelete}>
           <Trash2 className="mr-2 h-4 w-4" />
           Supprimer le dossier
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem asChild>
           <Link href={""} onClick={handleOpenPDF}>
             <FileText className="mr-2 h-4 w-4" />

@@ -71,7 +71,7 @@ const DrawerScan: FC<FormProps> = ({ name, placeholder, handleFilesChange, selec
                 </Button>
               </DrawerClose>
               <DrawerClose asChild>
-                <Button variant="outline" className="w-[50%] mt-2">
+                <Button variant="default" className="bg-green-400 w-[50%] mt-2">
                   Submit
                 </Button>
               </DrawerClose>

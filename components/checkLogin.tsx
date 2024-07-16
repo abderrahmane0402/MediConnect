@@ -4,7 +4,7 @@ import React from "react"
 
 const CheckLogin = () => {
   const { user } = session((state) => state)
-  console.log(user)
+  // console.log(user)
   return <></>
 }
 

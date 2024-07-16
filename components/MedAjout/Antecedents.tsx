@@ -19,7 +19,10 @@ import {
 } from "../ui/select";
 import { FormData, FormData4 } from "@/lib/FormData";
 interface FormProps {
-  onFormSubmit: (formData: FormData4) => void;
+  onFormSubmit : (formData: FormData4) => void;
+  disabed? : boolean;
+  data? : any;
+
 }
 
 const antece = [
@@ -67,7 +70,7 @@ const vaccTable = [
   { id: "Covid" },
 ];
 
-export default function Antecedents({ onFormSubmit }: FormProps) {
+export default function Antecedents({ onFormSubmit ,data ,disabed }: FormProps) {
   const [isAutre, setAutres] = useState(false);
   const [isAcc_Tra_ant, setAcc_Tra_ants] = useState(false);
   const [sousmala, setSousmala] = useState("");

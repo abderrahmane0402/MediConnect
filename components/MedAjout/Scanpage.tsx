@@ -30,7 +30,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 
 interface FormProps {
-  onFormSubmit: (formData: FormData1) => void;
+  onFormSubmit : (formData: FormData1) => void;
+  disabed? : boolean;
+  data? : any;
 
 }
 interface FormData1 {
@@ -273,7 +275,7 @@ const initialPremierExam6 = {
   Conclusions_Médicales: "",
   Conclusions_Professionnels: "",
 };
-export default function Scanpage({ onFormSubmit}: FormProps) {
+export default function Scanpage({ onFormSubmit , data , disabed}: FormProps) {
   // const [formData, setFormData] = useState<FormData1>({
   //   PremierExam: {
   //     Date_exam: "", // Initialize with today's date in YYYY-MM-DD format

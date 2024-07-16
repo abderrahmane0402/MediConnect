@@ -183,27 +183,25 @@ export default function RootPage() {
       console.error("Error submitting form:", error);
     }
   };
-  const handleSubmit4 = (data :any) => {
-    console.log(data);
-  }
+ 
   return (
     <>
-<FormProvider {...form}>
+
 <Form {...form}>   
        <Card className="">
           <form
-            // onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-            //   e.preventDefault(); // Prevent default form submission
-            //   handleFormSubmitglobale(); 
-            // }}
-            onSubmit={form.handleSubmit(handleSubmit4)} className="space-y-8"
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+              e.preventDefault(); // Prevent default form submission
+              handleFormSubmitglobale(); 
+            }}
+            // onSubmit={form.handleSubmit(handleSubmit4)} className="space-y-8"
             >
             {current_page === 1 && (
-              <InfoGeneral onFormSubmit={handleFormSubmit} />
+              <InfoGeneral onFormSubmit={handleFormSubmit} disabed={false} />
             )}
             {/* --------------------Anticedent Medicaux ----------------------------------- */}
-            {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit} />}
-            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit}
+            {current_page === 2 && <Antecedents onFormSubmit={handleFormSubmit}  disabed={false}   />}
+            {current_page === 3 && <Scanpage onFormSubmit={handleFormSubmit}  disabed={false}  
             //  onFormSubmitScan={handleFormSubmit2} 
              />}
           </form>
@@ -229,7 +227,7 @@ export default function RootPage() {
             )}
             {current_page === 3 && (
               <Button type="button" 
-              // onClick={handleFormSubmitglobale}
+              onClick={handleFormSubmitglobale}
               >
                 Submit
               </Button>
@@ -237,7 +235,7 @@ export default function RootPage() {
           </div>
         </Card>
       </Form>
-      </FormProvider>
+      {/* </FormProvider> */}
     </>
   );
 }
